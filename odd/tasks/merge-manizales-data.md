@@ -6,7 +6,7 @@ Merge the existing Manizales Socrata downloader commit into the repository's pri
 ## Tasks
 - [x] Reconcile local feature commit with updated `origin/docs/initial-foundation`.
 - [x] Run focused tests and inspect the merge; confirm `Documentos-prototipos` remains untouched relative to the target branch.
-- [ ] Push the merged result to `docs/initial-foundation` and record the resulting commit.
+- [x] Push the merged result to `docs/initial-foundation` and record the resulting commit.
 
 ## Evidence
 - User authorized updating and merging into `docs/initial-foundation` and publishing it.
@@ -15,3 +15,4 @@ Merge the existing Manizales Socrata downloader commit into the repository's pri
 - `git diff --check`: passed.
 - Candidate diff vs `origin/docs/initial-foundation`: 5 files, 282 insertions, 1 deletion; no `Documentos-prototipos/` paths.
 - The pre-existing untracked LibreOffice lock file was not modified.
+- Published merge commit: `b9aad39` (`merge: update primary before publishing Manizales downloader`), which incorporated remote primary update `b90db00` before the push.
