@@ -1,105 +1,106 @@
-# Alimenta product brief
 
-This brief establishes a responsible starting point for a prototype discussion. It separates the context supplied for the project from ideas that still require validation; it is not evidence that the proposed product will produce a particular social outcome.
+# Alimenta — Descripción general del producto
 
-## 1. Supplied context
+Este documento establece un punto de partida responsable para la discusión de un prototipo. Separa el contexto proporcionado para el proyecto de las ideas que aún requieren validación; no constituye evidencia de que el producto propuesto vaya a generar un resultado social determinado.
 
-The following context was supplied by the project owner and is treated as the starting premise, not as independently verified research:
+## 1. Contexto proporcionado
 
-- Alimenta aims to connect community food-aid organizers with suppliers and individual donors.
-- It also aims to help organizers coordinate inventories across initiatives.
-- The repository needs a shared project foundation before a prototype is defined.
+El siguiente contexto fue proporcionado por el responsable del proyecto y se considera la premisa inicial, no una investigación verificada de manera independiente:
 
-No further empirical claims about the scale, frequency, causes, or effects of the coordination challenge have been established in this repository.
+- Alimenta busca conectar a los organizadores de iniciativas comunitarias de ayuda alimentaria con proveedores y donantes individuales.
+- También busca ayudar a los organizadores a coordinar inventarios entre diferentes iniciativas.
+- El repositorio necesita una base compartida del proyecto antes de definir un prototipo.
 
-## 2. Proposed product direction
+En este repositorio aún no se han establecido afirmaciones empíricas adicionales sobre la magnitud, frecuencia, causas o efectos del desafío de coordinación.
 
-Explore a coordination tool that could make relevant inventory and contribution information easier for participating initiatives to understand and act on. The prototype should test whether this direction is useful and appropriate before it becomes a product commitment.
+## 2. Dirección propuesta del producto
 
-The direction does not yet define:
+Explorar una herramienta de coordinación que pueda facilitar a las iniciativas participantes la comprensión y el uso de información relevante sobre inventarios y contribuciones. El prototipo debe permitir evaluar si esta dirección es útil y adecuada antes de convertirla en un compromiso de desarrollo del producto.
 
-- what information is exchanged;
-- which interactions the prototype supports;
-- how participants are admitted or verified;
-- who owns or maintains records; or
-- how coordination works outside the product.
+Esta dirección todavía no define:
 
-## 3. Intended actors
+- qué información se intercambia;
+- qué interacciones admite el prototipo;
+- cómo se admite o verifica a los participantes;
+- quién es propietario de los registros o responsable de mantenerlos; o
+- cómo funciona la coordinación fuera del producto.
 
-| Actor | Proposed relationship to Alimenta | What remains unknown |
+## 3. Actores previstos
+
+| Actor | Relación propuesta con Alimenta | Aspectos aún desconocidos |
 | --- | --- | --- |
-| Community food-aid organizers | Primary participants who may describe or coordinate inventory across initiatives. | Current workflows, decision authority, information needs, and access constraints. |
-| Suppliers | Potential contributors of food or related supplies. | Motivation, availability patterns, constraints, and required assurances. |
-| Individual donors | Potential contributors at an individual scale. | Suitable contribution types, communication needs, and participation barriers. |
+| Organizadores de iniciativas comunitarias de ayuda alimentaria | Participantes principales que podrían registrar o coordinar inventarios entre iniciativas. | Flujos de trabajo actuales, autoridad para tomar decisiones, necesidades de información y restricciones de acceso. |
+| Proveedores | Posibles contribuyentes de alimentos o suministros relacionados. | Motivaciones, patrones de disponibilidad, restricciones y garantías requeridas. |
+| Donantes individuales | Posibles contribuyentes a escala individual. | Tipos de contribuciones adecuados, necesidades de comunicación y barreras de participación. |
 
-People receiving food support are affected stakeholders and must be considered respectfully. They are not assumed to be direct product users, and this brief does not propose collecting their data.
+Las personas que reciben apoyo alimentario son partes interesadas afectadas por el proyecto y deben ser consideradas con respeto. No se asume que sean usuarios directos del producto, y este documento no propone recopilar sus datos.
 
-## 4. Intended outcomes
+## 4. Resultados esperados
 
-The prototype discussion should evaluate whether Alimenta could:
+La discusión del prototipo debe evaluar si Alimenta podría:
 
-- improve shared visibility of relevant inventory information;
-- reduce avoidable coordination friction between participating initiatives;
-- make contribution opportunities clearer to suppliers and individual donors; and
-- support decisions without exposing sensitive information or shifting inappropriate burdens onto communities.
+- mejorar la visibilidad compartida de la información relevante sobre inventarios;
+- reducir las dificultades de coordinación evitables entre las iniciativas participantes;
+- facilitar que proveedores y donantes individuales identifiquen oportunidades de contribución; y
+- apoyar la toma de decisiones sin exponer información sensible ni trasladar cargas inapropiadas a las comunidades.
 
-These outcomes are intentions. Measures of success must be defined with participants rather than inferred from the intentions alone.
+Estos resultados representan intenciones. Los indicadores de éxito deben definirse junto con los participantes, en lugar de inferirse únicamente a partir de dichas intenciones.
 
-## 5. Early scope
+## 5. Alcance inicial
 
-The next phase is limited to contextualizing a prototype. It may include:
+La siguiente fase se limita a contextualizar un prototipo. Puede incluir:
 
-- documenting current actor workflows and vocabulary;
-- identifying the smallest coordination problem worth testing;
-- agreeing on a bounded prototype scenario;
-- identifying the minimum information needed for that scenario; and
-- defining validation criteria and safeguards before implementation.
+- documentar los flujos de trabajo actuales y la terminología utilizada por los actores;
+- identificar el problema de coordinación más pequeño que valga la pena evaluar;
+- acordar un escenario de prototipo con un alcance delimitado;
+- identificar la información mínima necesaria para dicho escenario; y
+- definir criterios de validación y medidas de protección antes de la implementación.
 
-## 6. Non-goals and unresolved areas
+## 6. Objetivos excluidos y áreas sin resolver
 
-The current foundation does not define or authorize:
+La base actual del proyecto no define ni autoriza:
 
-- a technology stack, software architecture, or deployment platform;
-- payment collection or financial intermediation;
-- transport, delivery, storage, or other logistics;
-- food-safety inspection, certification, or compliance processes;
-- a beneficiary identity, eligibility, or case-management model; or
-- claims that the project will reduce hunger, waste, or operating costs.
+- una pila tecnológica, arquitectura de software o plataforma de despliegue;
+- la recepción de pagos o la intermediación financiera;
+- el transporte, la entrega, el almacenamiento u otras actividades logísticas;
+- los procesos de inspección, certificación o cumplimiento de normas de seguridad alimentaria;
+- un modelo de identidad, elegibilidad o gestión de casos de beneficiarios; o
+- afirmaciones de que el proyecto reducirá el hambre, el desperdicio de alimentos o los costos operativos.
 
-These areas must remain open until evidence, ownership, and requirements are established. Some may remain permanently outside Alimenta's role.
+Estas áreas deben permanecer abiertas hasta que se establezcan evidencias, responsabilidades y requisitos. Algunas podrían quedar permanentemente fuera del ámbito de actuación de Alimenta.
 
-## 7. Assumptions requiring validation
+## 7. Supuestos que requieren validación
 
-1. Participating organizers experience an inventory-coordination problem that a digital prototype could meaningfully explore.
-2. Organizers are willing and able to share some inventory information across initiatives.
-3. Suppliers and individual donors need a clearer way to understand relevant contribution opportunities.
-4. A useful prototype can avoid collecting beneficiary-level information.
-5. Participants can agree on sufficiently consistent terms for inventory and availability.
-6. The value of broader visibility outweighs the risks of inaccurate, outdated, or inappropriately exposed information.
+1. Los organizadores participantes experimentan un problema de coordinación de inventarios que podría explorarse de manera significativa mediante un prototipo digital.
+2. Los organizadores están dispuestos y tienen la capacidad de compartir cierta información sobre inventarios entre iniciativas.
+3. Los proveedores y donantes individuales necesitan una forma más clara de identificar oportunidades relevantes de contribución.
+4. Es posible desarrollar un prototipo útil sin recopilar información individual de los beneficiarios.
+5. Los participantes pueden acordar términos suficientemente consistentes para describir los inventarios y su disponibilidad.
+6. El valor de una mayor visibilidad supera los riesgos asociados con información inexacta, desactualizada o expuesta de manera inapropiada.
 
-## 8. Risks and ethical considerations
+## 8. Riesgos y consideraciones éticas
 
-| Risk | Consideration for the prototype discussion |
+| Riesgo | Consideración para la discusión del prototipo |
 | --- | --- |
-| Unsupported impact claims | Describe intended outcomes as hypotheses and agree on evidence before making claims. |
-| Privacy and dignity | Minimize information collection and avoid exposing beneficiary or sensitive organizational data. |
-| Unequal access | Learn about device, connectivity, language, accessibility, and support constraints before choosing an interface. |
-| Stale or incorrect inventory | Clarify who updates information and how participants interpret its reliability. |
-| Uneven power or visibility | Examine whether the proposed model privileges larger or better-resourced participants. |
-| Operational ambiguity | State clearly which responsibilities remain with participating organizations and people. |
-| Safety and compliance expectations | Do not represent Alimenta as providing food-safety or regulatory assurance without an explicit, validated mandate. |
+| Afirmaciones de impacto sin respaldo | Describir los resultados esperados como hipótesis y acordar qué evidencias serán necesarias antes de formular afirmaciones. |
+| Privacidad y dignidad | Minimizar la recopilación de información y evitar la exposición de datos de beneficiarios o información organizacional sensible. |
+| Acceso desigual | Investigar las limitaciones relacionadas con dispositivos, conectividad, idioma, accesibilidad y soporte antes de seleccionar una interfaz. |
+| Inventarios desactualizados o incorrectos | Aclarar quién actualiza la información y cómo los participantes interpretan su confiabilidad. |
+| Desigualdad de poder o visibilidad | Examinar si el modelo propuesto favorece a participantes más grandes o con mayores recursos. |
+| Ambigüedad operativa | Establecer claramente qué responsabilidades permanecen a cargo de las organizaciones y personas participantes. |
+| Expectativas de seguridad y cumplimiento normativo | No presentar a Alimenta como responsable de garantizar la seguridad alimentaria o el cumplimiento regulatorio sin un mandato explícito y validado. |
 
-## 9. Focused questions for the prototype discussion
+## 9. Preguntas clave para la discusión del prototipo
 
-1. What specific coordination event should the first prototype help participants understand or complete?
-2. How do organizers currently record, update, and share inventory information?
-3. Which information is necessary for that event, and which information should never enter the prototype?
-4. Who is authorized to create, change, verify, and retire inventory information?
-5. What do suppliers and individual donors need to know before offering a contribution?
-6. Where does the product's responsibility end, especially for payments, logistics, food safety, and beneficiary information?
-7. What access, language, privacy, dignity, and power concerns should shape the prototype?
-8. What observable signal would justify continuing, changing, or stopping the proposed direction?
+1. ¿Qué evento específico de coordinación debería ayudar a comprender o completar el primer prototipo?
+2. ¿Cómo registran, actualizan y comparten actualmente los organizadores la información de sus inventarios?
+3. ¿Qué información es necesaria para ese evento y qué información nunca debería incorporarse al prototipo?
+4. ¿Quién está autorizado para crear, modificar, verificar y retirar información sobre inventarios?
+5. ¿Qué necesitan saber los proveedores y donantes individuales antes de ofrecer una contribución?
+6. ¿Dónde termina la responsabilidad del producto, especialmente en relación con pagos, logística, seguridad alimentaria e información de beneficiarios?
+7. ¿Qué preocupaciones relacionadas con el acceso, idioma, privacidad, dignidad y relaciones de poder deberían orientar el diseño del prototipo?
+8. ¿Qué señal observable justificaría continuar, modificar o detener la dirección propuesta?
 
-## Next step
+## Siguiente paso
 
-Discuss these questions with representatives of the intended actors, record where perspectives differ, and define one bounded prototype scenario. Only then should the project select functionality or technical foundations.
+Discutir estas preguntas con representantes de los actores previstos, registrar los puntos en los que sus perspectivas difieren y definir un único escenario de prototipo con un alcance delimitado. Solo después de ello debería el proyecto seleccionar las funcionalidades o las bases tecnológicas.
