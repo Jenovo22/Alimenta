@@ -1,0 +1,80 @@
+{
+  "proyecto": "Alimenta",
+  "version": "1.0",
+  "descripcion": "Paleta institucional de referencia y colores auxiliares para la interfaz de Alimenta.",
+  "colores_institucionales": {
+    "verde_institucional": {
+      "nombre": "Verde institucional",
+      "pantone": "376 C",
+      "hex": "#94B43B",
+      "rgb": [148, 180, 59],
+      "uso": "Identidad de marca, elementos destacados y llamadas a la accion con texto oscuro"
+    },
+    "rojo_alterno": {
+      "nombre": "Rojo alterno",
+      "pantone": "187 C",
+      "hex": "#A61C31",
+      "rgb": [166, 28, 49],
+      "uso": "Acentos institucionales y elementos secundarios de marca"
+    },
+    "verde_complementario": {
+      "nombre": "Verde complementario",
+      "pantone": "7743 C",
+      "hex": "#466B3F",
+      "rgb": [70, 107, 63],
+      "uso": "Navegacion, encabezados y botones con texto blanco"
+    },
+    "vinotinto": {
+      "nombre": "Vinotinto",
+      "pantone": "188 C",
+      "hex": "#76232F",
+      "rgb": [118, 35, 47],
+      "uso": "Detalles de identidad e ilustraciones"
+    },
+    "gris_oscuro": {
+      "nombre": "Gris oscuro",
+      "pantone": "425 C",
+      "hex": "#565A5C",
+      "rgb": [86, 90, 92],
+      "uso": "Texto secundario y metadatos"
+    },
+    "gris_claro": {
+      "nombre": "Gris claro",
+      "pantone": "421 C",
+      "hex": "#B1B2B0",
+      "rgb": [177, 178, 176],
+      "uso": "Bordes, separadores y estados deshabilitados"
+    }
+  },
+  "colores_auxiliares_interfaz": {
+    "blanco": {
+      "hex": "#FFFFFF",
+      "rgb": [255, 255, 255],
+      "uso": "Tarjetas y superficies"
+    },
+    "fondo_neutro": {
+      "hex": "#F8F9F6",
+      "rgb": [248, 249, 246],
+      "uso": "Fondo general de la aplicacion"
+    },
+    "texto_principal": {
+      "hex": "#26342A",
+      "rgb": [38, 52, 42],
+      "uso": "Texto principal sobre fondos claros"
+    }
+  },
+  "tokens_ui": {
+    "primary": "#94B43B",
+    "primary_contrast_text": "#26342A",
+    "secondary": "#466B3F",
+    "secondary_contrast_text": "#FFFFFF",
+    "accent": "#A61C31",
+    "accent_dark": "#76232F",
+    "background": "#F8F9F6",
+    "surface": "#FFFFFF",
+    "text_primary": "#26342A",
+    "text_secondary": "#565A5C",
+    "border": "#B1B2B0"
+  },
+  "nota_accesibilidad": "Evitar texto blanco normal sobre el verde institucional #94B43B; usar texto oscuro. Para acciones con texto blanco, preferir el verde complementario #466B3F. No depender exclusivamente del color para comunicar estados."
+}
