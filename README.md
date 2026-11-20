@@ -1,35 +1,35 @@
 # Alimenta
 
-Alimenta is an early-stage project exploring how community food-aid organizers could connect with suppliers and individual donors while coordinating inventories across initiatives. It is intended for the people who organize food support and the people or organizations that may contribute supplies. The project is currently being contextualized: no prototype behavior, technology stack, or operating model has been selected.
+Alimenta es un proyecto en etapa temprana que explora cómo los organizadores de iniciativas comunitarias de ayuda alimentaria podrían conectarse con proveedores y donantes individuales, al tiempo que coordinan los inventarios entre distintas iniciativas. Está dirigido tanto a las personas que organizan el apoyo alimentario como a las personas u organizaciones que pueden contribuir con suministros. Actualmente, el proyecto se encuentra en una fase de contextualización: aún no se ha seleccionado el funcionamiento del prototipo, la pila tecnológica ni el modelo operativo.
 
-## Why this repository exists
+## ¿Por qué existe este repositorio?
 
-The initial direction is to support clearer coordination around available food resources without making unsupported claims about community needs or expected impact. This repository provides a shared starting point for discussing that direction before implementation begins.
+La orientación inicial consiste en facilitar una coordinación más clara de los recursos alimentarios disponibles, sin realizar afirmaciones no fundamentadas sobre las necesidades de las comunidades o el impacto esperado. Este repositorio proporciona un punto de partida compartido para discutir esta orientación antes de comenzar la implementación.
 
-## Intended value
+## Valor propuesto
 
-Alimenta may help:
+Alimenta podría ayudar a:
 
-- community food-aid organizers understand and coordinate available inventory across initiatives;
-- suppliers and individual donors understand where their contributions may be relevant; and
-- project participants define a responsible prototype from shared context rather than assumptions.
+- Los organizadores de iniciativas comunitarias de ayuda alimentaria a conocer y coordinar los inventarios disponibles entre distintas iniciativas.
+- Los proveedores y donantes individuales a comprender dónde podrían ser relevantes sus contribuciones.
+- Los participantes del proyecto a definir un prototipo responsable a partir de un contexto compartido, en lugar de suposiciones.
 
-These are proposed outcomes, not validated results. See the [product brief](docs/product-brief.md) for the supplied context, assumptions, boundaries, and open questions.
+Estos son resultados propuestos, no resultados validados. Consulta el [documento de definición del producto](docs/product-brief.md) para conocer el contexto proporcionado, los supuestos, los límites y las preguntas abiertas.
 
-## Current stage
+## Estado actual
 
-The project is at the foundation stage. This repository contains documentation only. It does not yet define application functionality, architecture, deployment, payments, logistics, food-safety processes, or beneficiary-data handling.
+El proyecto se encuentra en la etapa de fundamentación. Este repositorio contiene únicamente documentación. Todavía no se han definido las funcionalidades de la aplicación, la arquitectura, el despliegue, los pagos, la logística, los procesos de seguridad alimentaria ni el tratamiento de los datos de los beneficiarios.
 
-## Repository map
+## Estructura del repositorio
 
-| Path | Purpose |
+| Ruta | Propósito |
 | --- | --- |
-| [`docs/product-brief.md`](docs/product-brief.md) | Separates supplied context from the proposed direction and records assumptions, risks, and open questions. |
-| [`CONTRIBUTING.md`](CONTRIBUTING.md) | Explains the lightweight contribution workflow and decision boundaries. |
-| `odd/tasks/` | Contains bounded work definitions and delivery evidence. |
+| [`docs/product-brief.md`](docs/product-brief.md) | Distingue el contexto proporcionado de la orientación propuesta y documenta los supuestos, riesgos y preguntas abiertas. |
+| [`CONTRIBUTING.md`](CONTRIBUTING.md) | Explica el flujo de trabajo simplificado para realizar contribuciones y los límites para la toma de decisiones. |
+| `odd/tasks/` | Contiene definiciones de tareas con un alcance delimitado y evidencias de entrega. |
 
-Local `.atl/` and `.codegraph/` directories are tooling state and are intentionally not part of the repository.
+Los directorios locales `.atl/` y `.codegraph/` contienen información de estado de las herramientas y, de manera intencional, no forman parte del repositorio.
 
-## Next step
+## Siguiente paso
 
-Contextualize the prototype with the intended actors. The next discussion should answer the focused questions in the [product brief](docs/product-brief.md) before selecting features, a technical stack, or an operating model.
+Contextualizar el prototipo junto con los actores previstos. La siguiente discusión deberá responder las preguntas específicas planteadas en el [documento de definición del producto](docs/product-brief.md) antes de seleccionar las funcionalidades, la pila tecnológica o el modelo operativo.
