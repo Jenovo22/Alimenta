@@ -1,0 +1,46 @@
+# Local project tooling
+.atl/
+.codegraph/
+
+# Operating system metadata
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Editors and local workspace settings
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# Environment files and local secrets
+.env
+.env.*
+!.env.example
+*.key
+*.pem
+
+# Logs and runtime artifacts
+*.log
+logs/
+*.pid
+*.seed
+tmp/
+temp/
+
+# Dependency caches and installed dependencies
+.cache/
+node_modules/
+vendor/
+.venv/
+venv/
+
+# Generic build, test, and generated outputs
+build/
+dist/
+out/
+target/
+coverage/
+reports/
+*.generated.*
