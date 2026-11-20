@@ -65,5 +65,5 @@ Documentation and repository-foundation files only. No application source code, 
 
 - Current state: both documentation tasks completed.
 - Verification: `git diff --check` passed; all Markdown files were structurally read back; README and contribution links resolve; `.atl/` and `.codegraph/` are ignored as intended.
-- Commit: pending.
-- Next step: create the work-unit commit and record its identity.
+- Commit: `56de471` (`docs: establish Alimenta project foundation`).
+- Next step: contextualize the prototype using the open questions in `docs/product-brief.md`.
