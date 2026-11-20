@@ -36,7 +36,7 @@ vendor/
 .venv/
 venv/
 
-# Generic build, test, and generated outputs
+# Generic build and generated outputs
 build/
 dist/
 out/
@@ -44,3 +44,8 @@ target/
 coverage/
 reports/
 *.generated.*
+
+# Python caches and downloaded household records
+__pycache__/
+Bases de datos/manizales_17001.csv
+Bases de datos/manizales_17001.json
