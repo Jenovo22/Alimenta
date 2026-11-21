@@ -1,7 +1,8 @@
 # Propuesta de plataforma virtual para gestión de donaciones comunitarias
 
-**Documento de propuesta funcional — versión 2.0 (20 de noviembre de 2026)**  
-**Estado:** diseño conceptual y funcional actualizado; los horarios, transportes y autorizaciones no están operando en un servicio real.
+**Documento de propuesta funcional — versión 2.1 (20 de noviembre de 2026)**
+
+**Estado:** diseño conceptual y funcional actualizado con base en las patentes y antecedentes aplicables ([`aplicabilidad-patentes-alimenta.md`](../Documentos-prototipos/aplicabilidad-patentes-alimenta.md)); los horarios, transportes y autorizaciones no están operando en un servicio real.
 
 ## 1. Resumen ejecutivo
 
@@ -12,6 +13,8 @@ Las necesidades son reportadas por los **ediles**; los **agentes** califican su 
 **Distinción esencial:** compromiso ≠ cita confirmada ≠ despacho ≠ recepción verificada. El banco no tiene stock por promesas, y el saldo de una necesidad solo cambia al confirmar la recepción correspondiente. Un aporte dirigido a un edil sin solicitud es un registro independiente y **no reduce automáticamente necesidades ni modifica su prioridad**.
 
 La plataforma recomienda, organiza y registra; **el agente decide asignaciones**, **el edil verifica la recepción**, **el donante realiza el transporte**. Se mantiene trazabilidad de actor, fecha, productos, cita, cantidades e incidencias. Para donaciones dirigidas a un edil, el destinatario final debe ser la comunidad, nunca el patrimonio personal del representante.
+
+**Fundamentación en patentes y antecedentes aplicables (v2.1):** sobre esta estructura base se incorporan cuatro pilares asistidos que respetan las exclusiones del MVP y la decisión humana (*Human-in-the-Loop*): (1) el **Catálogo de Ayudas Técnicas UNAL** (MUUPA, muleta axilar plegable y Sistema *Anatom*) dentro de `Salud y asistencia`; (2) **asistencia de priorización con equidad y reparto parcial sugerido bajo escasez** (inspirada en arquitectura multi-agente *Cureus Journals*, `US11393577B2` y `US8494885B2`, cruzada con datos territoriales agregados de Manizales `ab8a-uwf7`); (3) **emparejamiento asistido donante–necesidad** (*ReliefMatcher.AI* + `US11037098B2`, cerrando la brecha de verificación en terreno mediante ediles/JAC); y (4) una capa de **accesibilidad universal** (`WO2026151479A1`, `US20200133474A1`, referencia LSC `US20170236450A1` / Sistema ECOS) junto con una **ruta separada de derivación a Primeros Auxilios Psicológicos (PAP) UNAL** (`WO2021247792A1`, `CN102708284A`) sin almacenar datos clínicos ni identidades.
 
 ## 2. Estructura gráfica explicativa
 
@@ -97,16 +100,17 @@ El donante que transporta desde el banco **puede ser distinto** del aportante or
 
 1. El edil registra la necesidad y el agente la evalúa. La publicación se realiza según la autorización del sistema.
 2. El edil publica **ventanas de recepción comunitaria** con fecha, rango horario y cupos.
-3. El donante elige comunidad, producto y cantidad aportable, luego selecciona **una hora** dentro de las ventanas del edil.
-4. El sistema registra el compromiso y solicita la aceptación del edil. La capacidad del horario se bloquea temporalmente conforme a la política de vencimiento.
-5. Tras aceptación, el donante **transporta directamente** los productos al punto acordado mediante un canal privado. El edil confirma recepción o reporta rechazo/incidencia.
-6. El saldo pendiente de la necesidad solo disminuye por **unidades efectivamente recibidas**, no por la cita ni por la promesa.
+3. Un **asistente de emparejamiento** (inspirado en *ReliefMatcher.AI* y `US11037098B2`) permite al donante indicar el producto y la cantidad que desea aportar, sugiriendo necesidades compatibles según categoría del catálogo, saldo aportable y **ventanas abiertas con cupo del edil**. A diferencia de esquemas puramente digitales sin control en campo, la verificación en terreno queda cubierta por los ediles/JAC autorizados.
+4. El donante elige comunidad, producto y cantidad aportable, luego selecciona **una hora** dentro de las ventanas del edil.
+5. El sistema registra el compromiso y solicita la aceptación del edil. La capacidad del horario se bloquea temporalmente conforme a la política de vencimiento.
+6. Tras aceptación, el donante **transporta directamente** los productos al punto acordado mediante un canal privado. El edil confirma recepción o reporta rechazo/incidencia.
+7. El saldo pendiente de la necesidad solo disminuye por **unidades efectivamente recibidas**, no por la cita ni por la promesa.
 
 La donación no pasa por inventario bancario. Si el edil no tiene horarios abiertos, se muestra «Sin horarios disponibles» y no se crea una cita no autorizada. Las reservas pueden vencer o cancelarse con liberación de cupo y saldo aportable.
 
 ### 5.3. Donación dirigida a un edil específico, sin necesidad previamente registrada
 
-El donante debe poder buscar y **seleccionar un edil verificado por nombre o comunidad**, elegir producto y cantidad, describir el aporte y seleccionar un horario publicado por ese representante, **aunque no exista una solicitud para esos artículos**.
+El donante debe poder buscar y **seleccionar un edil verificado por nombre o comunidad**, elegir producto y cantidad, describir el aporte y seleccionar un horario publicado por ese representante, **aunque no exista una solicitud para esos artículos**. Como apoyo orientativo (inspirado en `US11037098B2`), si el producto elegido coincide con una necesidad ya publicada en esa u otra comunidad, el sistema puede mostrar un aviso no bloqueante para que el donante decida si prefiere atender dicha solicitud o mantener el ofrecimiento espontáneo.
 
 1. Se crea un ofrecimiento de tipo **dirigido a edil**, con `detalle_solicitud_id = NULL`, `edil_destinatario_id`, comunidad, artículo, cantidad, donante, fecha/hora y observación.
 2. El edil ve el ofrecimiento en su bandeja, determina si es pertinente, apto y gestionable y **acepta o rechaza**; un rechazo libera el cupo y se conserva su motivo.
@@ -129,7 +133,7 @@ Se adopta un **catálogo de cuatro niveles**: `categoría → subcategoría → 
 | Alimentación | No perecederos; perecederos; agua potable; alimentación especial. |
 | Higiene y cuidado personal | Higiene corporal; higiene bucal; higiene menstrual; cuidado personal. |
 | Bebés y primera infancia | Pañales; alimentación infantil; ropa y cuidado infantil. |
-| Salud y asistencia | Primeros auxilios; elementos de protección; dispositivos de apoyo. |
+| Salud y asistencia | Primeros auxilios; elementos de protección; dispositivos de apoyo (**Catálogo de Ayudas Técnicas UNAL**: MUUPA, muleta axilar plegable, Sistema *Anatom*). |
 | Hogar y limpieza | Productos de limpieza; utensilios; cocina; ropa de cama. |
 | Vestuario | Ropa adulta; ropa infantil; calzado; prendas de abrigo. |
 | Materiales y vivienda | Materiales de construcción; herramientas; reparaciones. |
@@ -139,6 +143,16 @@ Se adopta un **catálogo de cuatro niveles**: `categoría → subcategoría → 
 **Formulario de petición del edil:** comunidad/barrio; uno o varios productos del catálogo; especificación; cantidad y unidad; personas y hogares afectados; justificación; observaciones opcionales. La plataforma agrega fecha, hora, identificador y estado automáticamente. **El formulario del edil NO incluye el grado de necesidad.**
 
 Se permitirán solicitudes por **productos individuales** y por **kits** previamente definidos. Cada kit tendrá una lista de componentes y cantidades, para evitar inventarios inconsistentes. La opción «No encuentro el producto» enviará una propuesta de producto a revisión administrativa antes de incorporarlo al catálogo.
+
+### Catálogo de Ayudas Técnicas UNAL
+
+Dentro de `Salud y asistencia → dispositivos de apoyo` y `kits`, se habilita el catálogo de tecnologías físicas desarrolladas por la **Universidad Nacional de Colombia (UNAL)** para atender poblaciones vulnerables sin alterar el esquema base de inventario:
+
+- **MUUPA — Mango universal para operar puertas con pies o antebrazos (Radicado SIC: `NC2021/0010846`, Sede Bogotá):** lotes solicitables por ediles para adecuar puertas sin perforación en albergues, comedores comunitarios y puntos de acopio.
+- **Muleta axilar plegable con medio elástico en los perfiles de soporte (Patente de invención SIC):** ayuda técnica de movilidad reducida para adultos mayores y personas con discapacidad física.
+- **Sistema *Anatom* de posicionamiento antiescaras (Sede Palmira, en trámite de patente):** kit modular de cojines ergonómicos para personas con movilidad reducida y apoyo directo a cuidadores.
+
+> **Resguardo de propiedad industrial:** Alimenta no fabrica, reproduce ni comercializa estas invenciones; actúa únicamente como canal de visibilización y coordinación de donaciones o padrinazgo institucional respetando la titularidad de la UNAL ante la SIC.
 
 ### Prevención de duplicados
 
@@ -167,6 +181,16 @@ P = 0.50G + 0.30A + 0.20T
 | `T` antigüedad | 20 % | Sistema |
 
 Los pesos y rangos de normalización son **provisionales**. Antes de ponerlos en producción deben revisarse con escenarios reales y representantes de las comunidades. En particular, no debe asumirse que el barrio más grande es automáticamente el más prioritario: se puede contemplar la proporción de personas afectadas respecto a su población total para contrastar los resultados.
+
+### Asistencia con equidad y sugerencia de reparto bajo escasez
+
+Inspirado en el marco multi-agente con equidad (*Cureus Journals*, 2026) y los modelos de optimización bajo escasez (`US11393577B2` y `US8494885B2`), el panel del agente complementa `P` con **tres lentes orientativos**:
+
+1. **Urgencia (*Triage*):** basada en la calificación humana `G` (con alerta inmediata para `G = 5`).
+2. **Equidad territorial (*Equity*):** contrasta el volumen de personas afectadas (`A`) y la antigüedad (`T`) frente a indicadores territoriales agregados por zona/comunidad (replicables en Manizales mediante [`Bases de datos/download_manizales_data.py`](../Bases%20de%20datos/download_manizales_data.py), dataset `ab8a-uwf7`, `cod_mpio = 17001`), evitando que comunidades pequeñas o vulnerables queden rezagadas frente a sectores más populosos. Nunca expone registros individuales de hogares.
+3. **Viabilidad logística (*Logistics*):** cruza el stock físicamente disponible en `inventario_lotes` con ventanas activas del edil y disponibilidad de donantes transportadores.
+
+Cuando las unidades libres en el banco sean menores que la demanda de múltiples solicitudes evaluadas, el sistema puede calcular una **sugerencia orientativa de reparto parcial** (respetando prioridades críticas `G = 4–5`, equidad territorial y el saldo pendiente sin reiniciar `T`). Esta sugerencia nunca auto-reserva stock ni modifica `G`: el agente decide si la adopta, ajusta o descarta.
 
 ### Escala propuesta para `G`
 
@@ -236,10 +260,11 @@ Cada entrega tiene identificador, vínculo de donación (y de necesidad cuando e
 
 Se requieren recordatorios/reconfirmación de solicitudes antiguas sin borrar fechas originales; ediciones sustanciales producen nueva revisión del agente. El estado de **publicación** es independiente del grado de evaluación.
 
-## 10. Transparencia, privacidad, custodia y seguimiento
+## 10. Transparencia, privacidad, custodia, accesibilidad y resguardo legal
 
 - Historial por comunidad de solicitudes, entregas, saldos y fechas.
-- Registro de autor y justificación de cambios en grados, asignaciones, agendas, citas, aportes espontáneos y despacho.
+- Registro de autor y justificación de cambios en grados, asignaciones, agendas, citas, aportes espontáneos y despacho (patrones de trazabilidad basados en `WO2023012530A1` y `US20050021353A1`).
+- Verificación administrativa previa de ediles y representantes autorizados (`US20050021353A1`) antes de habilitar recepción comunitaria o aportes espontáneos.
 - Notificaciones al edil de ofrecimientos y citas; al donante de confirmación/rechazo/cambio de hora; al agente de ingreso pendiente, transporte sin aceptar y necesidades críticas.
 - Autenticación y permisos comprobados por operación. Un edil no observa citas ni donaciones dirigidas a otros representantes.
 - Datos agregados de personas/hogares; nunca divulgar listas de beneficiarios, números personales o domicilios de ediles en directorios públicos.
@@ -249,14 +274,26 @@ Se requieren recordatorios/reconfirmación de solicitudes antiguas sin borrar fe
 - Historial de donaciones previo es solo información contextual del agente; no es cuarto factor de la fórmula automática.
 - No prometer rutas optimizadas, transporte garantizado o seguimiento GPS: no están especificados ni implementados en esta fase.
 
+### Accesibilidad universal (*Accessibility-First*)
+
+Con base en `WO2026151479A1` y `US20200133474A1`, la interfaz incorpora un **Modo accesible** que amplía objetivos táctiles, tipografía y espaciado entre controles (previniendo errores por temblor o motricidad reducida), refuerza el contraste y ofrece dictado por voz opcional en formularios clave. Para el componente de lengua de señas en fases progresivas, se toman como referencia `US20170236450A1` y una eventual articulación institucional con el **Sistema ECOS (UNIMINUTO, patente SIC)**.
+
+### Ruta separada de soporte psicosocial (PAP UNAL)
+
+Inspirada en los flujos de triaje y derivación estructurada de `WO2021247792A1` y `CN102708284A`, la plataforma habilita un orientador breve no clínico y enlace directo hacia los **Primeros Auxilios Psicológicos (PAP) UNAL** para ediles, cuidadores y comunidad. Esta ruta opera **desacoplada del inventario de donaciones** y tiene estrictamente prohibido almacenar diagnósticos, respuestas clínicas o identidades personales.
+
+### Propiedad Intelectual (*Freedom to Operate*)
+
+Bajo la **Decisión 486 de la Comunidad Andina**, los programas de ordenador y métodos de gestión en sí mismos no son patentables en Colombia, y las patentes extranjeras analizadas (`US11393577B2`, `US8494885B2`, `US11037098B2`, `WO2023012530A1`, `CN109523314B`, entre otras) no están concedidas en Colombia. Quedan expresamente excluidas del proyecto las patentes orientadas a pagos/transacciones automáticas (`US11227325B1`, `US20180276710A1`) y comando táctico de incidentes (`US12299557B1`, `US12024201B2`, `US9143535B1`, `US11395124B2`).
+
 ## 11. Estructura preliminar de base de datos
 
 | Entidad / tabla | Contenido principal |
 |---|---|
 | `usuarios` | Cuenta, rol, autorización, datos mínimos de contacto. |
 | `comunidades`, `ediles_comunidades` | Barrio y relación verificable edil/comunidad. |
-| `categorias`, `subcategorias`, `productos`, `presentaciones` | Catálogo normalizado, unidad y restricciones. |
-| `kits`, `kits_componentes` | Componentes para administración del inventario de kits. |
+| `categorias`, `subcategorias`, `productos`, `presentaciones` | Catálogo normalizado (incluye el **Catálogo de Ayudas Técnicas UNAL** bajo `Salud y asistencia`), unidad y restricciones. |
+| `kits`, `kits_componentes` | Componentes para administración del inventario de kits (incluye kits de adecuación y cuidado). |
 | `solicitudes`, `detalle_solicitud` | Petición y sus múltiples productos, cantidades y saldos. |
 | `evaluaciones` | **FK a `detalle_solicitud_id`**, grado 1–5, agente, justificación y versiones. |
 | `donaciones`, `detalle_donacion` | Modalidad `BANCO`, `DIRECTA_NECESIDAD` o `DIRIGIDA_EDIL`, donante, unidades, estado y condiciones. |
@@ -268,25 +305,27 @@ Se requieren recordatorios/reconfirmación de solicitudes antiguas sin borrar fe
 | `asignaciones`, `detalle_asignacion` | Decisión del agente y cantidades asignadas por necesidad. |
 | `entregas`, `detalle_entrega` | Despachos y recepción real con cantidades aceptadas, pendientes e incidencias. |
 | `recepciones_aportes_dirigidos` | Historial específico de aportes comunitarios sin solicitud, responsable y destino final. |
+| `referencias_territoriales_agregadas` | Indicadores agregados por zona/comunidad (ej. corte Manizales `ab8a-uwf7`), sin PII ni hogares individuales. |
+| `derivaciones_pap_agregadas` | Conteo/traza anonimizada de accesos a la ruta PAP UNAL, desacoplada del inventario y sin datos clínicos. |
 | `auditoria` | Cambios por actor, antes/después, fecha, razón y objeto. |
 
 **Integridad:** una necesidad puede tener varios productos, pero la calificación corresponde a cada línea `detalle_solicitud_id`. Una donación espontánea **no debe tener un ID de necesidad inventado** para encajar en el modelo. La relación con una necesidad futura solo es posible mediante evento de conciliación autorizado.
 
 **Transacciones obligatorias de backend:** apartar cupos, evitar doble reserva de stock/saldo, validar roles, liberar citas canceladas y procesar recepciones exactamente una vez. El prototipo HTML simula estos controles y no puede garantizarlos sin servidor.
 
-## 12. Diseño de interfaces (mockup v2)
+## 12. Diseño de interfaces (mockup v2.1)
 
-**Panel del donante:** Inicio con **tres rutas** («Necesidad», «Banco», «Donar a un edil»), exploración de comunidades, productos/cantidades, selección de fecha/hora de recepción, confirmación de responsabilidad de transporte, «Mis donaciones» y «Mis transportes» para voluntarios que acepten trayectos desde el banco.
+**Panel del donante:** Inicio con **tres rutas** («Necesidad», «Banco», «Donar a un edil»), exploración de comunidades con **asistente de emparejamiento rápido** (*ReliefMatcher.AI* + `US11037098B2`), visibilidad destacada del **Catálogo de Ayudas Técnicas UNAL**, selección de fecha/hora de recepción, aviso orientativo en donaciones espontáneas cuando haya solicitudes compatibles, «Mis donaciones», «Mis transportes» y acceso directo a **Ruta PAP UNAL**.
 
-**Panel del edil:** Solicitudes, creación/edición, **Horarios de recepción** (fecha, intervalo y cupos), bandeja **Aportes a mi nombre** (aceptar o rechazar espontáneas y citas de necesidades), confirmación de entregas y registro de incidencias. Selector de comunidad si administra más de una.
+**Panel del edil:** Solicitudes (incluyendo ayudas técnicas UNAL y dictado por voz opcional), creación/edición, **Horarios de recepción** (fecha, intervalo y cupos), bandeja **Aportes a mi nombre** (aceptar o rechazar espontáneas y citas de necesidades), confirmación de entregas, registro de incidencias y acceso a **Ruta PAP UNAL**. Selector de comunidad si administra más de una.
 
-**Panel del agente:** Evaluación (G exclusivo del agente), prioridades, inventario y verificación de ingreso, **Agenda del banco** (crear ventanas y confirmar/ajustar citas), asignaciones, propuesta de salida hacia la comunidad con transportador donante y hora del edil, autorización de retiro y seguimiento hasta recepción.
+**Panel del agente:** Evaluación (G exclusivo del agente) asistida por **tres lentes** (*Urgencia `G`*, *Equidad territorial* con datos agregados y *Viabilidad logística*), inventario y verificación de ingreso, **Agenda del banco**, asignaciones con **sugerencia precargable de reparto parcial bajo escasez** (`US11393577B2` + *Cureus Journals*), propuesta de salida con transportador donante y seguimiento hasta recepción.
 
-**Panel de administración:** Autorización de ediles/transportadores y permisos, catálogo de productos, reglas de custodia y auditoría de todas las transiciones.
+**Panel de administración:** Autorización de ediles/transportadores y permisos, catálogo de productos con ficha del **Catálogo de Ayudas Técnicas UNAL**, reglas de custodia y auditoría de todas las transiciones.
 
-**Componentes de UX críticos:** selector de fecha/hora basado en cupos disponibles, estados diferenciados, cronología por entrega, avisos de falta de cupos o transportador, confirmación de aceptación, registro de rechazos, vista de diferencias entre prometido, recibido y entregado. Diseño responsive y campos accesibles.
+**Componentes de UX críticos:** conmutador transversal de **Modo accesible** (`WO2026151479A1`, `US20200133474A1`), selector de fecha/hora basado en cupos disponibles, estados diferenciados, cronología por entrega, avisos de falta de cupos o transportador, confirmación de aceptación, registro de rechazos y vista de diferencias entre prometido, recibido y entregado.
 
-El archivo `Mockup_interactivo_Alimenta.html` incluido en la entrega permite recorrer estos procesos con datos ficticios. **No es un sistema real de citas, pagos, transporte o almacenamiento.**
+El archivo `Mockup_interactivo_Alimenta.html` incluido en la entrega permite recorrer estos procesos con datos ficticios. **No es un sistema real de citas, pagos, transporte, diagnóstico clínico o almacenamiento.**
 
 ## 13. Plan de implementación
 
