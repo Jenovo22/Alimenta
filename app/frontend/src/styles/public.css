@@ -181,3 +181,118 @@
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
 }
+
+/* Banner publicitario ficticio (demostración de sostenibilidad B2B) */
+.brand-logo {
+  display: block;
+  width: 32px;
+  height: 32px;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+
+.sponsor-banner-wrap {
+  padding-top: 8px;
+  padding-bottom: 28px;
+}
+
+.sponsor-banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 24px 28px;
+  border-radius: 14px;
+  border: 1px solid #c9d8c3;
+  background: linear-gradient(112deg, #20382b 0%, #2d4f38 68%, #466b3f 100%);
+  color: #f9faf6;
+  box-shadow: 0 14px 32px rgba(32, 56, 43, 0.12);
+}
+
+.sponsor-banner-copy {
+  max-width: 700px;
+}
+
+.sponsor-badges {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 10px;
+}
+
+.sponsor-pill {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: #94b43b;
+  color: #203b32;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.4px;
+  text-transform: uppercase;
+}
+
+.sponsor-tag {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(249, 250, 246, 0.28);
+  color: #dce8d9;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.sponsor-banner h2 {
+  margin: 0 0 8px;
+  font-size: clamp(20px, 2.2vw, 26px);
+  line-height: 1.2;
+  color: #ffffff;
+}
+
+.sponsor-banner p {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.55;
+  color: #d6e3d3;
+}
+
+.sponsor-logo-slot {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  min-width: 168px;
+  min-height: 76px;
+  padding: 12px 18px;
+  border-radius: 10px;
+  border: 1.5px dashed rgba(249, 250, 246, 0.55);
+  background: rgba(255, 255, 255, 0.08);
+  color: #f9faf6;
+  text-align: center;
+  flex-shrink: 0;
+}
+
+.sponsor-logo-slot span {
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 1px;
+}
+
+.sponsor-logo-slot small {
+  font-size: 11px;
+  color: #c8dac5;
+}
+
+@media (max-width: 780px) {
+  .sponsor-banner {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 20px;
+  }
+
+  .sponsor-logo-slot {
+    width: 100%;
+  }
+}

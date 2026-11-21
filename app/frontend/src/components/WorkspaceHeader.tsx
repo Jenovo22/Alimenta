@@ -22,7 +22,7 @@ export function WorkspaceHeader({ role, page }: WorkspaceHeaderProps) {
     <header className="workspace-header">
       <div className="workspace-header-inner">
         <Link className="brand workspace-brand" to="/" aria-label="Alimenta, volver a la portada">
-          <span aria-hidden="true">A</span> Alimenta
+          <img src="/alimenta-isotipo.svg" alt="" className="brand-logo" width={32} height={32} aria-hidden="true" /> Alimenta
         </Link>
         <nav className="workspace-tabs" aria-label={`Navegación de ${roleLabels[role]}`}>
           {tabs.map((tab) => {

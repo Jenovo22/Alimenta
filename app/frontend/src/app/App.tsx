@@ -15,7 +15,7 @@ function PublicNavigation() {
   return (
     <header className="public-header">
       <nav className="public-nav" aria-label="Navegación principal">
-        <Link className="brand" to="/" aria-label="Alimenta, inicio"><span aria-hidden="true">A</span> Alimenta</Link>
+        <Link className="brand" to="/" aria-label="Alimenta, inicio"><img src="/alimenta-isotipo.svg" alt="" className="brand-logo" width={32} height={32} aria-hidden="true" /> Alimenta</Link>
         <div className="nav-links">
           <Link to="/" aria-current={location.pathname === '/' ? 'page' : undefined}>Inicio</Link>
           <Link to="/servicios" aria-current={location.pathname === '/servicios' ? 'page' : undefined}>Servicios comunitarios</Link>
@@ -69,6 +69,22 @@ function LandingPage() {
             <Link className="button button-light" to="/login">Donar</Link>
           </div>
           <p className="small-note">Conecta donantes, comunidades y el agente logístico para distribuir recursos equitativamente.</p>
+        </div>
+      </section>
+
+      <section className="sponsor-banner-wrap section-wrap" aria-label="Espacio publicitario demostrativo">
+        <div className="sponsor-banner">
+          <div className="sponsor-banner-copy">
+            <div className="sponsor-badges">
+              <span className="sponsor-pill">Publicidad ficticia · Demo</span>
+              <span className="sponsor-tag">Padrino institucional de ejemplo</span>
+            </div>
+            <h2>Mercados del Eje S.A.S. — Aliados por Manizales sin desperdicio</h2>
+          </div>
+          <div className="sponsor-logo-slot" aria-label="Espacio de logo demostrativo">
+            <span>LOGO DEMO</span>
+            <small>Espacio de marca</small>
+          </div>
         </div>
       </section>
 
