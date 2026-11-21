@@ -76,7 +76,7 @@ The user explicitly authorized frontend implementation and approved React + Type
 
 ## Progress and evidence
 
-- Current state: public React/Vite/TypeScript client implemented with public routes, manual allies carousel, static fictional service directory, accessible filters/list alternative, and no role workspaces.
+- Current state: React/Vite/TypeScript client implemented with public routes, manual allies carousel, fictional service directory, and transient demonstration workspaces for all four roles; no backend, real authentication, or persistence.
 - TDD RED: observed before app implementation. `npm run test -- --run` exited non-zero because `src/app/App` did not yet exist; Vitest reported `Failed to resolve import "./app/App"` and 0 tests collected.
 - TDD GREEN: after implementation and test-query refinement, `npm run test -- --run` passed: 1 test file, 5 tests. Final verification is recorded below.
 - Dependency install: `npm install --registry=https://registry.npmjs.org --no-audit --no-fund` succeeded (`added 97 packages in 48s`); React type packages were then installed from the same registry (`added 3 packages in 1s`). Exact versions are locked in `app/frontend/package-lock.json`.
