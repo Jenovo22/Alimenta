@@ -61,7 +61,7 @@ The user requested a data store connected to demo accounts, at least Edil, Donor
   - Authored changed-line count: 380 total (328 additions + 52 deletions) in the work-unit snapshot, including this task record.
   - Commit: `bd2a938c5e81f4f7f1bda628e21b832306472008` (`feat(demo): add seeded shared browser workflow`).
 
-- [x] **ALIM-DEMO-002 — Show Manizales with reference neighborhood markers** *(implemented; interactive verification partial)*
+- [x] **ALIM-DEMO-002 — Show Manizales with reference neighborhood markers** *(implementation/tests/native review complete; browser visual check partial)*
   - Route: delegated direct, one writer after ALIM-DEMO-001.
   - Trigger evidence: map tiles, location fixtures, map component, responsive styles, attribution, and tests span multiple files.
   - Acceptance criteria:
@@ -81,12 +81,14 @@ The user requested a data store connected to demo accounts, at least Edil, Donor
   - Rollback boundary: revert the ALIM-DEMO-002 implementation/evidence commit(s) to restore the prior schematic directory; this removes only geographic reference markers, map component/styles and focused tests/task evidence, preserving ALIM-DEMO-001 shared demo store/workflows and service filtering/list behavior.
   - Authored changed-line count: 214 total (178 additions + 36 deletions), including this task record in the evidence snapshot.
   - Implementation commit: `ab9f360a4c9c694c22bf1a34ee83518cbeddc946` (`feat(map): show Manizales neighborhood references`).
+  - Native review: medium-risk reliability review approved with no findings and acknowledgement confirmed for lineage `review-7a3d6d8c0075a837`. Reviewed candidate: 576 changed lines from base `c88329f` through `e23c360`.
 
 ## Progress and evidence
 
-- Current state: ALIM-DEMO-001 remains committed and intact. ALIM-DEMO-002 implements a client-side OSM map with static neighborhood references; automated tests/build pass, while interactive visual verification is partial because no browser/screenshot control is available.
+- Current state: ALIM-DEMO-001 and ALIM-DEMO-002 are implemented, committed, and native-reviewed. The demo uses seeded local browser persistence; the map displays static OSM reference points. Interactive browser visual verification remains partial because no browser/screenshot control is available.
 - Coordinate lookup: one initial query per requested place; La Isla returned only its mapped access stairs. A single narrower follow-up still returned that same access feature, so the UI must disclose this limitation.
 - TDD: ALIM-DEMO-001 RED (5 failed tests) / GREEN (16/16); ALIM-DEMO-002 RED (3/19 failed) / GREEN (19/19).
-- Verification: ALIM-DEMO-002 full test suite, production build and diff check passed; local `/servicios` HTML smoke returned HTTP 200. Browser interaction and screenshot inspection are unavailable here.
+- Verification: parent spot-check `npm run test -- --run` passed 19 tests; `npm run build` and `git diff --check` passed. Local `/servicios` HTML smoke returned HTTP 200. Native reliability review approved with no findings. Browser tile rendering and screenshot inspection remain unverified.
 - Commits: ALIM-DEMO-001 — `bd2a938c5e81f4f7f1bda628e21b832306472008` (`feat(demo): add seeded shared browser workflow`); 380 authored changed lines (328 additions, 52 deletions).
-- Next step: parent spot-check and RDD assessment; no PR or push.
+- Commits: ALIM-DEMO-002 — `ab9f360a4c9c694c22bf1a34ee83518cbeddc946` (`feat(map): show Manizales neighborhood references`) and `e23c3609a7640a3c07f77a9db56f1d1542387702` (ODD task evidence). Total reviewed slice from `c88329f`: 576 changed lines.
+- Next step: manually inspect the local map's live tile rendering and responsive appearance in a browser when available; no push or PR was authorized.
