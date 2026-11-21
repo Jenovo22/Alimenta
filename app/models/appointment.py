@@ -1,41 +1,41 @@
-"""Appointment model definition using SQLModel."""
+"""Appointment model definition using SQLModel. 
+
+DEPRECATED: This model is no longer used. Appointment functionality has been
+incorporated into the Donation model. Use Donation with window_id and status
+fields for scheduling donation deliveries.
+
+This file is kept for backward compatibility and will be removed in a future version.
+"""
 
 from sqlmodel import Field, SQLModel
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import Optional
 
 
-class Appointment(SQLModel, table=True):
-    """Represents an appointment/cita for donation delivery.
+def _get_utc_now():
+    """Get current UTC time with timezone info."""
+    return datetime.now(timezone.utc)
 
-    This entity unifies the terminology that was previously split between
-    'cita' and 'turno' into a single Appointment entity.
 
-    Attributes:
-        id: Primary key (auto-incrementing SERIAL).
-        window_id: Foreign key to ventanas_disponibilidad(id).
-        donor_id: Foreign key to usuarios(id) for the donor.
-        transportador_id: Optional foreign key to usuarios(id) for the transport donor.
-        status: Current status of the appointment (requested, accepted, canceled, completed).
-        created_at: Timestamp when the appointment was created.
-        updated_at: Timestamp when the appointment was last updated.
+class Appointment(SQLModel, table=False):
+    """Appointment entity for donation delivery scheduling.
+    
+    This is now a read-only view/schema that combines Donation fields.
+    The actual data is stored in the 'donaciones' table.
+    
+    For new development, use the Donation model directly.
     """
 
     id: Optional[int] = Field(default=None, primary_key=True)
     window_id: int = Field(foreign_key="ventanas_disponibilidad.id")
     donor_id: int = Field(foreign_key="usuarios.id")
+    product_id: int = Field(foreign_key="productos.id")
     transportador_id: Optional[int] = Field(
         default=None, foreign_key="usuarios.id", description="Optional transport donor"
     )
-    status: str = Field(max_length=20, description="Appointment status: requested, accepted, canceled, completed")
-    created_at: datetime = Field(default_factory=datetime.utcnow)
-    updated_at: datetime = Field(default_factory=datetime.utcnow)
+    quantity: int = Field(default=1, ge=1, description="Quantity for this appointment")
+    status: str = Field(default="requested", max_length=20, description="Appointment status: requested, accepted, canceled, completed")
+    created_at: datetime = Field(default_factory=_get_utc_now)
+    updated_at: datetime = Field(default_factory=_get_utc_now)
 
-    class Table:
-        """SQL table configuration with unique constraint to prevent double booking."""
-        name = "appointments"
-        constraints = [
-            # Unique constraint to prevent double booking of the same slot
-            # Note: SQLite has limitations with unique constraints across multiple columns
-            # In PostgreSQL this would be: UNIQUE (window_id, donor_id)
-        ]
+    __tablename__ = "appointments"  # Read-only/deprecated

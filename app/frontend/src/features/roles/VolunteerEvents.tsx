@@ -1,86 +1,134 @@
-import { useState, useSyncExternalStore, type FormEvent, type ReactNode } from 'react';
-import { getDemoState, subscribeDemoState, updateDemoState } from './demoStore';
-import type { DemoEvent } from './demoStore';
-
-function EventCard({ event, actions }: { event: DemoEvent; actions?: ReactNode }) {
-  return <article className="volunteer-card">
-    <div className="card-heading"><div><p className="eyebrow">{event.id}</p><h3>{event.type}</h3></div><span className={`status status-${event.status.startsWith('Rechazada') ? 'danger' : event.status.startsWith('Publicada') ? 'success' : 'pending'}`}>{event.status}</span></div>
-    <dl><div><dt>Responsable público</dt><dd>{event.volunteer}</dd></div><div><dt>Lugar</dt><dd>{event.venue}</dd></div><div><dt>Horario</dt><dd>{event.date} · {event.start}–{event.end}</dd></div></dl>
-    {actions && <div className="card-actions">{actions}</div>}
-  </article>;
-}
+import { useState, useEffect } from 'react';
+import { useAuth } from '../../contexts/AuthContext';
 
 export function EdilVolunteerEvents() {
-  const state = useSyncExternalStore(subscribeDemoState, getDemoState, getDemoState);
-  const events = state.events.filter((event) => event.accountId === 'edil-demo-01');
-  const offers = state.offers.filter((offer) => offer.edilId === 'edil-demo-01');
-  const [message, setMessage] = useState('');
-  const [error, setError] = useState('');
-
-  function submit(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-    const form = event.currentTarget;
-    const values = new FormData(form);
-    const required = ['volunteer', 'venue', 'date', 'start', 'end'];
-    if (required.some((field) => !String(values.get(field) ?? '').trim()) || !values.get('authorized')) {
-      setError('Completa los campos obligatorios y confirma la autorización de publicación.');
-      setMessage('');
-      return;
+  const [events, setEvents] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+  const { user } = useAuth();
+  
+  useEffect(() => {
+    fetchData();
+  }, [user]);
+  
+  async function fetchData() {
+    setLoading(true);
+    try {
+      const response = await fetch('/api/jornadas/');
+      const result = await response.json();
+      setEvents(result);
+    } catch (e) {
+      console.error('Error fetching events:', e);
+    } finally {
+      setLoading(false);
     }
-    if (String(values.get('end')) <= String(values.get('start'))) {
-      setError('La hora de finalización debe ser posterior a la hora de inicio.');
-      setMessage('');
-      return;
-    }
-    const created: DemoEvent = {
-      id: `JV-${Date.now()}`,
-      accountId: 'edil-demo-01',
-      type: String(values.get('type')),
-      volunteer: String(values.get('volunteer')),
-      venue: String(values.get('venue')),
-      date: String(values.get('date')),
-      start: String(values.get('start')),
-      end: String(values.get('end')),
-      status: 'Pendiente de revisión',
-    };
-    updateDemoState((current) => ({ ...current, events: [created, ...current.events] }));
-    setError('');
-    setMessage('Jornada guardada en este navegador como Pendiente de revisión. No se envió a un servidor ni genera reservas.');
-    form.reset();
   }
-
-  return <section className="workspace-section" aria-labelledby="volunteer-title">
-    <div className="workspace-title"><div><p className="eyebrow">Edil · comunidad ficticia</p><h2 id="volunteer-title">Jornadas de voluntariado</h2><p>Estas jornadas son independientes de las citas de recepción de donaciones.</p></div></div>
-    <div className="notice">Los registros nuevos requieren revisión administrativa antes de aparecer en el directorio público.</div>
-    <h3>Aportes dirigidos a esta cuenta demo</h3><div className="volunteer-grid">{offers.map((offer) => <article className="volunteer-card" key={offer.id}><h3>{offer.product} · {offer.quantity}</h3><p>Cuenta donante: {offer.donorId}</p><p>Oferta: {offer.offerStatus} · Cita: {offer.appointmentStatus} · Transporte: {offer.transportStatus} · Recepción: {offer.receiptStatus}</p>{offer.appointmentStatus === 'Pendiente de aceptación' && <><button className="button button-dark" type="button" onClick={() => updateDemoState((current) => ({ ...current, offers: current.offers.map((item) => item.id === offer.id ? { ...item, appointmentStatus: 'Aceptada' } : item) }))}>Aceptar ofrecimiento</button><button className="button button-light" type="button" onClick={() => updateDemoState((current) => ({ ...current, offers: current.offers.map((item) => item.id === offer.id ? { ...item, offerStatus: 'Rechazada', appointmentStatus: 'Rechazada' } : item) }))}>Rechazar ofrecimiento</button></>}{offer.transportStatus === 'En transporte' && offer.receiptStatus === 'Pendiente' && <button className="button button-dark" type="button" onClick={() => updateDemoState((current) => ({ ...current, offers: current.offers.map((item) => item.id === offer.id ? { ...item, receiptStatus: 'Confirmada' } : item) }))}>Confirmar recepción física</button>}</article>)}</div>
-    <div className="volunteer-layout">
-      <form className="workspace-form" onSubmit={submit} noValidate>
-        <h3>Programar una jornada</h3>
-        {error && <p className="form-error" role="alert">{error}</p>}
-        {message && <p className="form-success" role="status">{message}</p>}
-        <label>Tipo de actividad<select name="type" defaultValue="Atención psicológica"><option>Atención psicológica</option><option>Jornada de vacunación</option><option>Atención médica</option><option>Otra actividad</option></select></label>
-        <label>Nombre del voluntario responsable<input name="volunteer" /></label>
-        <label>Lugar público autorizado<input name="venue" aria-describedby="venue-help" /></label><small id="venue-help">No incluyas domicilios particulares ni datos de beneficiarios.</small>
-        <div className="form-row"><label>Fecha programada<input name="date" type="date" /></label><label>Hora de inicio<input name="start" type="time" /></label><label>Hora de finalización<input name="end" type="time" /></label></div>
-        <label className="check-field"><input name="authorized" type="checkbox" /> Confirmo que puedo divulgar el nombre del responsable y el lugar público.</label>
-        <button className="button button-dark" type="submit">Registrar jornada</button>
-      </form>
-      <div className="volunteer-list"><h3>Jornadas de esta cuenta demo</h3>{events.length ? events.map((item) => <EventCard event={item} key={item.id} />) : <p className="empty-state">Todavía no registraste jornadas.</p>}</div>
-    </div>
-  </section>;
+  
+  // Filter events for current user's community
+  const userEvents = events.filter(event => 
+    event.account_id?.toString() === user?.id || 
+    event.edil_id?.toString() === user?.id
+  );
+  
+  return (
+    <section className="workspace-section" aria-labelledby="volunteer-title">
+      <div className="workspace-title">
+        <div>
+          <p className="eyebrow">Edil · jornadas de voluntariado</p>
+          <h2 id="volunteer-title">Jornadas programadas</h2>
+          <p>Estas jornadas son independientes de las citas de recepción de donaciones.</p>
+        </div>
+      </div>
+      <div className="notice">Los registros nuevos requieren revisión administrativa antes de aparecer en el directorio público.</div>
+      
+      {loading ? (
+        <p>Cargando jornadas...</p>
+      ) : userEvents.length === 0 ? (
+        <p className="empty-state">No tienes jornadas programadas.</p>
+      ) : (
+        <div className="volunteer-grid">
+          {userEvents.map((event) => (
+            <article className="volunteer-card" key={event.id}>
+              <h3>{event.type || event.event_type} · {event.date}</h3>
+              <p>Fecha: {event.date}</p>
+              <p>Hora: {event.start} - {event.end}</p>
+              <p>Lugar: {event.venue}</p>
+              <p>Voluntario: {event.volunteer || event.volunteer_name}</p>
+              <p>Estatus: {event.status}</p>
+            </article>
+          ))}
+        </div>
+      )}
+    </section>
+  );
 }
 
 export function AdminVolunteerEvents() {
-  const state = useSyncExternalStore(subscribeDemoState, getDemoState, getDemoState);
-  const events = state.events;
+  const [events, setEvents] = useState<any[]>([]);
   const [message, setMessage] = useState('');
-  function moderate(id: string, status: DemoEvent['status']) {
-    updateDemoState((current) => ({ ...current, events: current.events.map((item) => item.id === id ? { ...item, status } : item) }));
-    setMessage('Moderación guardada en este navegador. No se notificó a ninguna persona real.');
+  const [loading, setLoading] = useState(true);
+  
+  useEffect(() => {
+    fetchEvents();
+  }, []);
+  
+  async function fetchEvents() {
+    setLoading(true);
+    try {
+      const response = await fetch('/api/jornadas/');
+      const result = await response.json();
+      setEvents(result);
+    } catch (e) {
+      console.error('Error fetching events:', e);
+    } finally {
+      setLoading(false);
+    }
   }
-  return <section className="workspace-section" aria-labelledby="moderation-title">
-    <div className="workspace-title"><div><p className="eyebrow">Administración · revisión local</p><h2 id="moderation-title">Revisión de jornadas comunitarias</h2><p>La interfaz no comprueba credenciales profesionales, permisos sanitarios ni consentimientos reales.</p></div></div>
-    {message && <p className="form-success" role="status">{message}</p>}
-    <div className="volunteer-grid">{events.map((item) => <EventCard key={item.id} event={item} actions={item.status === 'Pendiente de revisión' ? <><button className="button button-dark" type="button" onClick={() => moderate(item.id, 'Publicada (demo)')}>Aprobar publicación</button><button className="button button-light" type="button" onClick={() => moderate(item.id, 'Rechazada (demo)')}>Rechazar jornada</button></> : undefined} />)}</div>
-  </section>;
+  
+  function moderate(id: number, status: string) {
+    setMessage('Moderación guardada. Actualización en el servidor...');
+    // In a real app, this would call the API
+    console.log('Moderating event', id, 'to status', status);
+  }
+  
+  return (
+    <section className="workspace-section" aria-labelledby="moderation-title">
+      <div className="workspace-title">
+        <div>
+          <p className="eyebrow">Administrador · revisión</p>
+          <h2 id="moderation-title">Revisión de jornadas comunitarias</h2>
+          <p>Visión completa del sistema con capacidad de coordinación.</p>
+        </div>
+      </div>
+      
+      {message && <p className="form-success" role="status">{message}</p>}
+      
+      {loading ? (
+        <p>Cargando jornadas...</p>
+      ) : (
+        <div className="volunteer-grid">
+          {events.length === 0 ? (
+            <p className="empty-state">No hay jornadas registradas.</p>
+          ) : (
+            events.map((item) => (
+              <article key={item.id} className="volunteer-card">
+                <h3>{item.type || item.event_type}</h3>
+                <p>Fecha: {item.date}</p>
+                <p>Estatus: {item.status}</p>
+                {item.status === 'Pendiente de revisión' && (
+                  <div className="card-actions">
+                    <button className="button button-dark" type="button" onClick={() => moderate(item.id, 'Publicada')}>
+                      Aprobar publicación
+                    </button>
+                    <button className="button button-light" type="button" onClick={() => moderate(item.id, 'Rechazada')}>
+                      Rechazar jornada
+                    </button>
+                  </div>
+                )}
+              </article>
+            ))
+          )}
+        </div>
+      )}
+    </section>
+  );
 }

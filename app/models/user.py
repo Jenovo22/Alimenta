@@ -1,8 +1,13 @@
 """User model definition using SQLModel."""
 
 from sqlmodel import Field, SQLModel
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import Optional
+
+
+def _get_utc_now():
+    """Get current UTC time with timezone info."""
+    return datetime.now(timezone.utc)
 
 
 class User(SQLModel, table=True):
@@ -22,10 +27,12 @@ class User(SQLModel, table=True):
     """
 
     id: Optional[int] = Field(default=None, primary_key=True)
-    email: str = Field(max_length=255, unique=True, nullable=False)
+    email: str = Field(max_length=255, nullable=False, sa_column_kwargs={"unique": True})
     name: str = Field(max_length=255, nullable=False)
     role: str = Field(max_length=50, nullable=False, default="donante")
     password_hash: str = Field(max_length=255, nullable=False)
     is_active: bool = Field(default=False)
-    created_at: datetime = Field(default_factory=datetime.utcnow)
-    updated_at: datetime = Field(default_factory=datetime.utcnow)
+    created_at: datetime = Field(default_factory=_get_utc_now)
+    updated_at: datetime = Field(default_factory=_get_utc_now)
+
+    __tablename__ = "usuarios"

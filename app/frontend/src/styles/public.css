@@ -19,7 +19,7 @@
 .welcome h1 em { color: #728a55; font-style: normal; }
 .welcome-copy > p:not(.eyebrow) { max-width: 500px; color: #58685c; font-size: 16px; }
 .welcome-actions { display: flex; flex-wrap: wrap; gap: 11px; margin-top: 24px; }
-.demo-note, .small-note { color: #667363; font-size: 12px; }
+.small-note { color: #667363; font-size: 12px; }
 .need-preview { overflow: hidden; border: 1px solid var(--ui-border); border-radius: 9px; background: #fff; box-shadow: 0 18px 36px #2e463a14; }
 .browser-bar { min-height: 38px; display: flex; justify-content: space-between; align-items: center; padding: 0 15px; border-bottom: 1px solid #e5e9e2; background: #f7f8f5; color: #647467; font-size: 11px; }
 .need-preview-body { min-height: 350px; padding: clamp(24px, 4vw, 44px); }
@@ -77,7 +77,7 @@
 .directory-page { min-height: calc(100vh - 150px); padding-block: 52px 80px; }
 .directory-page > h1, .access-page h1 { margin: 10px 0; font-size: clamp(36px, 5vw, 52px); line-height: 1.1; letter-spacing: -2px; }
 .directory-intro { max-width: 730px; margin-bottom: 28px; color: #58685c; }
-.service-filters { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)) 1.4fr auto; gap: 12px; align-items: end; padding: 17px; border: 1px solid var(--ui-border); border-radius: 8px; background: white; }
+.service-filters { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)) 1.4fr auto; gap: 12px; align-items: end; padding: 17px; border: 1px solid var(--ui-border); border-radius: 8px; background: white; }
 .service-filters label { display: grid; gap: 6px; color: #415b47; font-size: 12px; font-weight: 700; }
 .service-filters input, .service-filters select { width: 100%; min-height: 44px; padding: 8px 10px; border: 1px solid #cbd7c6; border-radius: 5px; background: white; color: #203b32; font-size: 13px; }
 .clear-button { min-width: 125px; }
@@ -180,4 +180,119 @@
 }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+}
+
+/* Banner publicitario ficticio (demostración de sostenibilidad B2B) */
+.brand-logo {
+  display: block;
+  width: 32px;
+  height: 32px;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+
+.sponsor-banner-wrap {
+  padding-top: 8px;
+  padding-bottom: 28px;
+}
+
+.sponsor-banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 24px 28px;
+  border-radius: 14px;
+  border: 1px solid #c9d8c3;
+  background: linear-gradient(112deg, #20382b 0%, #2d4f38 68%, #466b3f 100%);
+  color: #f9faf6;
+  box-shadow: 0 14px 32px rgba(32, 56, 43, 0.12);
+}
+
+.sponsor-banner-copy {
+  max-width: 700px;
+}
+
+.sponsor-badges {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 10px;
+}
+
+.sponsor-pill {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: #94b43b;
+  color: #203b32;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.4px;
+  text-transform: uppercase;
+}
+
+.sponsor-tag {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(249, 250, 246, 0.28);
+  color: #dce8d9;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.sponsor-banner h2 {
+  margin: 0 0 8px;
+  font-size: clamp(20px, 2.2vw, 26px);
+  line-height: 1.2;
+  color: #ffffff;
+}
+
+.sponsor-banner p {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.55;
+  color: #d6e3d3;
+}
+
+.sponsor-logo-slot {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  min-width: 168px;
+  min-height: 76px;
+  padding: 12px 18px;
+  border-radius: 10px;
+  border: 1.5px dashed rgba(249, 250, 246, 0.55);
+  background: rgba(255, 255, 255, 0.08);
+  color: #f9faf6;
+  text-align: center;
+  flex-shrink: 0;
+}
+
+.sponsor-logo-slot span {
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 1px;
+}
+
+.sponsor-logo-slot small {
+  font-size: 11px;
+  color: #c8dac5;
+}
+
+@media (max-width: 780px) {
+  .sponsor-banner {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 20px;
+  }
+
+  .sponsor-logo-slot {
+    width: 100%;
+  }
 }
