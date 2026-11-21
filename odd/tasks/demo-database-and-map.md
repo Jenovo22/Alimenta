@@ -41,7 +41,7 @@ The user requested a data store connected to demo accounts, at least Edil, Donor
 
 ## Tasks
 
-- [x] **ALIM-DEMO-001 — Add seeded profiles and shared browser-local workflow** *(implementation complete; interactive verification partial)*
+- [x] **ALIM-DEMO-001 — Add seeded profiles and shared browser-local workflow** *(committed; interactive verification partial)*
   - Route: delegated direct, one writer.
   - Trigger evidence: access routing, multiple role workspaces, data models, persistence, tests, seed JSON, and README require coordinated non-trivial changes.
   - Acceptance criteria:
@@ -59,7 +59,7 @@ The user requested a data store connected to demo accounts, at least Edil, Donor
   - Rollback boundary: revert this work-unit commit to remove the demo local store, fictional fixtures/profile selection, shared donor/Edil/Agent/Admin workflows, related tests, and README notes; preserve the public frontend, existing service directory and all later map work.
   - Evidence: RED observed before implementation: 5 of 16 tests failed on missing profile selection, donor offer, shared persisted actions and reset (plus updated old transient-state assertions). GREEN: final 16/16 tests passed. Build passed as above. Runtime browser interaction remains unverified; no claim of complete manual walkthrough.
   - Authored changed-line count: 380 total (328 additions + 52 deletions) in the work-unit snapshot, including this task record.
-  - Commit: pending final commit hash.
+  - Commit: `bd2a938c5e81f4f7f1bda628e21b832306472008` (`feat(demo): add seeded shared browser workflow`).
 
 - [ ] **ALIM-DEMO-002 — Show Manizales with reference neighborhood markers**
   - Route: delegated direct, one writer after ALIM-DEMO-001.
@@ -83,5 +83,5 @@ The user requested a data store connected to demo accounts, at least Edil, Donor
 - Coordinate lookup: one initial query per requested place; La Isla returned only its mapped access stairs. A single narrower follow-up still returned that same access feature, so the UI must disclose this limitation.
 - TDD: strict mode; RED observed before production implementation (5 failed tests); GREEN: `npm run test -- --run` passed 16 tests.
 - Verification: test/build/diff check passed. Dev-server HTML smoke request returned successfully; interactive donor → Edil → Agent and event moderation/reload/reset walkthrough was not performed because no interactive browser control is available.
-- Commits: ALIM-DEMO-001 Conventional Commit hash and final authored line count pending final commit snapshot.
+- Commits: ALIM-DEMO-001 — `bd2a938c5e81f4f7f1bda628e21b832306472008` (`feat(demo): add seeded shared browser workflow`); 380 authored changed lines (328 additions, 52 deletions).
 - Next step: implement ALIM-DEMO-002 separately; do not create PRs or push without authorization.
