@@ -101,3 +101,10 @@ Al cruzar el estado actual del repositorio con [`docs/Rubrica_requerimientos.jpe
 1. **Etapa 1 — Cierre documental para rúbrica:** Actualizar `docs/propuesta.md`, `docs/product-brief.md` y `README.md`, y crear el paquete de **Plan 30–60–90 días, Viabilidad/Aliados e Impactos/KPIs**.
 2. **Etapa 2 — Transición a MVP utilizable:** Actualizar `CONTRIBUTING.md` con el stack elegido y construir el backend + base de datos relacional cumpliendo `R01`–`R12`.
 3. **Etapa 3 — Integración diferenciadora (patentes + datos):** Conectar los 4 módulos derivados de las patentes (Catálogo UNAL, equidad con `ab8a-uwf7` + reparto parcial sugerido, emparejamiento donante–necesidad y modo accesible + ruta PAP UNAL) con la paleta institucional aplicada.
+
+---
+
+## 6. Estado de ejecución y pendiente en `docs/diseño/`
+
+* **Completado en definición funcional ([`docs/propuesta.md`](docs/propuesta.md) v2.1):** Ya incorpora los cuatro pilares derivados de las patentes y antecedentes aplicables (Catálogo de Ayudas Técnicas UNAL, asistencia de equidad territorial con `ab8a-uwf7` y reparto parcial sugerido bajo escasez, emparejamiento donante–necesidad, capa *Accessibility-First* y Ruta PAP UNAL desacoplada).
+* **Pendiente en `docs/diseño/`:** Se decidió mantener sin modificaciones [`docs/diseño/Propuesta_mockup_Alimenta.md`](docs/dise%C3%B1o/Propuesta_mockup_Alimenta.md) y [`docs/diseño/Mockup_interactivo_Alimenta.html`](docs/dise%C3%B1o/Mockup_interactivo_Alimenta.html) en esta iteración (anulando los cambios previos sobre esa carpeta). Queda pendiente para una iteración posterior actualizar el mockup y sus pantallas (`P01`–`P24`, Modo accesible, Catálogo UNAL, asistente de equidad/reparto, emparejamiento y Ruta PAP UNAL) junto con la aplicación de [`docs/diseño/alimenta_paleta_colores.json`](docs/dise%C3%B1o/alimenta_paleta_colores.json).
