@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="64" height="64" viewBox="0 0 64 64" role="img" aria-labelledby="logo-title logo-desc">
+  <title id="logo-title">Alimenta — favicon</title>
+  <desc id="logo-desc">Emblema reducido a hojas, recipiente y corazón para una pestaña de navegador</desc>
+  
+  <path d="M7 31C7 16 18 8 32 8S57 16 57 31" fill="none" stroke="#94B43B" stroke-width="6" stroke-linecap="round"/>
+  <path d="M31 28C31 19 38 15 46 16C47 25 41 31 33 32Z" fill="#94B43B"/>
+  <path d="M30 33C23 32 21 27 21 22C28 22 31 26 31 33Z" fill="#94B43B"/>
+  <path d="M12 34H52V41C52 53 43 59 32 59S12 53 12 41Z" fill="#A61C31"/>
+  <path d="M32 49C29 46 23 43 23 39C23 34 29 33 32 38C35 33 41 34 41 39C41 43 35 46 32 49Z" fill="#F8F9F6"/>
+  
+</svg>

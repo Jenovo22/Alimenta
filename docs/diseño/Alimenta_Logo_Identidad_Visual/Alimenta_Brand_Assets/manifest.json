@@ -1,0 +1,34 @@
+{
+  "brand": "Alimenta",
+  "formats": [
+    "SVG (outlined paths)",
+    "PNG (RGBA transparent)",
+    "ICO"
+  ],
+  "palette": {
+    "primary": "#94B43B",
+    "secondary": "#466B3F",
+    "red": "#A61C31",
+    "wine": "#76232F",
+    "offwhite": "#F8F9F6",
+    "ink": "#26342A"
+  },
+  "svg_files": [
+    "alimenta-logo-vertical.svg",
+    "alimenta-logo-horizontal.svg",
+    "alimenta-logo-horizontal-oscuro.svg",
+    "alimenta-isotipo.svg",
+    "alimenta-tipografia.svg",
+    "favicon.svg"
+  ],
+  "recommended": {
+    "header": "svg/alimenta-logo-horizontal.svg",
+    "header_dark": "svg/alimenta-logo-horizontal-oscuro.svg",
+    "footer_or_hero": "svg/alimenta-logo-vertical.svg",
+    "symbol": "svg/alimenta-isotipo.svg",
+    "wordmark": "svg/alimenta-tipografia.svg",
+    "favicon": "svg/favicon.svg",
+    "legacy_favicon": "favicon.ico"
+  },
+  "compatibility": "Pure SVG path outlines (no external assets, CSS, or web fonts); PNG files are transparent."
+}
