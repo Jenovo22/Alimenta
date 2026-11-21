@@ -1,0 +1,403 @@
+{
+  "artifact_kind": "alimenta-manizales-multimodal-audit",
+  "build_id": "0a0b5941f80043669cbfa8d7ee53d6b6",
+  "database": {
+    "engine": "SQLite",
+    "intended_use": "local analytical staging and audit; not production PostGIS",
+    "relative_path": "Bases de datos/manizales_multimodal_2018.sqlite",
+    "row_level_personal_or_household_data": false
+  },
+  "generated_at_utc": "2026-11-21T10:56:27Z",
+  "importer": "alimenta.manizales_multimodal",
+  "joins": {
+    "esri_strata_to_mgn": {
+      "coverage": "attribute join only; Esri ring geometry not copied or compared",
+      "key_field": "ID_UNIFICADO_MANZANA -> COD_DANE_A",
+      "matched_row_count": 3723
+    },
+    "jac_to_blocks": {
+      "boundary_tolerance_degrees": 1e-10,
+      "interpretation_limit": "one source point locates that row only; it does not establish JAC polygon coverage or allocate barrio/comuna data to blocks",
+      "method": "point-in-polygon using an even-odd planar test in target geographic coordinates after provisional inverse Transverse Mercator",
+      "neighborhood_or_comuna_areal_allocation": false,
+      "official_jac_polygon_coverage": false,
+      "performed": true,
+      "projected_coordinate_guard_m": [
+        0.0,
+        3000000.0
+      ],
+      "projection_algorithm": "GRS 1980 Transverse Mercator inverse series through delta^6 in latitude and delta^5 in longitude; EPSG:3115 parameters are provisional assumptions",
+      "projection_parameters": {
+        "central_meridian_degrees": -77.07750791666668,
+        "false_easting_m": 1000000.0,
+        "false_northing_m": 1000000.0,
+        "inverse_flattening": 298.257222101,
+        "latitude_of_origin_degrees": 4.596200416666667,
+        "scale_factor": 0.9992,
+        "semi_major_axis_m": 6378137.0
+      },
+      "row_count": 144,
+      "source_crs_assumption": "EPSG:3115 (MAGNA-SIRGAS / Colombia West zone), inferred from coordinate range only; not source metadata",
+      "source_crs_status": "inferred/provisional; source owner confirmation required",
+      "status_counts": {
+        "ambiguous": 0,
+        "boundary": 0,
+        "invalid": 0,
+        "matched": 103,
+        "outside": 41
+      },
+      "target_crs_declaration_status": "MGN PRJ declares geographic GCS_MAGNA on GRS_1980; EPSG remains unassigned; longitude/latitude axis order is supported by local geometry ranges",
+      "target_polygon_count": 3922,
+      "unique_jac_records_verified": false
+    },
+    "mgn_to_ipm": {
+      "comparison": "exact 22-character key equality",
+      "ipm_only_key_count": 0,
+      "key_fields": [
+        "COD_DANE_A",
+        "COD_DANE"
+      ],
+      "key_sets_equal": true,
+      "mgn_only_key_count": 0,
+      "topological_geometry_equality_claimed": false
+    }
+  },
+  "method_limits": [
+    "SQLite is a local staging/audit store, not production PostGIS.",
+    "Stored MGN Polygon payloads are original ESRI SHP record bytes; no geometry overlay or spatial index was created.",
+    "Polygon checks are structural only; ring closure does not prove topology or self-intersection validity.",
+    "IPM scale, units, vintage, methodology, licensing, and zero semantics remain unresolved.",
+    "Esri strata are an estimated source attribute, not income; null and Sin Estrato remain distinct.",
+    "No vulnerability score or undocumented percentage was derived.",
+    "JAC source CRS is unknown; the EPSG:3115 inverse transform is inferred/provisional and must be confirmed by the source owner before official use.",
+    "JAC point-to-block matches locate one supplied point only; they are not official JAC polygon coverage and do not allocate barrio/comuna indicators or populations to blocks.",
+    "JAC source rows are not verified as distinct JACs; unmatched and boundary/ambiguous rows remain unassigned.",
+    "Household Sisbén sample, MEDD directory, CNMH records, and other personal/row-level sources were excluded."
+  ],
+  "schema_version": 2,
+  "scope": "local files only; no remote requests; provisional coordinate transformation is limited to JAC point-to-block location",
+  "source_assets": [
+    {
+      "modified_utc": "2021-11-04T19:59:16Z",
+      "relative_path": "Bases de datos/SHP_MGN2018_INTGRD_MANZ/MGN_ANM_MANZANA.dbf",
+      "sha256": "75752b78a77c4995dc927bb326b6051056f4cd3447431bb792a1f02f8569dcce",
+      "size_bytes": 979190734,
+      "source_id": "mgn_2018"
+    },
+    {
+      "modified_utc": "2021-11-04T19:27:40Z",
+      "relative_path": "Bases de datos/SHP_MGN2018_INTGRD_MANZ/MGN_ANM_MANZANA.shp",
+      "sha256": "fa0918ae08db2d204de3453eba884aa13af5ef5a30c25bc31be11da44b93ca69",
+      "size_bytes": 384188112,
+      "source_id": "mgn_2018"
+    },
+    {
+      "modified_utc": "2021-11-04T19:27:40Z",
+      "relative_path": "Bases de datos/SHP_MGN2018_INTGRD_MANZ/MGN_ANM_MANZANA.shx",
+      "sha256": "a6a5ca8020fd70040dc67cf35c441a8a6d099cd12ae6741998eebcbdbb921a14",
+      "size_bytes": 4040068,
+      "source_id": "mgn_2018"
+    },
+    {
+      "modified_utc": "2020-09-28T13:49:20Z",
+      "relative_path": "Bases de datos/SHP_MGN2018_INTGRD_MANZ/MGN_ANM_MANZANA.prj",
+      "sha256": "62f0af93ee13e5aa7aef6ca23a95be44c65f6822a293d47c32ea77b401673d0b",
+      "size_bytes": 139,
+      "source_id": "mgn_2018"
+    },
+    {
+      "modified_utc": "2021-09-02T17:17:20Z",
+      "relative_path": "Bases de datos/SHP_VULNRB_IPMxMZ/VULNRB_IPMxMZ.dbf",
+      "sha256": "2cee622cc1b1a7a799e08ab52d379871bd14af3023914b04442daaf74526a572",
+      "size_bytes": 172203894,
+      "source_id": "ipm_local"
+    },
+    {
+      "modified_utc": "2021-09-02T17:17:20Z",
+      "relative_path": "Bases de datos/SHP_VULNRB_IPMxMZ/VULNRB_IPMxMZ.shp",
+      "sha256": "67e09b68868c471cde28c02dd7e14300ff1a86d9b7ab914998f14fd6e324a111",
+      "size_bytes": 383974208,
+      "source_id": "ipm_local"
+    },
+    {
+      "modified_utc": "2021-09-02T17:17:20Z",
+      "relative_path": "Bases de datos/SHP_VULNRB_IPMxMZ/VULNRB_IPMxMZ.shx",
+      "sha256": "5975bea18e60965aef96136684623327203b15056c5df663713d747f8118f5e2",
+      "size_bytes": 4040068,
+      "source_id": "ipm_local"
+    },
+    {
+      "modified_utc": "2021-09-02T16:58:50Z",
+      "relative_path": "Bases de datos/SHP_VULNRB_IPMxMZ/VULNRB_IPMxMZ.prj",
+      "sha256": "62f0af93ee13e5aa7aef6ca23a95be44c65f6822a293d47c32ea77b401673d0b",
+      "size_bytes": 139,
+      "source_id": "ipm_local"
+    },
+    {
+      "modified_utc": "2021-09-02T17:17:20Z",
+      "relative_path": "Bases de datos/SHP_VULNRB_IPMxMZ/VULNRB_IPMxMZ.cpg",
+      "sha256": "3ad3031f5503a4404af825262ee8232cc04d4ea6683d42c5dd0a2f2a27ac9824",
+      "size_bytes": 5,
+      "source_id": "ipm_local"
+    },
+    {
+      "modified_utc": "2026-11-21T06:06:16Z",
+      "relative_path": "Bases de datos/manizales_strata_2018.sqlite",
+      "sha256": "b691ab680255f5df07c56cdd8be5fa2b3055c78990a29c7899c3073128f820f5",
+      "size_bytes": 13451264,
+      "source_id": "esri_strata_2018"
+    },
+    {
+      "modified_utc": "2026-11-21T05:16:49Z",
+      "relative_path": "Bases de datos/Delimitación_territorial_juntas_de_acción_comunal_zona_urbana.csv",
+      "sha256": "87d46a1c1a66e7faf4a5e8a86492ae647fb60eeda3fd2f8566c7bb2aa02ab784",
+      "size_bytes": 21569,
+      "source_id": "jac_csv"
+    }
+  ],
+  "sources": {
+    "esri_strata_2018": {
+      "cabecera_key_count": 3723,
+      "cabecera_missing_count": 0,
+      "duplicate_key_count": 0,
+      "geometry_imported": false,
+      "label_distribution": {
+        "Cinco": 100,
+        "Cuatro": 344,
+        "Dos": 983,
+        "Seis": 166,
+        "Sin Estrato": 514,
+        "Tres": 1196,
+        "Uno": 420
+      },
+      "license_status": "unresolved; review source terms before redistribution",
+      "matched_rows": 3723,
+      "methodology_status": "estimated stratum; not an income measurement",
+      "non_cabecera_key_count": 199,
+      "sin_estrato_label_count": 514,
+      "source_geometry_equality_tested": false,
+      "source_provenance": {
+        "feature_count": 3723,
+        "source_year": 2018,
+        "spatial_reference_raw": 4326
+      },
+      "source_rows": 3723,
+      "source_version": "Existing ignored local Esri 2018 estimated predominant-stratum SQLite",
+      "source_vintage": "2018",
+      "stratum_distribution": {
+        "(null)": 514,
+        "1": 420,
+        "2": 983,
+        "3": 1196,
+        "4": 344,
+        "5": 100,
+        "6": 166
+      },
+      "stratum_null_count": 514,
+      "unmatched_source_key_count": 0
+    },
+    "ipm_local": {
+      "category_cross_tab": [
+        {
+          "category_raw": "0.00000e+00",
+          "count": 145,
+          "ipm_value_status": "raw_zero",
+          "label": "",
+          "mgn_population_group": "population_positive"
+        },
+        {
+          "category_raw": "0.00000e+00",
+          "count": 54,
+          "ipm_value_status": "raw_zero",
+          "label": "",
+          "mgn_population_group": "population_zero_or_negative"
+        },
+        {
+          "category_raw": "1.00000e+00",
+          "count": 31,
+          "ipm_value_status": "raw_positive",
+          "label": "Vulnerabilidad alta",
+          "mgn_population_group": "population_positive"
+        },
+        {
+          "category_raw": "1.00000e+00",
+          "count": 6,
+          "ipm_value_status": "raw_zero",
+          "label": "Vulnerabilidad alta",
+          "mgn_population_group": "population_positive"
+        },
+        {
+          "category_raw": "2.00000e+00",
+          "count": 352,
+          "ipm_value_status": "raw_positive",
+          "label": "Vulnerabilidad media-alta",
+          "mgn_population_group": "population_positive"
+        },
+        {
+          "category_raw": "2.00000e+00",
+          "count": 50,
+          "ipm_value_status": "raw_zero",
+          "label": "Vulnerabilidad media-alta",
+          "mgn_population_group": "population_positive"
+        },
+        {
+          "category_raw": "3.00000e+00",
+          "count": 1118,
+          "ipm_value_status": "raw_positive",
+          "label": "Vulnerabilidad media-baja",
+          "mgn_population_group": "population_positive"
+        },
+        {
+          "category_raw": "3.00000e+00",
+          "count": 219,
+          "ipm_value_status": "raw_zero",
+          "label": "Vulnerabilidad media-baja",
+          "mgn_population_group": "population_positive"
+        },
+        {
+          "category_raw": "3.00000e+00",
+          "count": 1,
+          "ipm_value_status": "raw_zero",
+          "label": "Vulnerabilidad media-baja",
+          "mgn_population_group": "population_zero_or_negative"
+        },
+        {
+          "category_raw": "4.00000e+00",
+          "count": 1084,
+          "ipm_value_status": "raw_positive",
+          "label": "Vulnerabilidad baja",
+          "mgn_population_group": "population_positive"
+        },
+        {
+          "category_raw": "4.00000e+00",
+          "count": 38,
+          "ipm_value_status": "raw_positive",
+          "label": "Vulnerabilidad baja",
+          "mgn_population_group": "population_zero_or_negative"
+        },
+        {
+          "category_raw": "4.00000e+00",
+          "count": 353,
+          "ipm_value_status": "raw_zero",
+          "label": "Vulnerabilidad baja",
+          "mgn_population_group": "population_positive"
+        },
+        {
+          "category_raw": "4.00000e+00",
+          "count": 471,
+          "ipm_value_status": "raw_zero",
+          "label": "Vulnerabilidad baja",
+          "mgn_population_group": "population_zero_or_negative"
+        }
+      ],
+      "category_empty_label_count": 199,
+      "crs": {
+        "epsg": null,
+        "status": "EPSG unresolved; PRJ preserved verbatim; no transformation",
+        "wkt_verbatim": "GEOGCS[\"GCS_MAGNA\",DATUM[\"D_MAGNA\",SPHEROID[\"GRS_1980\",6378137.0,298.257222101]],PRIMEM[\"Greenwich\",0.0],UNIT[\"Degree\",0.0174532925199433]]"
+      },
+      "duplicate_key_count": 0,
+      "geometry": {
+        "dbf_aligned_record_count": 504996,
+        "selected_record_count": 3922,
+        "shape_type": 5,
+        "source_id": "ipm_local",
+        "structural_checks": [
+          "SHP header and SHX size/count/alignment",
+          "record number, shape type, and payload length",
+          "finite coordinates and record bounds",
+          "part offsets and closed rings with at least four points"
+        ],
+        "structurally_valid_polygon_count": 3922,
+        "topological_validity": "not tested; no GIS topology engine is available",
+        "validated_parts": 3923,
+        "validated_points": 280271
+      },
+      "methodology_and_semantic_units": "unresolved",
+      "municipality_rows": 3922,
+      "null_key_count": 0,
+      "raw_value_status_counts": {
+        "raw_positive": 2623,
+        "raw_zero": 1299
+      },
+      "raw_zero_with_population_positive_count": 773,
+      "source_dbf_records": 504996,
+      "source_version": "Local VULNRB_IPMxMZ polygon package",
+      "source_vintage": null,
+      "unique_keys": 3922,
+      "zero_interpretation": "unresolved; raw_zero is not a no-vulnerability claim"
+    },
+    "jac_csv": {
+      "crs": {
+        "epsg": null,
+        "status": "source CRS unknown; EPSG:3115 is used only as an inferred/provisional join assumption",
+        "wkt_verbatim": null
+      },
+      "crs_status": "unknown; source has raw X/Y but no declared CRS",
+      "geometry_status": "no JAC polygon geometry supplied; source points are provisionally located to DANE blocks",
+      "row_count": 144,
+      "source_fields_staged": [
+        "FID",
+        "OBJECTID_1",
+        "BARRIO",
+        "X",
+        "Y",
+        "NOMBRE_JUN",
+        "nro",
+        "COMUNA"
+      ],
+      "source_version": "Local urban JAC point CSV",
+      "source_vintage": null,
+      "spatial_join_performed": true
+    },
+    "mgn_2018": {
+      "class_counts": {
+        "1": 3723,
+        "2": 199
+      },
+      "crs": {
+        "epsg": null,
+        "status": "EPSG unresolved; PRJ preserved verbatim; no transformation",
+        "wkt_verbatim": "GEOGCS[\"GCS_MAGNA\",DATUM[\"D_MAGNA\",SPHEROID[\"GRS_1980\",6378137.0,298.257222101]],PRIMEM[\"Greenwich\",0.0],UNIT[\"Degree\",0.0174532925199433]]"
+      },
+      "definitions": "pending local MGN dictionary validation; raw fields only",
+      "duplicate_key_count": 0,
+      "geometry": {
+        "dbf_aligned_record_count": 504996,
+        "selected_record_count": 3922,
+        "shape_type": 5,
+        "source_id": "mgn_2018",
+        "structural_checks": [
+          "SHP header and SHX size/count/alignment",
+          "record number, shape type, and payload length",
+          "finite coordinates and record bounds",
+          "part offsets and closed rings with at least four points"
+        ],
+        "structurally_valid_polygon_count": 3922,
+        "topological_validity": "not tested; no GIS topology engine is available",
+        "validated_parts": 3923,
+        "validated_points": 280271
+      },
+      "municipality_rows": 3922,
+      "null_key_count": 0,
+      "selected_count_fields": [
+        "TP16_HOG",
+        "TP27_PERSO",
+        "TVIVIENDA",
+        "TP19_ACU_1",
+        "TP19_ACU_2",
+        "TP19_ALC_1",
+        "TP19_ALC_2",
+        "TP19_EE_1",
+        "TP19_EE_2",
+        "TP19_INTE1",
+        "TP19_INTE2",
+        "TP19_INTE9"
+      ],
+      "source_dbf_records": 504996,
+      "source_version": "Local DANE MGN CNPV 2018 polygon package",
+      "source_vintage": "2018",
+      "unique_keys": 3922
+    }
+  }
+}
