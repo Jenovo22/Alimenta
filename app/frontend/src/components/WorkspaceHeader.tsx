@@ -1,15 +1,23 @@
-import { Link } from 'react-router-dom';
-import { roleLabels } from '../features/roles/data';
-import type { DemoRole } from '../features/roles/types';
+import { Link, useNavigate } from 'react-router-dom';
+import { roleBasePath, roleLabels, roleNavigation } from '../features/roles/data';
+import type { UserRole } from '../features/roles/types';
 import { useAuth } from '../contexts/AuthContext';
 
-type WorkspaceHeaderProps = { role: DemoRole; page: string };
+type WorkspaceHeaderProps = { role: UserRole; page: string };
 
 export function WorkspaceHeader({ role, page }: WorkspaceHeaderProps) {
-  const { user } = useAuth();
-  
+  const { user, logout } = useAuth();
+  const navigate = useNavigate();
+
   const profileName = user?.name || roleLabels[role] || role;
-  
+  const basePath = roleBasePath[role];
+  const tabs = roleNavigation[role] ?? [];
+
+  function handleLogout() {
+    logout();
+    navigate('/login', { replace: true });
+  }
+
   return (
     <header className="workspace-header">
       <div className="workspace-header-inner">
@@ -17,41 +25,14 @@ export function WorkspaceHeader({ role, page }: WorkspaceHeaderProps) {
           <span aria-hidden="true">A</span> Alimenta
         </Link>
         <nav className="workspace-tabs" aria-label={`Navegación de ${roleLabels[role]}`}>
-          <Link to={`/${role}`} aria-current={page === '' ? 'page' : undefined}>
-            Inicio
-          </Link>
-          {role === 'donante' && (
-            <>
-              <Link to={`/${role}/donaciones`} aria-current={page === 'donaciones' ? 'page' : undefined}>
-                Donaciones
+          {tabs.map((tab) => {
+            const target = tab.path ? `${basePath}/${tab.path}` : basePath;
+            return (
+              <Link key={tab.path || 'home'} to={target} aria-current={page === tab.path ? 'page' : undefined}>
+                {tab.label}
               </Link>
-            </>
-          )}
-          {role === 'edil' && (
-            <>
-              <Link to={`/${role}/voluntariado`} aria-current={page === 'voluntariado' ? 'page' : undefined}>
-                Jornadas
-              </Link>
-              <Link to={`/${role}/recepciones`} aria-current={page === 'recepciones' ? 'page' : undefined}>
-                Recepciones
-              </Link>
-            </>
-          )}
-          {role === 'agente' && (
-            <Link to={`/${role}/inventario`} aria-current={page === 'inventario' ? 'page' : undefined}>
-              Inventario
-            </Link>
-          )}
-          {role === 'administrador' && (
-            <>
-              <Link to={`/${role}/agente`} aria-current={page === 'agente' ? 'page' : undefined}>
-                Dashboard
-              </Link>
-              <Link to={`/${role}/jornadas`} aria-current={page === 'jornadas' ? 'page' : undefined}>
-                Jornadas
-              </Link>
-            </>
-          )}
+            );
+          })}
         </nav>
         <div className="workspace-actions">
           <span className="profile-name">{profileName}</span>
@@ -59,15 +40,15 @@ export function WorkspaceHeader({ role, page }: WorkspaceHeaderProps) {
             <details className="workspace-options">
               <summary aria-label="Abrir opciones">⋯</summary>
               <div>
-                <Link to="/">{user.role === 'administrador' ? 'Panel admin' : user.role === 'agente' ? 'Dashboard agente' : 'Mi área'}</Link>
-                <button 
-                  type="button" 
-                  onClick={() => {
-                    localStorage.removeItem('alimenta_token');
-                    localStorage.removeItem('alimenta_user');
-                    window.location.reload();
-                  }}
-                >
+                <Link to="/servicios">Directorio y mapa</Link>
+                {user.role === 'administrador' && (
+                  <>
+                    <Link to="/agente">Vista de agente</Link>
+                    <Link to="/edil">Vista de edil</Link>
+                    <Link to="/donante">Vista de donante</Link>
+                  </>
+                )}
+                <button type="button" className="workspace-logout-btn" onClick={handleLogout}>
                   Cerrar sesión
                 </button>
               </div>

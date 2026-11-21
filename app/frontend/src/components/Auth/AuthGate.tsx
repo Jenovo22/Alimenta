@@ -11,12 +11,8 @@ interface AuthGateProps {
  * Redirects to workspace if user is already authenticated
  */
 export function AuthGate({ children }: AuthGateProps) {
-  const { user, isAuthenticated, isLoading } = useAuth();
+  const { user, isAuthenticated } = useAuth();
   const location = useLocation();
-
-  if (isLoading) {
-    return <div className="loading">Cargando...</div>;
-  }
 
   // If already authenticated, redirect to user's workspace
   if (isAuthenticated && user) {

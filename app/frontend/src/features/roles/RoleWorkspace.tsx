@@ -2,74 +2,130 @@ import { useState, useEffect } from 'react';
 import { Link, Navigate, useLocation, useParams } from 'react-router-dom';
 import { WorkspaceHeader } from '../../components/WorkspaceHeader';
 import { useAuth } from '../../contexts/AuthContext';
-import { DonorDonations, EdilVolunteerEvents, AgentInventory, AdminVolunteerEvents } from './RoleComponents';
+import {
+  DonorDonations,
+  DonorNeeds,
+  EdilNeeds,
+  EdilReceptions,
+  EdilVolunteerEvents,
+  AgentInventory,
+  AdminVolunteerEvents,
+  AdminUsers,
+} from './RoleComponents';
+import { AgentLogistics } from './AgentLogistics';
 import { AdminDashboard } from './AdminDashboard';
-import type { DemoRole } from './types';
+import { roleBasePath, roleLabels } from './data';
+import type { UserRole } from './types';
 import '../../styles/workspace.css';
 
-const roles: DemoRole[] = ['donante', 'edil', 'agente', 'administrador'];
+const roles: UserRole[] = ['donante', 'edil', 'agente', 'administrador'];
 
-function Dashboard({ role }: { role: DemoRole }) {
-  const [data, setData] = useState<any>(null);
+function RoleSummaryDashboard({ role }: { role: UserRole }) {
+  const { user } = useAuth();
+  const [metrics, setMetrics] = useState<Array<{ value: number | string; label: string; detail: string }>>([]);
   const [loading, setLoading] = useState(true);
-  
+
   useEffect(() => {
-    fetchData();
-  }, [role]);
-  
-  async function fetchData() {
-    setLoading(true);
-    try {
-      const endpoints: Record<DemoRole, string> = {
-        donante: '/api/donations/',
-        edil: '/api/jornadas/',
-        agente: '/api/inventory/',
-        administrador: '/api/donations/'
-      };
-      const response = await fetch(endpoints[role] || '/api/donations/');
-      const result = await response.json();
-      setData(result);
-    } catch (e) {
-      console.error('Error fetching data:', e);
-    } finally {
-      setLoading(false);
+    let active = true;
+    async function loadSummary() {
+      setLoading(true);
+      try {
+        const [dRes, nRes, evRes, invRes, uRes] = await Promise.all([
+          fetch('/api/donations/'),
+          fetch('/api/needs'),
+          fetch('/api/volunteer-events'),
+          fetch('/api/inventory/summary'),
+          fetch('/api/users'),
+        ]);
+        const donations = dRes.ok ? await dRes.json() : [];
+        const needs = nRes.ok ? await nRes.json() : [];
+        const events = evRes.ok ? await evRes.json() : [];
+        const inv = invRes.ok ? await invRes.json() : { items: [] };
+        const users = uRes.ok ? await uRes.json() : [];
+
+        if (!active) return;
+
+        const userId = Number(user?.id || 0);
+        if (role === 'donante') {
+          const mine = donations.filter((d: { donor_id: number }) => d.donor_id === userId);
+          const confirmed = mine.filter((d: { receipt_status: string }) => d.receipt_status === 'Confirmada').length;
+          const openNeeds = needs.filter((n: { is_satisfied: boolean }) => !n.is_satisfied).length;
+          setMetrics([
+            { value: mine.length, label: 'Mis donaciones', detail: 'Aportes registrados en la plataforma' },
+            { value: confirmed, label: 'Entregas confirmadas', detail: 'Verificadas por la comunidad receptora' },
+            { value: openNeeds, label: 'Necesidades abiertas', detail: 'Solicitudes comunitarias por cubrir' },
+          ]);
+        } else if (role === 'edil') {
+          const toReceive = donations.filter((d: { edil_id: number | null; receipt_status: string }) => d.edil_id === userId && d.receipt_status !== 'Confirmada').length;
+          const openNeeds = needs.filter((n: { is_satisfied: boolean }) => !n.is_satisfied).length;
+          setMetrics([
+            { value: toReceive, label: 'Recepciones pendientes', detail: 'Entregas por confirmar en tu comunidad' },
+            { value: openNeeds, label: 'Necesidades activas', detail: 'Solicitudes publicadas' },
+            { value: events.length, label: 'Jornadas registradas', detail: 'Actividades de voluntariado' },
+          ]);
+        } else {
+          const totalStock = (inv.items || []).reduce((acc: number, i: { available_quantity: number }) => acc + (i.available_quantity || 0), 0);
+          setMetrics([
+            { value: donations.length, label: 'Donaciones registradas', detail: 'Sincronizadas en tiempo real' },
+            { value: totalStock, label: 'Unidades en inventario', detail: `${(inv.items || []).length} productos en bodega` },
+            { value: users.length, label: 'Usuarios activos', detail: `${events.length} jornadas registradas` },
+          ]);
+        }
+      } catch (e) {
+        console.error('Error cargando resumen:', e);
+      } finally {
+        if (active) setLoading(false);
+      }
     }
-  }
-  
-  const summaries: Record<DemoRole, string[]> = {
-    donante: ['Mis donaciones', 'Estado de envíos', 'Comunidades atendidas'],
-    edil: ['Jornadas programadas', 'Donaciones recibidas', 'Voluntariados coordinados'],
-    agente: ['Inventario del banco', 'Donaciones pendientes', 'Asignaciones pendientes'],
-    administrador: ['Todas las donaciones', 'Usuarios activos', 'Sistema completo']
-  };
-  
-  const formatRoleName = (r: string): string => {
-    return r.charAt(0).toUpperCase() + r.slice(1);
-  };
-  
-  if (loading) {
-    return (
-      <section className="workspace-section">
-        <p className="eyebrow">Cargando datos</p>
-        <h2>Área de {formatRoleName(role)}</h2>
-        <p>Cargando información de la plataforma...</p>
-      </section>
-    );
-  }
-  
+    loadSummary();
+    return () => {
+      active = false;
+    };
+  }, [role, user?.id]);
+
+  const basePath = roleBasePath[role];
+
   return (
     <section className="workspace-section">
-      <p className="eyebrow">Bienvenido</p>
-      <h2>Área de {formatRoleName(role)}</h2>
-      <p>Datos sincronizados con el backend en tiempo real.</p>
-      <div className="metric-grid">
-        {summaries[role].map((label, index) => (
-          <article key={label}>
-            <strong>{index + 1}</strong>
-            <span>{label}</span>
-            <small>{Array.isArray(data) ? data.length : 'Datos cargados'}</small>
-          </article>
-        ))}
+      <p className="eyebrow">Bienvenido · {roleLabels[role]}</p>
+      <h2>Panel de {roleLabels[role]}</h2>
+      <p>Información operativa sincronizada en tiempo real con la base de datos de Alimenta.</p>
+
+      {loading ? (
+        <p>Cargando indicadores...</p>
+      ) : (
+        <div className="metric-grid">
+          {metrics.map((m) => (
+            <article key={m.label}>
+              <strong>{m.value}</strong>
+              <span>{m.label}</span>
+              <small>{m.detail}</small>
+            </article>
+          ))}
+        </div>
+      )}
+
+      <div className="quick-links-bar">
+        {role === 'donante' && (
+          <>
+            <Link className="button button-dark" to={`${basePath}/donaciones`}>Gestionar mis donaciones</Link>
+            <Link className="button button-light" to={`${basePath}/necesidades`}>Ver necesidades activas</Link>
+          </>
+        )}
+        {role === 'edil' && (
+          <>
+            <Link className="button button-dark" to={`${basePath}/recepciones`}>Confirmar recepciones</Link>
+            <Link className="button button-light" to={`${basePath}/solicitudes`}>Publicar necesidad</Link>
+            <Link className="button button-light" to={`${basePath}/voluntariado`}>Programar jornada</Link>
+          </>
+        )}
+        {role === 'administrador' && (
+          <>
+            <Link className="button button-dark" to={`${basePath}/agente`}>Abrir centro logístico y agente</Link>
+            <Link className="button button-light" to={`${basePath}/jornadas`}>Moderar jornadas</Link>
+            <Link className="button button-light" to={`${basePath}/usuarios`}>Ver usuarios</Link>
+          </>
+        )}
       </div>
     </section>
   );
@@ -78,9 +134,11 @@ function Dashboard({ role }: { role: DemoRole }) {
 export function RoleWorkspace() {
   const params = useParams();
   const location = useLocation();
-  const role = params.role as DemoRole;
+  const segments = location.pathname.split('/').filter(Boolean);
+  const pathRole = segments[0] === 'admin' ? 'administrador' : segments[0];
+  const role = (params.role ?? pathRole) as UserRole;
   const { user, token } = useAuth();
-  
+
   if (!user || !token) {
     return <Navigate to="/login" replace />;
   }
@@ -88,46 +146,33 @@ export function RoleWorkspace() {
   if (!roles.includes(role)) {
     return <Navigate to="/" replace />;
   }
-  
-  const page = location.pathname.split('/').filter(Boolean)[2] ?? '';
-  
-  let content = page === '' ? <Dashboard role={role} /> : null;
-  
-  // Role-specific components
-  if (role === 'donante' && page === 'donaciones') {
-    content = <DonorDonations />;
+
+  const page = segments[1] ?? '';
+
+  let content: React.ReactNode = <RoleSummaryDashboard role={role} />;
+
+  if (role === 'agente') {
+    content = page === 'inventario' ? <AgentInventory /> : <AgentLogistics allowWeightEdit />;
+  } else if (role === 'donante') {
+    if (page === 'donaciones') content = <DonorDonations />;
+    else if (page === 'necesidades') content = <DonorNeeds />;
+  } else if (role === 'edil') {
+    if (page === 'voluntariado') content = <EdilVolunteerEvents />;
+    else if (page === 'recepciones') content = <EdilReceptions />;
+    else if (page === 'solicitudes') content = <EdilNeeds />;
+  } else if (role === 'administrador') {
+    if (page === 'agente') content = <AdminDashboard />;
+    else if (page === 'jornadas') content = <AdminVolunteerEvents />;
+    else if (page === 'usuarios') content = <AdminUsers />;
   }
-  if (role === 'edil' && ['voluntariado', 'recepciones'].includes(page)) {
-    content = <EdilVolunteerEvents />;
-  }
-  if (role === 'agente' && page === 'inventario') {
-    content = <AgentInventory />;
-  }
-  if (role === 'administrador' && page === 'agente') {
-    content = <AdminDashboard />;
-  }
-  if (role === 'administrador' && ['jornadas', 'usuarios'].includes(page)) {
-    content = <AdminVolunteerEvents />;
-  }
-  
-  const formatRoleName = (r: string): string => {
-    return r.charAt(0).toUpperCase() + r.slice(1);
-  };
-  
+
   return (
     <div className="workspace-shell">
       <WorkspaceHeader role={role} page={page} />
       <main className="workspace-main">
         <div className="workspace-context">
-          <span>Área de trabajo / {formatRoleName(role)}</span>
-          {user && (
-            <>
-              <Link to="/">{user.name}</Link>
-            </>
-          )}
-        </div>
-        <div className="live-data">
-          <strong>Conectado al backend</strong> - Datos en tiempo real desde la base de datos
+          <span>Área de trabajo / {roleLabels[role]}</span>
+          <span>{user.name} · {user.email}</span>
         </div>
         {content}
       </main>

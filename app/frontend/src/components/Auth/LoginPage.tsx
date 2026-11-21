@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
 import './LoginPage.css';
 
@@ -9,10 +10,10 @@ interface LoginPageProps {
 export function LoginPage({ onLoginSuccess }: LoginPageProps) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
-  const { login, isAuthenticated, isLoading } = useAuth();
+  const { login, isAuthenticated, isLoading, authError } = useAuth();
 
-  // Redirigir si ya está autenticado
   useEffect(() => {
     if (isAuthenticated) {
       onLoginSuccess();
@@ -21,10 +22,13 @@ export function LoginPage({ onLoginSuccess }: LoginPageProps) {
 
   if (isAuthenticated) {
     return (
-      <main className="login-page section-wrap">
-        <div className="login-container">
+      <main className="login-shell">
+        <div className="login-card login-card-centered">
+          <div className="login-brand">
+            <span aria-hidden="true">A</span> Alimenta
+          </div>
           <h1>Cargando...</h1>
-          <p className="login-subtitle">Redirigiendo al panel...</p>
+          <p className="login-subtitle">Redirigiendo a tu panel de trabajo...</p>
         </div>
       </main>
     );
@@ -34,100 +38,98 @@ export function LoginPage({ onLoginSuccess }: LoginPageProps) {
     e.preventDefault();
     setError('');
 
-    const success = await login(email, password);
+    const success = await login(email.trim(), password);
     if (success) {
       onLoginSuccess();
     } else {
-      setError('Credenciales inválidas. Verifica el email y contraseña.');
+      setError('');
     }
   };
 
-  // Demo credentials helper
-  const fillDemoCredentials = (role: 'donante' | 'edil' | 'agente' | 'administrador') => {
-    const creds: Record<string, { email: string; password: string }> = {
-      donante: { email: 'donante@alimenta.app', password: 'donante123' },
-      edil: { email: 'edil@alimenta.app', password: 'edil123' },
-      agente: { email: 'agente@alimenta.app', password: 'agente123' },
-      administrador: { email: 'admin@alimenta.app', password: 'admin123' },
-    };
-    setEmail(creds[role].email);
-    setPassword(creds[role].password);
-  };
-
   return (
-    <main className="login-page section-wrap">
-      <div className="login-container">
-        <h1>Acceder a Alimenta</h1>
-        <p className="login-subtitle">Conecta para gestionar donaciones y comunidades</p>
+    <main className="login-shell">
+      <div className="login-layout">
+        <section className="login-aside" aria-label="Información de Alimenta">
+          <Link className="login-brand" to="/" aria-label="Alimenta, volver al inicio">
+            <span aria-hidden="true">A</span> Alimenta
+          </Link>
+          <p className="login-eyebrow">Plataforma comunitaria</p>
+          <h2 className="login-aside-title">
+            Donaciones coordinadas <em>hasta la recepción.</em>
+          </h2>
+          <p className="login-aside-copy">
+            Ingresa con tu cuenta institucional para coordinar entregas, consultar necesidades comunitarias y gestionar la logística en tiempo real.
+          </p>
+          <ul className="login-highlights">
+            <li>
+              <strong>Equidad y trazabilidad</strong>
+              <span>Priorización basada en criterios de ponderación social.</span>
+            </li>
+            <li>
+              <strong>Confirmación real</strong>
+              <span>Cada entrega queda verificada por la comunidad receptora.</span>
+            </li>
+          </ul>
+        </section>
 
-        <form onSubmit={handleSubmit} className="login-form">
-          {error && <div className="error-message" role="alert">{error}</div>}
-
-          <div className="form-group">
-            <label htmlFor="email">Email</label>
-            <input
-              type="email"
-              id="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="tu@email.com"
-              required
-              autoComplete="email"
-            />
+        <section className="login-card" aria-labelledby="login-heading">
+          <div className="login-card-header">
+            <h1 id="login-heading">Acceder a Alimenta</h1>
+            <p className="login-subtitle">Ingresa tus credenciales para acceder a tu panel</p>
           </div>
 
-          <div className="form-group">
-            <label htmlFor="password">Contraseña</label>
-            <input
-              type="password"
-              id="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              placeholder="••••••••"
-              required
-              autoComplete="current-password"
-            />
-          </div>
+          <form onSubmit={handleSubmit} className="login-form">
+            {(error || authError) && (
+              <div className="error-message" role="alert">
+                {error || authError}
+              </div>
+            )}
 
-          <button type="submit" disabled={isLoading} className="login-btn">
-            {isLoading ? 'Ingresando...' : 'Acceder'}
-          </button>
-        </form>
+            <div className="form-group">
+              <label htmlFor="email">Email</label>
+              <input
+                type="email"
+                id="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="tu@alimenta.app"
+                required
+                autoComplete="email"
+              />
+            </div>
 
-        <div className="divider">
-          <span>o usar credenciales de demostración</span>
-        </div>
+            <div className="form-group">
+              <label htmlFor="password">Contraseña</label>
+              <div className="password-field">
+                <input
+                  type={showPassword ? 'text' : 'password'}
+                  id="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  placeholder="••••••••"
+                  required
+                  autoComplete="current-password"
+                />
+                <button
+                  type="button"
+                  className="password-toggle"
+                  onClick={() => setShowPassword((prev) => !prev)}
+                  aria-pressed={showPassword}
+                >
+                  {showPassword ? 'Ocultar' : 'Mostrar'}
+                </button>
+              </div>
+            </div>
 
-        <div className="demo-credentials">
-          <button 
-            className="demo-btn active"
-            onClick={() => fillDemoCredentials('donante')}
-          >
-            Donante: donante@alimenta.app / donante123
-          </button>
-          <button 
-            className="demo-btn"
-            onClick={() => fillDemoCredentials('edil')}
-          >
-            Edil: edil@alimenta.app / edil123
-          </button>
-          <button 
-            className="demo-btn"
-            onClick={() => fillDemoCredentials('agente')}
-          >
-            Agente: agente@alimenta.app / agente123
-          </button>
-          <button 
-            className="demo-btn"
-            onClick={() => fillDemoCredentials('administrador')}
-          >
-            Admin: admin@alimenta.app / admin123
-          </button>
-        </div>
+            <button type="submit" disabled={isLoading} className="login-btn">
+              {isLoading ? 'Ingresando...' : 'Acceder'}
+            </button>
+          </form>
 
-        <p className="back-link">
-          <a href="/">← Volver a inicio</a>
-        </p>
+          <p className="back-link">
+            <Link to="/">← Volver a inicio</Link>
+          </p>
+        </section>
       </div>
     </main>
   );

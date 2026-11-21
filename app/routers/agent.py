@@ -11,6 +11,21 @@ from ..models.user import User
 router = APIRouter(prefix="/agent", tags=["agent"])
 
 
+@router.get("/analyze/pending")
+def analyze_all_pending(
+    limit: int = Query(100, ge=1, le=1000),
+    session: Session = Depends(get_donations_session)
+):
+    """Analyze all pending donations and rank by priority."""
+    agent = create_agent_service(session)
+    results = agent.analyze_all_pending(limit=limit)
+    return {
+        "total": len(results),
+        "analysis": results,
+        "top_priorities": results[:10] if results else []
+    }
+
+
 @router.get("/analyze/{donation_id}")
 def analyze_donation(
     donation_id: int,
@@ -25,21 +40,6 @@ def analyze_donation(
         raise HTTPException(status_code=404, detail=str(e))
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Analysis failed: {str(e)}")
-
-
-@router.get("/analyze/pending")
-def analyze_all_pending(
-    limit: int = Query(100, ge=1, le=1000),
-    session: Session = Depends(get_donations_session)
-):
-    """Analyze all pending donations and rank by priority."""
-    agent = create_agent_service(session)
-    results = agent.analyze_all_pending(limit=limit)
-    return {
-        "total": len(results),
-        "analysis": results,
-        "top_priorities": results[:10] if results else []
-    }
 
 
 @router.post("/allocate/{product_id}")

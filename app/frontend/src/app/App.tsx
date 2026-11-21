@@ -1,11 +1,12 @@
 import { Link, Navigate, Route, Routes, useLocation } from 'react-router-dom';
-import { useState } from 'react';
-import { Carousel } from '../components/Carousel';
+import { useEffect, useState } from 'react';
+import { Carousel, type FeaturedAlly } from '../components/Carousel';
 import { ServiceDirectory } from '../features/services/ServiceDirectory';
-import { allies } from '../features/services/data';
+import { fallbackAllies } from '../features/services/data';
 import { LoginPage } from '../components/Auth/LoginPage';
 import { ProtectedRoute } from '../components/Auth/ProtectedRoute';
 import { AuthGate } from '../components/Auth/AuthGate';
+import { AuthProvider } from '../contexts/AuthContext';
 import { RoleWorkspace } from '../features/roles/RoleWorkspace';
 import '../styles/public.css';
 
@@ -14,7 +15,7 @@ function PublicNavigation() {
   return (
     <header className="public-header">
       <nav className="public-nav" aria-label="Navegación principal">
-        <Link className="brand" to="/" aria-label="Alimenta, incio"><span aria-hidden="true">A</span> Alimenta</Link>
+        <Link className="brand" to="/" aria-label="Alimenta, inicio"><span aria-hidden="true">A</span> Alimenta</Link>
         <div className="nav-links">
           <Link to="/" aria-current={location.pathname === '/' ? 'page' : undefined}>Inicio</Link>
           <Link to="/servicios" aria-current={location.pathname === '/servicios' ? 'page' : undefined}>Servicios comunitarios</Link>
@@ -30,6 +31,32 @@ function PublicNavigation() {
 
 function LandingPage() {
   const [selected, setSelected] = useState(0);
+  const [allies, setAllies] = useState<FeaturedAlly[]>(fallbackAllies);
+
+  useEffect(() => {
+    let active = true;
+    fetch('/api/organizations/top10')
+      .then((res) => (res.ok ? res.json() : []))
+      .then((orgs: Array<{ id: number; name: string; description?: string; rank_position?: number; is_verified?: boolean }>) => {
+        if (!active || !Array.isArray(orgs) || orgs.length === 0) return;
+        setAllies(
+          orgs.map((org) => ({
+            id: org.id,
+            name: org.name,
+            rank: org.rank_position,
+            verified: org.is_verified,
+            description: org.description || 'Organización aliada de la red Alimenta.',
+          })),
+        );
+      })
+      .catch(() => {
+        // Keep fallback list if offline
+      });
+    return () => {
+      active = false;
+    };
+  }, []);
+
   return (
     <main>
       <section className="welcome section-wrap" id="inicio">
@@ -82,14 +109,14 @@ function LandingPage() {
 
 export default function App() {
   const location = useLocation();
-  const isWorkspace = location.pathname.startsWith('/donante') || 
+  const isWorkspace = location.pathname.startsWith('/donante') ||
                       location.pathname.startsWith('/edil') ||
                       location.pathname.startsWith('/agente') ||
                       location.pathname.startsWith('/admin');
   const isLoginPage = location.pathname === '/login';
-  
+
   return (
-    <>
+    <AuthProvider>
       {!isWorkspace && !isLoginPage && <PublicNavigation />}
       <Routes>
         <Route path="/" element={<LandingPage />} />
@@ -127,6 +154,6 @@ export default function App() {
           <span>Conecta donantes con necesidades comunitarias</span>
         </footer>
       )}
-    </>
+    </AuthProvider>
   );
 }

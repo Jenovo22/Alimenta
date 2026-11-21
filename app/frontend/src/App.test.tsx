@@ -45,17 +45,16 @@ describe('public experience', () => {
     const user = userEvent.setup();
     const { getByRole, findByRole } = renderAt('/');
 
-    await user.click(getByRole('link', { name: /quiero donar/i }));
+    await user.click(getByRole('link', { name: /acceder/i }));
     expect(await findByRole('heading', { name: /acceder a alimenta/i })).toBeVisible();
   });
 
-  it('shows login form with role buttons', () => {
-    const { getByLabelText, getByRole, getByText } = renderAt('/login');
+  it('shows login form', () => {
+    const { getByLabelText, getByRole } = renderAt('/login');
 
     expect(getByLabelText(/email/i)).toBeVisible();
     expect(getByLabelText(/contraseña/i)).toBeVisible();
     expect(getByRole('button', { name: /acceder/i })).toBeVisible();
-    expect(getByText(/credenciales de demostración/i)).toBeVisible();
   });
 });
 

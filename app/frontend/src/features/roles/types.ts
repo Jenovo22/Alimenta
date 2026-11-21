@@ -1,4 +1,4 @@
-export type DemoRole = 'donante' | 'edil' | 'agente' | 'administrador';
+export type UserRole = 'donante' | 'edil' | 'agente' | 'administrador';
 
 export type VolunteerEventStatus = 'Pendiente de revisión' | 'Publicada' | 'Rechazada';
 

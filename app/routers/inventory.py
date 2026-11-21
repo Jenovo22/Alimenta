@@ -48,6 +48,21 @@ def get_inventory_summary(session: Session = Depends(get_donations_session)):
     return {"items": summary, "total_products": len(summary)}
 
 
+@router.get("/movements", response_model=List[InventoryMovement])
+def list_movements(
+    skip: int = 0,
+    limit: int = 100,
+    movement_type: Optional[str] = None,
+    session: Session = Depends(get_donations_session)
+):
+    """List inventory movements, optionally filtered by type."""
+    query = select(InventoryMovement)
+    if movement_type:
+        query = query.where(InventoryMovement.movement_type == movement_type)
+    movements = session.exec(query.order_by(InventoryMovement.created_at.desc()).offset(skip).limit(limit)).all()
+    return movements
+
+
 @router.get("/{inventory_id}", response_model=Inventory)
 def read_inventory(inventory_id: int, session: Session = Depends(get_donations_session)):
     """Get a specific inventory item by ID."""
@@ -149,18 +164,3 @@ def adjust_inventory(
     session.refresh(movement)
 
     return inventory_item
-
-
-@router.get("/movements", response_model=List[InventoryMovement])
-def list_movements(
-    skip: int = 0,
-    limit: int = 100,
-    movement_type: Optional[str] = None,
-    session: Session = Depends(get_donations_session)
-):
-    """List inventory movements, optionally filtered by type."""
-    query = select(InventoryMovement)
-    if movement_type:
-        query = query.where(InventoryMovement.movement_type == movement_type)
-    movements = session.exec(query.order_by(InventoryMovement.created_at.desc()).offset(skip).limit(limit)).all()
-    return movements
