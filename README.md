@@ -4,7 +4,7 @@
 
 Alimenta es un proyecto que propone conectar a donantes, representantes comunitarios (*ediles*) y agentes encargados de evaluar necesidades y coordinar recursos. Su propósito es facilitar el registro de solicitudes, el seguimiento de aportes y la confirmación de entregas, además de ofrecer información pública sobre servicios de apoyo comunitario.
 
-El proyecto se encuentra en una **etapa de definición y preparación de una demo funcional**. Existen documentación, propuestas de interfaz y trabajo exploratorio con datos de Manizales. Para comenzar la implementación se propone añadir `app/` (código funcional) y `deploy/` (infraestructura), sin reorganizar las carpetas existentes. **No debe interpretarse que las funcionalidades descritas ya estén desarrolladas, desplegadas o validadas en campo**.
+El proyecto se encuentra en una **etapa de definición y preparación de una demo funcional**. Existen documentación, propuestas de interfaz y trabajo exploratorio con datos de Manizales. Se creó el esqueleto de carpetas de `app/` para organizar el futuro código del producto, sin reorganizar las carpetas existentes. Sus directorios están vacíos: todavía no contienen una aplicación funcional. `deploy/` (infraestructura) sigue pendiente. **No debe interpretarse que las funcionalidades descritas ya estén desarrolladas, desplegadas o validadas en campo**.
 
 ## ¿Por qué existe este repositorio?
 
@@ -88,7 +88,7 @@ A partir de la estructura presente, el repositorio incluye:
 - Un script relacionado con la descarga de datos de Manizales, documentación de bases de datos y una prueba asociada.
 - Definiciones de tareas que documentan trabajo de fundamentación y datos.
 
-**No se presupone** la existencia de una API operativa, una base de datos desplegada, autenticación real, un sistema de donaciones transaccional o logística ejecutándose en producción. La estructura de aplicación propuesta más abajo es una decisión de **organización del trabajo**, no evidencia de que esas carpetas o servicios ya existan. La selección definitiva de tecnologías debe registrarse explícitamente cuando sea aprobada.
+**No se presupone** la existencia de una API operativa, una base de datos desplegada, autenticación real, un sistema de donaciones transaccional o logística ejecutándose en producción. La estructura inicial de carpetas de `app/` es una decisión de **organización del trabajo**, no evidencia de que haya código o servicios implementados. La selección definitiva de tecnologías debe registrarse explícitamente cuando sea aprobada.
 
 ## Estructura actual del repositorio
 
@@ -119,20 +119,20 @@ Alimenta/
 └── README.md
 ```
 
-Esta estructura refleja las **rutas visibles en el estado actual** del proyecto. Las carpetas de frontend, backend e infraestructura **aún no se consideran existentes**: se describen en la propuesta siguiente. Los directorios `.atl/` y `.codegraph/` son locales/de herramientas; su seguimiento efectivo depende de `.gitignore` y de la configuración de Git.
+Esta estructura refleja las **rutas visibles en el estado actual** del proyecto. Las carpetas de `app/` se crean inicialmente vacías para servir de esqueleto; no representan frontend, backend ni infraestructura implementados. `deploy/` continúa pendiente. Los directorios `.atl/` y `.codegraph/` son locales/de herramientas; su seguimiento efectivo depende de `.gitignore` y de la configuración de Git.
 
-## Estructura propuesta para desarrollar y desplegar la aplicación
+## Estructura inicial de carpetas de la aplicación
 
-Se propone **conservar la estructura actual** y agregar dos directorios principales:
+Se conserva la estructura existente y se agrega `app/` como esqueleto inicial. `deploy/` continúa siendo una propuesta separada:
 
-- **`app/` — código del producto:** frontend, backend, migraciones y datos ficticios de inicialización de la demo. Aloja las funcionalidades que pasarán del mockup a una aplicación real.
-- **`deploy/` — infraestructura:** configuraciones reproducibles para desarrollo y, cuando corresponda, producción. No debe contener lógica funcional de negocio.
+- **`app/` — organización prevista del código del producto:** frontend, backend, migraciones y datos ficticios de inicialización de la demo. Las carpetas existen, pero están vacías y no implementan funcionalidades.
+- **`deploy/` — infraestructura pendiente:** configuraciones reproducibles para desarrollo y, cuando corresponda, producción. No debe contener lógica funcional de negocio.
 
-La ampliación prevista (rutas **por crear**, no inventario de archivos existentes) es:
+El esqueleto de carpetas creado (sin código funcional ni configuración de stack) es:
 
 ```text
 Alimenta/
-├── app/                                 # NUEVO: aplicación funcional
+├── app/                                 # Esqueleto vacío; no es una aplicación funcional
 │   ├── frontend/                        # Interfaz web
 │   │   ├── public/                      # Archivos estáticos
 │   │   ├── src/
@@ -151,8 +151,8 @@ Alimenta/
 │   │   │   ├── styles/                  # Tokens y estilos del diseño aprobado
 │   │   │   ├── types/
 │   │   │   └── assets/
-│   │   ├── package.json                 # Una vez seleccionado el stack web
-│   │   └── Dockerfile                   # Contenedor del frontend
+│   │   ├── package.json                 # Pendiente de selección del stack web; no creado
+│   │   └── Dockerfile                   # Pendiente de implementación; no creado
 │   ├── backend/
 │   │   ├── app/
 │   │   │   ├── api/                     # Endpoints y validación de entrada
@@ -162,20 +162,22 @@ Alimenta/
 │   │   │   └── db/                      # Conexión y transacciones
 │   │   ├── migrations/                  # Versionado del esquema
 │   │   ├── tests/                       # Pruebas del backend
-│   │   ├── requirements.txt             # Si se utiliza Python
-│   │   └── Dockerfile
+│   │   ├── requirements.txt             # Si se utiliza Python; pendiente, no creado
+│   │   └── Dockerfile                   # Pendiente de implementación; no creado
 │   ├── database/
 │   │   └── seeds/                       # Datos ficticios para la demo
-│   ├── .env.example                     # Variables documentadas sin secretos
-│   └── README.md                        # Cómo ejecutar el producto
-├── deploy/                              # NUEVO: despliegue e infraestructura
+│   ├── .env.example                     # Pendiente; no creado
+│   └── README.md                        # Pendiente; no creado
+├── deploy/                              # Pendiente: despliegue e infraestructura
 │   ├── development/
 │   └── production/
 ├── tests/
 │   ├── test_manizales_downloader.py    # Prueba existente
-│   └── e2e/                             # NUEVO: recorridos completos de la app
-└── compose.yaml                        # NUEVO: orquestación local prevista
+│   └── e2e/                             # Pendiente: recorridos completos de la app
+└── compose.yaml                        # Pendiente: orquestación local prevista; no creado
 ```
+
+Los archivos `.gitkeep` mantienen en Git las carpetas de aplicación que todavía no tienen contenido. No son código de la aplicación. Los manifiestos, Dockerfiles, migraciones y archivos de configuración nombrados como pendientes en el árbol no se han creado.
 
 El resto de las rutas detalladas en la sección **Estructura actual del repositorio** permanece en su ubicación original: `Bases de datos/`, `docs/`, `Documentos-prototipos/`, `odd/tasks/`, los archivos raíz y las herramientas locales.
 
@@ -183,10 +185,10 @@ El resto de las rutas detalladas en la sección **Estructura actual del reposito
 
 | Ruta | Qué debe contener | Qué debe quedar fuera |
 | --- | --- | --- |
-| `app/frontend/` | Interfaces públicas y privadas, componentes compartidos, formularios, navegación superior y consumo de API. | Validaciones de autorización como única barrera de seguridad o SQL de negocio. |
-| `app/backend/` | API, reglas de solicitudes y donaciones, evaluación, inventario, agenda, transporte, recepciones, servicios y reconocimientos. | Estilos, maquetas de presentación o credenciales en código fuente. |
-| `app/database/` | *Seeds* ficticios y recursos reproducibles de inicialización. Las migraciones de esquema se mantienen en `app/backend/migrations/`. | Descargas exploratorias originales o datos personales reales. |
-| `deploy/` | Configuración de entornos, despliegue, redes, volúmenes y automatización de infraestructura. | Reglas de priorización, asignaciones o lógica de frontend. |
+| `app/frontend/` | Carpeta creada; destinada a interfaces públicas y privadas, componentes compartidos, formularios, navegación superior y consumo de API. | Validaciones de autorización como única barrera de seguridad o SQL de negocio. |
+| `app/backend/` | Carpeta creada; destinada a API, reglas de solicitudes y donaciones, evaluación, inventario, agenda, transporte, recepciones, servicios y reconocimientos. | Estilos, maquetas de presentación o credenciales en código fuente. |
+| `app/database/` | Carpeta creada; destinada a *seeds* ficticios y recursos reproducibles. Las migraciones de esquema se mantienen en `app/backend/migrations/`. | Descargas exploratorias originales o datos personales reales. |
+| `deploy/` *(pendiente)* | Configuración futura de entornos, despliegue, redes, volúmenes y automatización de infraestructura. | Reglas de priorización, asignaciones o lógica de frontend. |
 | `docs/diseño/` | El **HTML final aprobado** (`Mockup_Alimenta_Taste_v7_Jornadas_Voluntariado.html`), lineamientos visuales y especificación `propuesta_mockup.md`. | Cambios directos para convertir el mockup en la aplicación de producción. |
 | `Documentos-prototipos/` | Patentes de referencia, artículos científicos y análisis de aplicabilidad (`aplicabilidad-patentes-alimenta.md`). | Código fuente de la aplicación o secretos. |
 | `Bases de datos/` | Exploración de fuentes y scripts existentes, incluido el trabajo de Manizales. | Esquema transaccional de la plataforma o secretos de infraestructura. |
@@ -238,7 +240,7 @@ El HTML aprobado en [`docs/diseño/Mockup_Alimenta_Taste_v7_Jornadas_Voluntariad
 | [`odd/tasks/`](odd/tasks/) | Registro de tareas de fundamentación y procesamiento de datos. |
 | [`PLAN_CAMBIOS_PROYECTO.md`](PLAN_CAMBIOS_PROYECTO.md) | Planificación y registro de cambios previsto en el repositorio. |
 | [`CONTRIBUTING.md`](CONTRIBUTING.md) | Pautas de contribución y revisión de propuestas. |
-| `app/` *(propuesto)* | Código funcional del frontend, backend y datos de inicialización de la demo; pendiente de crear. |
+| `app/` | Esqueleto de carpetas vacío para el futuro frontend, backend y datos de inicialización de la demo. |
 | `deploy/` y `compose.yaml` *(propuestos)* | Infraestructura y ejecución local; pendientes de implementar. |
 
 ## Trabajo con datos y pruebas
