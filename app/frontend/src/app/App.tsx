@@ -5,6 +5,8 @@ import { ServiceDirectory } from '../features/services/ServiceDirectory';
 import { RoleWorkspace } from '../features/roles/RoleWorkspace';
 import { allies, serviceLocations } from '../features/services/data';
 import '../styles/public.css';
+import { getDemoState, selectDemoProfile, subscribeDemoState } from '../features/roles/demoStore';
+import { useSyncExternalStore } from 'react';
 
 function PublicNavigation() {
   const location = useLocation();
@@ -77,7 +79,9 @@ function AccessPage() {
     ['agente', 'Agente', 'Consulta evaluación, inventario y coordinación del banco.'],
     ['administrador', 'Administrador', 'Revisa servicios, representantes y jornadas demostrativas.'],
   ];
-  return <main className="section-wrap access-page"><p className="eyebrow">Acceso y registro</p><h1>Acceso de demostración</h1><p>Esta pantalla no autentica ni registra usuarios reales. Elegir una vista no concede permisos: solo abre una demostración cliente con datos ficticios.</p><div className="role-access-grid">{roles.map(([path, label, description]) => <article key={path}><h2>{label}</h2><p>{description}</p><Link className="button button-dark" to={`/demo/${path}`}>Abrir vista de {label}</Link></article>)}</div><Link className="button button-light" to="/">Volver al inicio</Link></main>;
+  const state = useSyncExternalStore(subscribeDemoState, getDemoState, getDemoState);
+  const [message, setMessage] = useState('');
+  return <main className="section-wrap access-page"><p className="eyebrow">Acceso y registro</p><h1>Acceso de demostración</h1><p>Elegí un perfil ficticio para continuar. Cambiar de perfil es solo una simulación: no autentica ni concede permisos.</p><label>Perfil de demostración<select aria-label="Perfil de demostración" value={state.selectedProfileId} onChange={(event) => { selectDemoProfile(event.target.value); setMessage('Perfil demostrativo seleccionado. Este cambio no autentica ni concede permisos.'); }}>{state.profiles.map((profile) => <option key={profile.id} value={profile.id}>{profile.name} · {profile.role}</option>)}</select></label>{message && <p role="status">{message}</p>}<div className="role-access-grid">{roles.map(([path, label, description]) => <article key={path}><h2>{label}</h2><p>{description}</p><Link className="button button-dark" to={`/demo/${path}`}>Abrir vista de {label}</Link></article>)}</div><Link className="button button-light" to="/">Volver al inicio</Link></main>;
 }
 
 export default function App() {

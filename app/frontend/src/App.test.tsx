@@ -1,10 +1,12 @@
 import { cleanup, render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { MemoryRouter } from 'react-router-dom';
-import { afterEach, describe, expect, it } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 import App from './app/App';
+import { resetDemoState } from './features/roles/demoStore';
 
 afterEach(cleanup);
+beforeEach(() => resetDemoState());
 
 function renderAt(path: string) {
   return render(<MemoryRouter initialEntries={[path]}><App /></MemoryRouter>);
@@ -62,7 +64,7 @@ describe('public experience', () => {
 
     await user.click(within(screen.getByRole('navigation', { name: /principal/i })).getByRole('link', { name: /quiero donar/i }));
     expect(await screen.findByRole('heading', { name: /acceso de demostración/i })).toBeVisible();
-    expect(screen.getByText(/no autentica ni registra usuarios reales/i)).toBeVisible();
+    expect(screen.getByText(/no autentica ni concede permisos/i)).toBeVisible();
   });
 });
 
@@ -84,15 +86,14 @@ describe('role demonstrations', () => {
     const user = userEvent.setup();
     renderAt('/demo/donante/donaciones');
 
-    expect(screen.getByText('Intención registrada')).toBeVisible();
-    expect(screen.getByText('Cita pendiente de aceptación')).toBeVisible();
-    expect(screen.getByText('En transporte')).toBeVisible();
-    expect(screen.getByText('Recepción confirmada')).toBeVisible();
-    await user.click(screen.getByRole('button', { name: /registrar intención/i }));
-    expect(screen.getByRole('status')).toHaveTextContent(/solo en este navegador.*no confirma una recepción/i);
+    expect(screen.getByText(/ofrecimiento, aceptación\/cita, transporte y recepción son estados independientes/i)).toBeVisible();
+    await user.type(screen.getByLabelText(/producto/i), 'Arroz');
+    await user.type(screen.getByLabelText(/cantidad ofrecida/i), '2');
+    await user.click(screen.getByRole('button', { name: /crear ofrecimiento/i }));
+    expect(screen.getByRole('status')).toHaveTextContent(/no es una donación real ni una recepción/i);
   });
 
-  it('validates and submits an edil volunteer event only to transient state', async () => {
+  it('validates and persists an edil volunteer event for admin moderation', async () => {
     const user = userEvent.setup();
     renderAt('/demo/edil/voluntariado');
 
@@ -107,20 +108,32 @@ describe('role demonstrations', () => {
     await user.click(screen.getByLabelText(/confirmo que puedo divulgar/i));
     await user.click(screen.getByRole('button', { name: /registrar jornada/i }));
 
-    expect(screen.getByRole('status')).toHaveTextContent(/guardada solo en esta sesión.*pendiente de revisión/i);
+    expect(screen.getByRole('status')).toHaveTextContent(/guardada en este navegador.*pendiente de revisión/i);
+    window.dispatchEvent(new StorageEvent('storage', { key: 'alimenta-demo-store-v1' }));
     expect(screen.getByRole('heading', { name: /atención psicológica/i })).toBeVisible();
+    await user.click(screen.getByRole('link', { name: /inicio/i }));
+    await user.click(screen.getByRole('link', { name: /voluntariado/i }));
+    expect(screen.getByRole('heading', { name: /atención psicológica/i })).toBeVisible();
+    await user.selectOptions(screen.getByLabelText(/cambiar vista de rol/i), 'admin-demo-01');
+    await user.click(screen.getByRole('link', { name: /jornadas/i }));
+    expect(screen.getByText('María Demo')).toBeVisible();
   });
 
-  it('lets an administrator moderate volunteer events without implying persistence', async () => {
+  it('lets an administrator moderate volunteer events persistently', async () => {
     const user = userEvent.setup();
     renderAt('/demo/administrador/jornadas');
 
     await user.click(screen.getAllByRole('button', { name: /aprobar publicación/i })[0]);
-    expect(screen.getByRole('status')).toHaveTextContent(/publicada solo en esta demostración.*no se guardó en un servidor/i);
+    expect(screen.getByRole('status')).toHaveTextContent(/guardada en este navegador/i);
     expect(screen.getByText('Publicada (demo)')).toBeVisible();
+    await user.selectOptions(screen.getByLabelText(/cambiar vista de rol/i), 'edil-demo-01');
+    await user.click(screen.getByRole('link', { name: /voluntariado/i }));
+    expect(screen.getByText('Publicada (demo)')).toBeVisible();
+    await user.selectOptions(screen.getByLabelText(/cambiar vista de rol/i), 'admin-demo-01');
+    await user.click(screen.getByRole('link', { name: /jornadas/i }));
 
     await user.click(screen.getAllByRole('button', { name: /rechazar jornada/i })[0]);
-    expect(screen.getByRole('status')).toHaveTextContent(/rechazada solo en esta demostración/i);
+    expect(screen.getByRole('status')).toHaveTextContent(/guardada en este navegador/i);
     expect(screen.getByText('Rechazada (demo)')).toBeVisible();
   });
 
@@ -132,6 +145,77 @@ describe('role demonstrations', () => {
     expect(within(table).getByRole('columnheader', { name: 'Disponible' })).toBeVisible();
     expect(within(table).getByRole('columnheader', { name: 'Reservado' })).toBeVisible();
     expect(within(table).getByRole('columnheader', { name: 'Despachado' })).toBeVisible();
-    expect(screen.getByText(/una promesa no aumenta lo disponible/i)).toBeVisible();
+    expect(screen.getByText(/solo las recepciones físicas confirmadas incrementan/i)).toBeVisible();
+  });
+});
+
+describe('shared browser-local demo workflow', () => {
+  it('offers fictional seeded profiles and keeps profile switching demo-only', async () => {
+    const user = userEvent.setup();
+    renderAt('/acceso');
+    for (const account of ['Donante de ejemplo', 'Edil de ejemplo', 'Agente de ejemplo', 'Administradora de ejemplo']) {
+      expect(screen.getByRole('option', { name: new RegExp(account, 'i') })).toBeInTheDocument();
+    }
+    expect(screen.getByText(/no autentica ni concede permisos/i)).toBeVisible();
+    await user.selectOptions(screen.getByLabelText(/perfil de demostración/i), 'donante-demo-01');
+    expect(screen.getByRole('status')).toHaveTextContent(/perfil demostrativo/i);
+    expect(screen.getByRole('status')).toHaveTextContent(/no autentica/i);
+  });
+
+  it('persists donor offer and Edil decision, transport, receipt across profile views', async () => {
+    const user = userEvent.setup();
+    renderAt('/demo/donante/donaciones');
+    await user.type(screen.getByLabelText(/producto/i), 'Arroz');
+    await user.type(screen.getByLabelText(/cantidad ofrecida/i), '5');
+    await user.click(screen.getByRole('button', { name: /crear ofrecimiento/i }));
+    expect(screen.getByRole('status')).toHaveTextContent(/ofrecimiento creado/i);
+    window.dispatchEvent(new StorageEvent('storage', { key: 'alimenta-demo-store-v1' }));
+    await user.selectOptions(screen.getByLabelText(/cambiar vista de rol/i), 'edil-demo-01');
+    await user.click(screen.getByRole('link', { name: /recepciones/i }));
+    expect(screen.getAllByText(/Arroz/)[0]).toBeVisible();
+    await user.click(screen.getByRole('button', { name: /aceptar ofrecimiento/i }));
+    expect(JSON.parse(window.localStorage.getItem('alimenta-demo-store-v1') ?? '{}').offers[0].donorId).toBe('donante-demo-01');
+    await user.selectOptions(screen.getByLabelText(/cambiar vista de rol/i), 'donante-demo-01');
+    await user.click(screen.getByRole('link', { name: /mis donaciones/i }));
+    expect(screen.getByText(/aceptada/i)).toBeVisible();
+    await user.click(screen.getByRole('button', { name: /marcar transporte/i }));
+    await user.selectOptions(screen.getByLabelText(/cambiar vista de rol/i), 'edil-demo-01');
+    await user.click(screen.getByRole('link', { name: /recepciones/i }));
+    await user.click(screen.getByRole('button', { name: /confirmar recepción física/i }));
+    await user.selectOptions(screen.getByLabelText(/cambiar vista de rol/i), 'donante-demo-01');
+    await user.click(screen.getByRole('link', { name: /mis donaciones/i }));
+    expect(screen.getByText(/Recepción: Confirmada/i)).toBeVisible();
+    await user.type(screen.getByLabelText(/producto/i), 'Avena');
+    await user.type(screen.getByLabelText(/cantidad ofrecida/i), '3');
+    await user.click(screen.getByRole('button', { name: /crear ofrecimiento/i }));
+    await user.selectOptions(screen.getByLabelText(/cambiar vista de rol/i), 'edil-demo-01');
+    await user.click(screen.getByRole('link', { name: /recepciones/i }));
+    await user.click(screen.getAllByRole('button', { name: /rechazar ofrecimiento/i })[0]);
+    await user.selectOptions(screen.getByLabelText(/cambiar vista de rol/i), 'donante-demo-01');
+    await user.click(screen.getByRole('link', { name: /mis donaciones/i }));
+    expect(screen.getByText(/Oferta: Rechazada · Cita: Rechazada/i)).toBeVisible();
+    await user.selectOptions(screen.getByLabelText(/cambiar vista de rol/i), 'agente-demo-01');
+    await user.click(screen.getByRole('link', { name: /inventario/i }));
+    expect(within(screen.getByRole('table', { name: /inventario demostrativo/i })).getByRole('row', { name: /Arroz 5 5 0 0/i })).toBeVisible();
+  });
+
+  it('updates agent inventory only on confirmed physical receipt and recovers malformed storage/reset', async () => {
+    const user = userEvent.setup();
+    renderAt('/demo/donante/donaciones');
+    await user.type(screen.getByLabelText(/producto/i), 'Lentejas');
+    await user.type(screen.getByLabelText(/cantidad ofrecida/i), '7');
+    await user.click(screen.getByRole('button', { name: /crear ofrecimiento/i }));
+    await user.selectOptions(screen.getByLabelText(/cambiar vista de rol/i), 'agente-demo-01');
+    await user.click(screen.getByRole('link', { name: /inventario/i }));
+    expect(within(screen.getByRole('table', { name: /inventario demostrativo/i })).queryByText('Lentejas')).not.toBeInTheDocument();
+    window.localStorage.setItem('alimenta-demo-store-v1', '{broken');
+    window.dispatchEvent(new StorageEvent('storage', { key: 'alimenta-demo-store-v1' }));
+    cleanup();
+    renderAt('/demo/agente/inventario');
+    expect(screen.getByText(/se restableció el estado demo/i)).toBeVisible();
+    expect(screen.getByRole('button', { name: /restablecer demo/i })).toBeVisible();
+    window.confirm = () => true;
+    await user.click(screen.getByRole('button', { name: /restablecer demo/i }));
+    expect(screen.getAllByRole('status').some((status) => /se restablecieron los datos ficticios/i.test(status.textContent ?? ''))).toBe(true);
   });
 });

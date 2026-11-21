@@ -4,7 +4,7 @@
 
 Alimenta es un proyecto que propone conectar a donantes, representantes comunitarios (*ediles*) y agentes encargados de evaluar necesidades y coordinar recursos. Su propósito es facilitar el registro de solicitudes, el seguimiento de aportes y la confirmación de entregas, además de ofrecer información pública sobre servicios de apoyo comunitario.
 
-El proyecto está construyendo una demostración. `app/frontend/` contiene una experiencia pública y vistas cliente para donante, edil, agente y administrador con React, TypeScript y Vite. Usa datos ficticios y estado transitorio: no hay backend, autenticación, persistencia ni operaciones reales. `deploy/` sigue pendiente. **No debe interpretarse que la plataforma está desplegada ni validada en campo**.
+El proyecto está construyendo una demostración. `app/frontend/` contiene una experiencia pública y vistas cliente para donante, edil, agente y administrador con React, TypeScript y Vite. La demo usa perfiles y datos ficticios en `localStorage` del navegador actual; no hay backend, autenticación real, sincronización entre dispositivos ni operaciones reales. `deploy/` sigue pendiente. **No debe interpretarse que la plataforma está desplegada ni validada en campo**.
 
 ## ¿Por qué existe este repositorio?
 
@@ -88,7 +88,7 @@ A partir de la estructura presente, el repositorio incluye:
 - Un script relacionado con la descarga de datos de Manizales, documentación de bases de datos y una prueba asociada.
 - Definiciones de tareas que documentan trabajo de fundamentación y datos.
 
-**No se presupone** la existencia de una API operativa, una base de datos desplegada, autenticación real, un sistema de donaciones transaccional o logística ejecutándose en producción. El frontend y sus vistas por rol son una demostración cliente sin backend ni persistencia. El resto de la estructura de `app/` continúa siendo organización de trabajo, no evidencia de servicios implementados.
+**No se presupone** la existencia de una API operativa, una base de datos desplegada, autenticación real, un sistema de donaciones transaccional o logística ejecutándose en producción. El frontend y sus vistas por rol son una demostración cliente sin backend; su almacén local solo conserva cambios en el mismo navegador y origen. El resto de la estructura de `app/` continúa siendo organización de trabajo, no evidencia de servicios implementados.
 
 ## Estructura actual del repositorio
 
@@ -125,7 +125,7 @@ Esta estructura refleja las **rutas visibles en el estado actual** del proyecto.
 
 Se conserva la estructura existente y se agrega `app/` como esqueleto inicial. `deploy/` continúa siendo una propuesta separada:
 
-- **`app/` — código de demostración y organización futura:** frontend público y vistas demostrativas por rol implementados; backend, migraciones y datos ficticios de inicialización siguen pendientes.
+- **`app/` — código de demostración y organización futura:** frontend público y vistas demostrativas por rol implementados, con fixtures locales ficticios; backend y migraciones siguen pendientes.
 - **`deploy/` — infraestructura pendiente:** configuraciones reproducibles para desarrollo y, cuando corresponda, producción. No debe contener lógica funcional de negocio.
 
 El esqueleto de carpetas creado (sin código funcional ni configuración de stack) es:
@@ -213,7 +213,9 @@ React + TypeScript + Vite están aprobados e instalados para la experiencia púb
 
 La portada (`/`) presenta las rutas de aporte como vistas previas, organizaciones aliadas ficticias en un carrusel manual y una muestra de servicios. El directorio (`/servicios`) permite filtrar por comunidad, tipo, día y texto, y ofrece una lista accesible como alternativa a la representación esquemática.
 
-La ruta `/acceso` abre vistas demostrativas con navegación superior para `/demo/donante`, `/demo/edil`, `/demo/agente` y `/demo/administrador`. Incluyen ejemplos de seguimiento de donaciones, inventario por estados y jornadas de voluntariado con registro local por el edil y moderación local por administración. Elegir una vista **no autentica ni concede permisos**. Todas las acciones usan estado transitorio del navegador, no llegan a un servidor, no cambian inventario real y se pierden al recargar.
+La ruta `/acceso` permite seleccionar perfiles demo ficticios para `/demo/donante`, `/demo/edil`, `/demo/agente` y `/demo/administrador`. Cambiar de perfil **no autentica ni concede permisos**. El flujo local permite crear un ofrecimiento del donante, aceptarlo o rechazarlo como Edil, marcar transporte y confirmar recepción física; solo esa recepción confirmada aumenta el inventario demostrativo. Las jornadas del Edil también se comparten con la vista de moderación administrativa. Los cambios se guardan en `localStorage` en este navegador/origen, no llegan a un servidor y se pueden borrar con **Restablecer demo**. No hay transporte gestionado por Alimenta ni operación real.
+
+La persistencia no es una base de datos segura, autenticación ni autorización: el contenido puede modificarse desde las herramientas del navegador y no se sincroniza entre dispositivos. La demo incluye fixtures ficticios y recupera los datos iniciales si detecta un estado local malformado.
 
 Desde `app/frontend/`, con Node.js 24.18.0 y npm 11.16.0:
 
