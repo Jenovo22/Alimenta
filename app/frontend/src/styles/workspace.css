@@ -17,7 +17,7 @@
 .workspace-main { max-width: 1400px; margin: auto; padding: 30px clamp(20px, 4vw, 58px) 70px; }
 .workspace-context { display: flex; justify-content: space-between; gap: 18px; margin-bottom: 18px; color: #687569; font-size: 11px; font-weight: 700; text-transform: uppercase; }
 .workspace-context a { color: var(--brand-green-dark); }
-.demo-boundary, .notice { padding: 13px 15px; border: 1px solid #d9ddc7; border-radius: 6px; background: #f3f4e9; color: #565a5c; font-size: 12px; }
+.live-data { padding: 13px 15px; border: 1px solid #cbd7c6; border-radius: 6px; background: #e8f5e9; color: #2e7d32; font-size: 12px; margin-bottom: 20px; }
 .workspace-section { padding-top: 35px; }
 .workspace-section > h2, .workspace-title h2 { margin-bottom: 8px; font-size: clamp(28px, 4vw, 42px); line-height: 1.12; letter-spacing: -1.4px; }
 .workspace-section > p:not(.eyebrow), .workspace-title p:not(.eyebrow) { max-width: 760px; color: #5d6c61; }

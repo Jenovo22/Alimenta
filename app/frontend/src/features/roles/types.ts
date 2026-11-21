@@ -1,6 +1,6 @@
 export type DemoRole = 'donante' | 'edil' | 'agente' | 'administrador';
 
-export type VolunteerEventStatus = 'Pendiente de revisión' | 'Publicada (demo)' | 'Rechazada (demo)';
+export type VolunteerEventStatus = 'Pendiente de revisión' | 'Publicada' | 'Rechazada';
 
 export type VolunteerEvent = {
   id: string;
