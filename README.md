@@ -51,6 +51,13 @@ La sección de agradecimientos podrá destacar hasta **diez personas jurídicas 
 
 Como principio operativo de la propuesta, **el transporte corre por cuenta del donante o de un donante transportador que lo acepte**. El agente coordina horarios y asignaciones desde el banco, pero no se convierte por ello en transportador. Una promesa o una cita no equivalen a una recepción confirmada.
 
+### Roles y transporte
+
+- **Donante aportante**: quien realiza la donación de bienes o recursos.
+- **Donante transportador**: donante que además asume la responsabilidad de transportar los bienes al punto de entrega, aceptando la tarea de transporte.
+- La regla de negocio: el `transportador_id` puede ser distinto del `donante_id`. Si se especifica un `transportador_id` debe corresponder a un usuario con rol **donante transportador**; de lo contrario, el propio donante actúa como transportador.
+- El servicio debe validar que el `transportador_id` exista y posea el rol adecuado antes de aceptar la operación de transporte.
+
 ### Inventario, necesidades y trazabilidad
 
 La solución deberá distinguir recursos **comprometidos, recibidos, disponibles, reservados, despachados y entregados**. También deberá permitir entregas parciales, mantener el saldo pendiente de cada producto y registrar quién realizó y confirmó cada operación.
