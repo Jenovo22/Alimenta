@@ -1,6 +1,6 @@
 # Alimenta — Lineamientos de diseño y contrato visual de implementación
 
-**Baseline de UI:** `Mockup_Alimenta_Taste_v6_Menu_Superior.html`  
+**Baseline de UI:** `Mockup_Alimenta_Taste_v7_Jornadas_Voluntariado.html`
 **Vigencia:** guía para reproducir el **mockup final aprobado** en una demo funcional; 20 de noviembre de 2026.  
 **Lectura conjunta:** `propuesta_mockup.md`. El HTML es la fuente visual primaria; estas reglas explicitan su sistema, no habilitan un rediseño.
 

@@ -1,17 +1,18 @@
 # Alimenta — Propuesta de mockup y especificación para la demo funcional
 
-**Versión del documento:** 4.0 (consolidación posterior al diseño final)  
-**Referencia visual congelada:** `Mockup_Alimenta_Taste_v6_Menu_Superior.html`  
+**Versión del documento:** 4.1 (alineada con mockup v7 · Jornadas de voluntariado)
+
+**Referencia visual congelada:** `Mockup_Alimenta_Taste_v7_Jornadas_Voluntariado.html`
 **Fecha de consolidación:** 20 de noviembre de 2026  
 **Estado:** especificación de implementación; **no** certifica una aplicación funcional ni servicios reales.
 
-> **Regla de precedencia.** El HTML entregado por el equipo es la **fuente de verdad para navegación, orden visual, pantallas, componentes y microinteracciones**. La propuesta funcional previa (`propuesta.md`, v3) sigue siendo la fuente para el problema, las responsabilidades y las reglas operativas, salvo decisión documentada. Este documento convierte las interacciones simuladas del HTML en requisitos verificables para desarrollar la demo; **no cambia el HTML final**. Cuando un requisito adicional no exista en el mockup, se identifica como trabajo de implementación y no como función ya construida.
+> **Regla de precedencia.** El HTML entregado por el equipo es la **fuente de verdad para navegación, orden visual, pantallas, componentes y microinteracciones**. La propuesta funcional previa (`propuesta.md`, v2.1) sigue siendo la fuente para el problema, las responsabilidades y las reglas operativas, salvo decisión documentada. Este documento convierte las interacciones simuladas del HTML en requisitos verificables para desarrollar la demo; **no cambia el HTML final**. Cuando un requisito adicional no exista en el mockup, se identifica como trabajo de implementación y no como función ya construida.
 
 ## 1. Propósito y límites
 
-Alimenta conecta donantes, ediles, agentes y administradores para registrar necesidades comunitarias, coordinar donaciones de productos y sus transportes, verificar recepciones y divulgar servicios comunitarios. El principio que no se puede perder es: **el edil reporta y recibe; el agente evalúa, prioriza y coordina el banco; el donante transporta o acepta transportar; el administrador verifica y audita; el sistema registra sin sustituir decisiones humanas.**
+Alimenta conecta donantes, ediles, agentes y administradores para registrar necesidades comunitarias, coordinar donaciones de productos y sus transportes, verificar recepciones y divulgar servicios comunitarios y jornadas de voluntariado. El principio que no se puede perder es: **el edil reporta, agenda jornadas comunitarias y recibe; el agente evalúa, prioriza y coordina el banco; el donante transporta o acepta transportar; el administrador verifica, revisa publicaciones y audita; el sistema registra sin sustituir decisiones humanas.**
 
-La demo funcional deberá permitir recorrer flujos de punta a punta **entre usuarios con sesiones y roles distintos**, almacenar datos, impedir operaciones inválidas y demostrar consecuencias en otras pantallas. No es necesario ejecutar donaciones físicas para demostrarlo; toda entidad de prueba debe estar rotulada como demostrativa. Se excluyen de esta fase pagos, medicamentos, seguimiento GPS, distribución automática autónoma sin aprobación humana y disponibilidad real de raciones de ollas comunitarias. **Sí se autoriza** implementar en `app/`, siguiendo exclusivamente las directrices del repositorio (`README.md` y `docs/propuesta.md`), el **modelo de ponderación social + herramienta `US8494885B2`** (como sugerencia asistida *Human-in-the-Loop* para el Agente, sin auto-reservar ni alterar `G`), el **Catálogo de Ayudas Técnicas UNAL**, el **emparejamiento asistido** y la **Ruta PAP UNAL** desacoplada sin datos clínicos, preservando intactas las reglas visuales y de navegación del HTML v6.
+La demo funcional deberá permitir recorrer flujos de punta a punta **entre usuarios con sesiones y roles distintos**, almacenar datos, impedir operaciones inválidas y demostrar consecuencias en otras pantallas. No es necesario ejecutar donaciones físicas para demostrarlo; toda entidad de prueba debe estar rotulada como demostrativa. Se excluyen de esta fase pagos, medicamentos, seguimiento GPS, distribución automática autónoma sin aprobación humana y disponibilidad real de raciones de ollas comunitarias. **Sí se autoriza** implementar en `app/`, siguiendo exclusivamente las directrices del repositorio (`README.md` y `docs/propuesta.md`), el **modelo de ponderación social + herramienta `US8494885B2`** (como sugerencia asistida *Human-in-the-Loop* para el Agente, sin auto-reservar ni alterar `G`), las **jornadas de voluntariado comunitario** (`jornadas_edil` / `jornadas_admin`, independientes de las citas de donación), el **Catálogo de Ayudas Técnicas UNAL**, el **emparejamiento asistido** y la **Ruta PAP UNAL** desacoplada sin datos clínicos, preservando intactas las reglas visuales y de navegación del HTML v7. La **accesibilidad universal para versión móvil** (lengua de señas, interfaces táctiles y auditivas) queda registrada como **plan a futuro (Fase 2)**.
 
 ### 1.1. Decisiones de diseño ya cerradas
 
@@ -59,18 +60,19 @@ La ruta heredada `aliados_publico` del prototipo redirige conceptualmente a `por
 | DON-06 | Transportes | `transportes` | Activar disponibilidad, aceptar traslados desde el banco e iniciar recorrido |
 | DON-07 | Detalle de necesidad | `detalle` | Solicitud, afectados agregados, pendientes, aportables, elección de fecha/hora y compromiso |
 
-### 2.3. Edil — 7 opciones principales + detalle
+### 2.3. Edil — 8 opciones principales + detalle
 
 | ID | Etiqueta visible | `page` | Funcionalidad esperada |
 |---|---|---|---|
-| EDI-01 | Inicio | `inicio` | Carrusel editorial, indicadores de su comunidad y solicitudes |
+| EDI-01 | Inicio | `inicio` | Carrusel editorial, indicadores de su comunidad, próximas jornadas de voluntariado y solicitudes |
 | EDI-02 | Servicios | `puntos_servicio` | Crear/editar propuestas de puntos públicos pertenecientes a su comunidad |
-| EDI-03 | Solicitudes | `peticiones` | Consultar necesidades y entrar al detalle |
-| EDI-04 | Nueva solicitud | `nueva` | Registrar varios productos, cantidades, hogares, afectados, justificación y advertencia por duplicados |
-| EDI-05 | Agenda | `agenda_edil` | Publicar ventanas de hora, cupos y cierre condicionado por citas activas |
-| EDI-06 | Aportes | `aportes_edil` | Aceptar/rechazar donaciones espontáneas y citas ligadas a necesidades |
-| EDI-07 | Recepciones | `recibir` | Confirmar cantidades reales y evidencia; admitir parciales |
-| EDI-08 | Detalle de solicitud | `detalle_edil` | Actualizar necesidad con motivo, auditoría y nueva evaluación si cambia información relevante |
+| EDI-03 | Voluntariado | `jornadas_edil` | Agendar voluntarios en un horario específico (atención psicológica, jornada de vacunación, atención médica u otra), indicando nombre del voluntario encargado y lugar público autorizado; queda «Pendiente de revisión» |
+| EDI-04 | Solicitudes | `peticiones` | Consultar necesidades y entrar al detalle |
+| EDI-05 | Nueva solicitud | `nueva` | Registrar varios productos, cantidades, hogares, afectados, justificación y advertencia por duplicados |
+| EDI-06 | Agenda | `agenda_edil` | Publicar ventanas de hora, cupos y cierre condicionado por citas activas |
+| EDI-07 | Aportes | `aportes_edil` | Aceptar/rechazar donaciones espontáneas y citas ligadas a necesidades |
+| EDI-08 | Recepciones | `recibir` | Confirmar cantidades reales y evidencia; admitir parciales |
+| EDI-09 | Detalle de solicitud | `detalle_edil` | Actualizar necesidad con motivo, auditoría y nueva evaluación si cambia información relevante |
 
 ### 2.4. Agente — 7 opciones principales + evaluación
 
@@ -85,17 +87,18 @@ La ruta heredada `aliados_publico` del prototipo redirige conceptualmente a `por
 | AGE-07 | Entregas | `entregas` | Proponer horario de edil y transportador, esperar aceptación, autorizar salida y seguimiento |
 | AGE-08 | Evaluación individual | `evaluacion` | `G` 1–5 con motivo, resumen de afectación y antigüedad, puntaje solo ilustrativo |
 
-### 2.5. Administrador — 5 opciones principales
+### 2.5. Administrador — 6 opciones principales
 
 | ID | Etiqueta visible | `page` | Funcionalidad esperada |
 |---|---|---|---|
 | ADM-01 | Inicio | `inicio` | Carrusel editorial, pendientes de verificación, productos y eventos |
 | ADM-02 | Servicios | `puntos_servicio` | Crear/editar puntos, verificar, publicar o suspender |
-| ADM-03 | Verificar ediles | `verificaciones` | Aprobar representantes para comunidades determinadas |
-| ADM-04 | Catálogo | `catalogo` | Visualización estructurada; el mantenimiento completo es requisito de la demo, no función editable hoy |
-| ADM-05 | Auditoría | `auditoria` | Bitácora de acciones de la sesión; en demo funcional, registros persistentes |
+| ADM-03 | Jornadas | `jornadas_admin` | Revisar y publicar jornadas de voluntariado comunitario registradas por ediles |
+| ADM-04 | Verificar ediles | `verificaciones` | Aprobar representantes para comunidades determinadas |
+| ADM-05 | Catálogo | `catalogo` | Visualización estructurada; el mantenimiento completo es requisito de la demo, no función editable hoy |
+| ADM-06 | Auditoría | `auditoria` | Bitácora de acciones de la sesión; en demo funcional, registros persistentes |
 
-**Conteo:** 25 opciones de navegación principal: 6 Donante + 7 Edil + 7 Agente + 5 Administrador. Las vistas detalle/evaluación, pública y acceso se agregan sobre estas 25. El selector de roles o de edil del HTML es **exclusivamente de prueba**.
+**Conteo:** 27 opciones de navegación principal: 6 Donante + 8 Edil + 7 Agente + 6 Administrador. Las vistas detalle/evaluación, pública y acceso se agregan sobre estas 27. El selector de roles o de edil del HTML es **exclusivamente de prueba**.
 
 ## 3. Contratos de interfaz (componentes que NO deben reinventarse)
 

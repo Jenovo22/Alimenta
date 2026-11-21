@@ -1,4 +1,4 @@
-> **AVISO — Documento histórico superado:** Esta especificación v2.0 corresponde al prototipo anterior y **no debe usarse para generar código**. Las referencias normativas activas son [`propuesta_mockup.md`](propuesta_mockup.md) (v4.0), [`Mockup_Alimenta_Taste_v6_Menu_Superior.html`](Mockup_Alimenta_Taste_v6_Menu_Superior.html), [`lineamientos_diseno.md`](lineamientos_diseno.md) y [`AGENTS.md`](AGENTS.md).
+> **AVISO — Documento histórico superado:** Esta especificación v2.0 corresponde al prototipo anterior y **no debe usarse para generar código**. Las referencias normativas activas son [`propuesta_mockup.md`](propuesta_mockup.md) (v4.1), [`Mockup_Alimenta_Taste_v7_Jornadas_Voluntariado.html`](Mockup_Alimenta_Taste_v7_Jornadas_Voluntariado.html), [`lineamientos_diseno.md`](lineamientos_diseno.md) y [`AGENTS.md`](AGENTS.md).
 
 # Alimenta — Propuesta de mockup funcional integrado
 

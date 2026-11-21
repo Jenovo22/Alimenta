@@ -278,9 +278,13 @@ Se requieren recordatorios/reconfirmación de solicitudes antiguas sin borrar fe
 - Historial de donaciones previo es solo información contextual del agente; no es cuarto factor de la fórmula automática.
 - No prometer rutas optimizadas, transporte garantizado o seguimiento GPS: no están especificados ni implementados en esta fase.
 
-### Accesibilidad universal (*Accessibility-First*)
+### Accesibilidad universal (*Accessibility-First* — plan a futuro para versión móvil)
 
-Con base en `WO2026151479A1` y `US20200133474A1`, la interfaz incorpora un **Modo accesible** que amplía objetivos táctiles, tipografía y espaciado entre controles (previniendo errores por temblor o motricidad reducida), refuerza el contraste y ofrece dictado por voz opcional en formularios clave. Para el componente de lengua de señas en fases progresivas, se toman como referencia `US20170236450A1` y una eventual articulación institucional con el **Sistema ECOS (UNIMINUTO, patente SIC)**.
+En el MVP web se conservan buenas prácticas base de contraste WCAG, foco visible y navegación por teclado. Como **elemento del plan a futuro (Fase 2)** orientado a la **versión de dispositivo móvil**, se proyecta incorporar **accesibilidad universal** con base en `WO2026151479A1`, `US20200133474A1` y `US20170236450A1` (junto con el referente nacional **Sistema ECOS — UNIMINUTO**, patente SIC): soporte en **lengua de señas**, **interfaces táctiles adaptativas** (objetivos táctiles amplios y espaciado para motricidad reducida o temblor) e **interfaces auditivas / por voz** (lectura asistida y dictado por voz en formularios clave).
+
+### Jornadas de voluntariado comunitario (independientes de las citas de donación)
+
+El **Edil** dispone de una sección dedicada (`jornadas_edil`) para agendar voluntarios en un horario específico para su comunidad en categorías como **atención psicológica**, **jornadas de vacunación**, **atención médica en el barrio** u **otra**, registrando obligatoriamente el **nombre del voluntario encargado**, el **lugar público autorizado** (sin domicilios particulares), fecha, rango horario y descripción. Cada jornada ingresa en estado **`Pendiente de revisión`** para validación administrativa (`jornadas_admin`) antes de publicarse en el directorio público comunitario (`mapa_publico`); las cancelaciones se conservan en historial y la plataforma no valida licencias médicas ni genera reservas de cupos clínicos.
 
 ### Ruta separada de soporte psicosocial (PAP UNAL)
 
@@ -311,6 +315,7 @@ Bajo la **Decisión 486 de la Comunidad Andina**, los programas de ordenador y m
 | `recepciones_aportes_dirigidos` | Historial específico de aportes comunitarios sin solicitud, responsable y destino final. |
 | `referencias_territoriales_agregadas` | Indicadores agregados por zona/comunidad (ej. corte Manizales `ab8a-uwf7`), sin PII ni hogares individuales. |
 | `servicios_comunitarios` | Puntos públicos verificados (ollas, almuerzos y servicios de apoyo) con horarios informativos, sin cupos en tiempo real. |
+| `jornadas_voluntariado` | Jornadas agendadas por el edil (`tipo`: psicológica, vacunación, médica u otra; `voluntario_encargado`, `lugar`, fecha, horario y estado de revisión administrativa), independientes de las citas de donación. |
 | `organizaciones_aliadas` | Reconocimientos y listado Top 10 gestionado por el Agente para visibilidad dentro de Inicio (`#aliados`). |
 | `derivaciones_pap_agregadas` | Conteo/traza anonimizada de accesos a la ruta PAP UNAL, desacoplada del inventario y sin datos clínicos. |
 | `auditoria` | Cambios por actor, antes/después, fecha, razón y objeto. |
@@ -321,19 +326,19 @@ Bajo la **Decisión 486 de la Comunidad Andina**, los programas de ordenador y m
 
 ## 12. Diseño de interfaces y alineación con el mockup aprobado
 
-El diseño visual y de navegación aprobado se define en [`docs/diseño/Mockup_Alimenta_Taste_v6_Menu_Superior.html`](dise%C3%B1o/Mockup_Alimenta_Taste_v6_Menu_Superior.html), [`docs/diseño/propuesta_mockup.md`](dise%C3%B1o/propuesta_mockup.md) y [`docs/diseño/lineamientos_diseno.md`](dise%C3%B1o/lineamientos_diseno.md): **navegación superior unificada** (sin barra lateral), composición editorial con paleta institucional (`#94B43B`, `#466B3F`, `#A61C31`, `#76232F`, `#565A5C`, `#B1B2B0`), carrusel compartido sin *autoplay* y selector de necesidades de tres paneles.
+El diseño visual y de navegación aprobado se define en [`docs/diseño/Mockup_Alimenta_Taste_v7_Jornadas_Voluntariado.html`](dise%C3%B1o/Mockup_Alimenta_Taste_v7_Jornadas_Voluntariado.html), [`docs/diseño/propuesta_mockup.md`](dise%C3%B1o/propuesta_mockup.md) y [`docs/diseño/lineamientos_diseno.md`](dise%C3%B1o/lineamientos_diseno.md): **navegación superior unificada** (sin barra lateral), composición editorial con paleta institucional (`#94B43B`, `#466B3F`, `#A61C31`, `#76232F`, `#565A5C`, `#B1B2B0`), carrusel compartido sin *autoplay* y selector de necesidades de tres paneles.
 
-**Acceso público (sin sesión):** Portada editorial con modalidades de donación, sección integrada de **Organizaciones aliadas (Top 10)** dentro de Inicio (`#aliados`, sin página pública independiente) y acceso al **directorio público de servicios comunitarios** (`mapa_publico`) con horarios informativos verificados.
+**Acceso público (sin sesión):** Portada editorial con modalidades de donación, sección integrada de **Organizaciones aliadas (Top 10)** dentro de Inicio (`#aliados`, sin página pública independiente) y acceso al **directorio público de servicios comunitarios y jornadas de voluntariado publicadas** (`mapa_publico`) con horarios informativos verificados.
 
 **Panel del donante:** Inicio con **tres rutas** («Necesidad», «Banco», «Donar a un edil»), exploración de comunidades con **asistente de emparejamiento rápido** (*ReliefMatcher.AI* + `US11037098B2`), visibilidad destacada del **Catálogo de Ayudas Técnicas UNAL**, selección de fecha/hora de recepción, aviso orientativo en donaciones espontáneas cuando haya solicitudes compatibles, «Mis donaciones», «Mis transportes» y acceso directo a **Ruta PAP UNAL**.
 
-**Panel del edil:** Solicitudes (incluyendo ayudas técnicas UNAL y dictado por voz opcional), creación/edición, **Horarios de recepción** (fecha, intervalo y cupos), bandeja **Aportes a mi nombre** (aceptar o rechazar espontáneas y citas de necesidades), confirmación de entregas, registro de incidencias, registro de servicios comunitarios sujetos a revisión y acceso a **Ruta PAP UNAL**. Selector de comunidad si administra más de una.
+**Panel del edil:** Solicitudes (incluyendo ayudas técnicas UNAL y dictado por voz opcional), creación/edición, **Horarios de recepción** (fecha, intervalo y cupos), **Jornadas de voluntariado (`jornadas_edil`)** para agendar voluntarios en un horario específico (psicológico, vacunación, atención médica u otra, con nombre del voluntario encargado y lugar público autorizado), bandeja **Aportes a mi nombre** (aceptar o rechazar espontáneas y citas de necesidades), confirmación de entregas, registro de incidencias, registro de servicios comunitarios sujetos a revisión y acceso a **Ruta PAP UNAL**. Selector de comunidad si administra más de una.
 
 **Panel del agente:** Evaluación (`G` exclusivo del agente) asistida por el **agente de ponderación social** (*Urgencia `G`*, *Equidad territorial* con datos agregados de Manizales `ab8a-uwf7` y *Viabilidad logística*), inventario y verificación de ingreso, **Agenda del banco**, asignaciones con la **herramienta `US8494885B2` de reparto parcial bajo escasez**, propuesta de salida con transportador donante, gestión de publicaciones de **Organizaciones aliadas (Top 10)** y seguimiento hasta recepción.
 
-**Panel de administración:** Autorización de ediles/transportadores y permisos, catálogo de productos con ficha del **Catálogo de Ayudas Técnicas UNAL**, revisión de servicios comunitarios, reglas de custodia y auditoría de todas las transiciones.
+**Panel de administración:** Autorización de ediles/transportadores y permisos, catálogo de productos con ficha del **Catálogo de Ayudas Técnicas UNAL**, revisión de servicios comunitarios y **jornadas de voluntariado (`jornadas_admin`)**, reglas de custodia y auditoría de todas las transiciones.
 
-**Componentes de UX críticos:** controles de **accesibilidad** (`WO2026151479A1`, `US20200133474A1`, contraste WCAG, foco visible y navegación por teclado), selector de fecha/hora basado en cupos disponibles, estados diferenciados, cronología por entrega, avisos de falta de cupos o transportador, confirmación de aceptación, registro de rechazos y vista de diferencias entre prometido, recibido y entregado.
+**Componentes de UX críticos:** contraste WCAG, foco visible y navegación por teclado en el MVP web (con **accesibilidad universal para versión móvil** —lengua de señas, interfaces táctiles y auditivas; `WO2026151479A1`, `US20200133474A1`, `US20170236450A1`— proyectada en el plan a futuro), selector de fecha/hora basado en cupos disponibles, estados diferenciados, cronología por entrega, avisos de falta de cupos o transportador, confirmación de aceptación, registro de rechazos y vista de diferencias entre prometido, recibido y entregado.
 
 El mockup HTML aprobado es una **referencia visual y de interacción con datos ficticios**. **No es un sistema real de citas, pagos, transporte, diagnóstico clínico o almacenamiento.**
 
@@ -344,7 +349,7 @@ El mockup HTML aprobado es una **referencia visual y de interacción con datos f
 Conservando la estructura documental actual, la implementación se organizará en **`app/`** (`frontend/`, `backend/`, `database/seeds/`), **`deploy/`** y `compose.yaml` bajo una arquitectura recomendada de **monolito modular** (sujeta a aprobación formal del stack en `CONTRIBUTING.md`):
 
 1. Autenticación real, roles, autorización en servidor y directorio de ediles verificados.
-2. Portada pública, directorio verificado de servicios comunitarios y bloque **Organizaciones aliadas (Top 10)** en Inicio (`#aliados`).
+2. Portada pública, directorio verificado de servicios comunitarios, **jornadas de voluntariado agendadas por el edil** (`jornadas_edil` / `jornadas_admin`) y bloque **Organizaciones aliadas (Top 10)** en Inicio (`#aliados`).
 3. Comunidades, catálogo normalizado (incluyendo el **Catálogo de Ayudas Técnicas UNAL**), solicitudes y prevención de duplicados.
 4. Evaluación exclusiva del agente con `G` 1–5, **agente de ponderación social** (con indicadores agregados de Manizales `ab8a-uwf7`) y **herramienta `US8494885B2`** para sugerencias de reparto parcial bajo escasez.
 5. **Calendarios de recepción del edil y del banco**, con franjas/cupos atómicos, confirmación/rechazo, cancelación, reprogramación y auditoría.
@@ -352,9 +357,15 @@ Conservando la estructura documental actual, la implementación se organizará e
 7. Registro de donantes transportadores voluntarios y **aceptación explícita** de trayectos bancarios.
 8. Inventario físico verificado, reservas, salidas, entregas completas/parciales, conciliación de diferencias y **Ruta PAP UNAL** desacoplada sin datos clínicos.
 
-### Fase 2 — Mejoras posteriores
+### Fase 2 — Plan a futuro y mejoras posteriores
 
-Notificaciones automáticas, exportaciones, reportes agregados, mapas generales (sin divulgar domicilios), recordatorios de citas, optimización logística, seguimiento de reprogramaciones, controles de calidad ampliados y análisis de recurrencia. Nunca equiparar «programado» con «entregado».
+Como evolución posterior al MVP, se proyectan las siguientes líneas de crecimiento alineadas con las reglas de privacidad (`R11`) y control humano (`R01`, `R13`):
+
+1. **Accesibilidad universal y versión móvil *offline-first*:** **accesibilidad universal en versión de dispositivo móvil** (lengua de señas, interfaces táctiles adaptativas y auditivas/por voz; `WO2026151479A1`, `US20200133474A1`, `US20170236450A1` / Sistema ECOS) y operación ***offline-first* / baja conectividad** para sincronizar registros de ediles y confirmaciones de entrega en zonas con señal intermitente.
+2. **Evolución logística y mapas agregados en emergencias:** notificaciones automáticas, recordatorios de citas, sugerencias de agrupación de trayectos para transportadores (`US11393577B2`) y mapas agregados por zona o albergue durante contingencias (`CN110852587A`, `US20200100084A1`), sin divulgar domicilios particulares.
+3. **Validación institucional y trazabilidad ampliada para Jornadas de Voluntariado:** convenios con entidades de salud, universidades y brigadas para respaldar habilitaciones en jornadas de vacunación o atención médica (`jornadas_voluntariado`) y habilitar recordatorios comunitarios.
+4. **Módulo de sostenibilidad empresarial B2B / B2G:** perfiles de donante corporativo (NIT/sucursales), exportación de expedientes auditables de donación verificada para soporte tributario (en alianza con ESAL/Banco de Alimentos), licenciamiento territorial multimunicipio y reportes ESG agregados vinculados al bloque `#aliados` (Top 10).
+5. **Analítica y calidad operativa:** seguimiento de reprogramaciones, controles de calidad ampliados y análisis de recurrencia. Nunca equiparar «programado» con «entregado».
 
 ## 14. Decisiones aún por validar
 

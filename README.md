@@ -38,9 +38,9 @@ La sección de agradecimientos podrá destacar hasta **diez personas jurídicas 
 | Perfil | Responsabilidad prevista |
 | --- | --- |
 | **Donante** | Elegir necesidades publicadas, donar al banco o realizar aportes dirigidos a un edil; solicitar horarios y hacer seguimiento. |
-| **Edil** | Representar una comunidad autorizada, registrar solicitudes, publicar ventanas de recepción, revisar aportes dirigidos y confirmar cantidades recibidas. |
+| **Edil** | Representar una comunidad autorizada, registrar solicitudes, publicar ventanas de recepción, agendar **jornadas de voluntariado comunitario** (atención psicológica, vacunación, atención médica u otra), revisar aportes dirigidos y confirmar cantidades recibidas. |
 | **Agente** | Evaluar y priorizar necesidades, coordinar el banco y sus horarios, asignar recursos, gestionar entregas y seleccionar reconocimientos a organizaciones. |
-| **Administrador** | Verificar representantes, administrar permisos y catálogo, revisar la publicación de puntos comunitarios y consultar auditoría. |
+| **Administrador** | Verificar representantes, administrar permisos y catálogo, revisar y aprobar la publicación de puntos comunitarios y **jornadas de voluntariado**, y consultar auditoría. |
 | **Comunidad beneficiaria** | Comunicar necesidades a través de su representante y recibir las contribuciones verificadas; no requiere necesariamente una cuenta individual. |
 
 ### Modalidades de donación
@@ -57,14 +57,15 @@ La solución deberá distinguir recursos **comprometidos, recibidos, disponibles
 
 El **grado de necesidad (1 a 5)** lo asigna exclusivamente el agente, con justificación. La fórmula de priorización propuesta —`P = 0.50G + 0.30A + 0.20T`— y sus normalizaciones son **provisionales**: requieren validación antes de utilizarse en decisiones reales. La plataforma puede recomendar, pero el agente decide y deja trazabilidad.
 
-### Agente de ponderación social, patente de referencia y módulos de inclusión
+### Agente de ponderación social, patente de referencia, voluntariado y módulos de inclusión
 
-Como definición funcional consolidada en [`docs/propuesta.md`](docs/propuesta.md), la solución complementa el flujo operativo con cuatro capacidades asistidas que preservan la decisión humana (*Human-in-the-Loop*) y las exclusiones del MVP:
+Como definición funcional consolidada en [`docs/propuesta.md`](docs/propuesta.md), la solución complementa el flujo operativo con cinco capacidades que preservan la decisión humana (*Human-in-the-Loop*) y las exclusiones del MVP:
 
 - **Agente propio de ponderación social + herramienta `US8494885B2`:** el agente pondera urgencia (`G`), equidad territorial (con datos agregados de Manizales `ab8a-uwf7`, sin PII) y viabilidad logística, y utiliza el modelo de [`US8494885B2`](Documentos-prototipos/US8494885B2.pdf) (*Banco como área de acopio → Comunidades como puntos de distribución*) como herramienta para sugerir repartos parciales bajo escasez sin auto-reservar stock ni alterar `G`.
+- **Jornadas de voluntariado comunitario (agendadas por el Edil):** sección dedicada (`jornadas_edil`) donde el edil registra voluntarios para un horario específico en actividades de **atención psicológica, jornadas de vacunación, atención médica en el barrio u otra**, indicando el **nombre del voluntario encargado** y el **lugar público autorizado** (sin domicilios particulares). Cada jornada pasa por revisión administrativa (`jornadas_admin`) antes de publicarse en el directorio público comunitario y es independiente de las citas de donación.
 - **Catálogo de Ayudas Técnicas UNAL:** visibiliza solicitudes y donaciones de **MUUPA** (`NC2021/0010846`), **Muleta axilar plegable** y **Sistema *Anatom*** (cuidadores) dentro de `Salud y asistencia`, respetando la titularidad de la UNAL ante la SIC.
 - **Emparejamiento asistido donante–necesidad:** sugiere coincidencias por catálogo y ventanas horarias abiertas (*ReliefMatcher.AI* + `US11037098B2`), cerrando la verificación en terreno mediante ediles verificados.
-- **Accesibilidad universal y Ruta PAP UNAL:** criterios *accessibility-first* (`WO2026151479A1`, `US20200133474A1`) y derivación desacoplada hacia **Primeros Auxilios Psicológicos (PAP) UNAL** (`WO2021247792A1`, `CN102708284A`) sin almacenar datos clínicos ni identidades.
+- **Ruta PAP UNAL y plan a futuro (Fase 2):** derivación desacoplada hacia **Primeros Auxilios Psicológicos (PAP) UNAL** (`WO2021247792A1`, `CN102708284A`) sin almacenar datos clínicos ni identidades. Como **plan a futuro (Fase 2)** se proyecta: (1) **accesibilidad universal en versión de dispositivo móvil** —lengua de señas, interfaces táctiles y auditivas— (`WO2026151479A1`, `US20200133474A1`, `US20170236450A1` / Sistema ECOS) junto con **operación móvil *offline-first* / baja conectividad**; (2) **evolución logística y mapas agregados en emergencias** (`US11393577B2`, `CN110852587A`, `US20200100084A1`, sin domicilios); (3) **validación institucional y trazabilidad ampliada para Jornadas de Voluntariado**; y (4) **módulo de sostenibilidad empresarial B2B / B2G** (perfiles corporativos, expedientes auditables de donación verificada y reportes ESG agregados vinculados a `#aliados`).
 
 ## Diseño y experiencia de usuario
 
@@ -76,7 +77,7 @@ El diseño de referencia acordado para la demo contempla:
 - **Interfaz adaptable** a escritorio y móvil, con navegación utilizable mediante teclado.
 - **Paleta institucional** de referencia: verde `#94B43B`, verde oscuro `#466B3F`, rojo `#A61C31`, vinotinto `#76232F`, gris oscuro `#565A5C` y gris claro `#B1B2B0`.
 
-Los materiales de diseño —incluida la **versión final aprobada del mockup HTML** ([`docs/diseño/Mockup_Alimenta_Taste_v6_Menu_Superior.html`](docs/dise%C3%B1o/Mockup_Alimenta_Taste_v6_Menu_Superior.html)), sus lineamientos visuales y la especificación `propuesta_mockup.md`— se organizan en `docs/diseño/`. Por su parte, `Documentos-prototipos/` reúne las patentes, artículos científicos y el análisis de aplicabilidad ([`Documentos-prototipos/aplicabilidad-patentes-alimenta.md`](Documentos-prototipos/aplicabilidad-patentes-alimenta.md)) que fundamentan [`docs/propuesta.md`](docs/propuesta.md). Antes de iniciar la implementación deben contrastarse las propuestas documentales con el HTML aprobado. **El mockup es una referencia visual y de interacción, no un backend funcional.**
+Los materiales de diseño —incluida la **versión final aprobada del mockup HTML** ([`docs/diseño/Mockup_Alimenta_Taste_v7_Jornadas_Voluntariado.html`](docs/dise%C3%B1o/Mockup_Alimenta_Taste_v7_Jornadas_Voluntariado.html)), sus lineamientos visuales y la especificación `propuesta_mockup.md`— se organizan en `docs/diseño/`. Por su parte, `Documentos-prototipos/` reúne las patentes, artículos científicos y el análisis de aplicabilidad ([`Documentos-prototipos/aplicabilidad-patentes-alimenta.md`](Documentos-prototipos/aplicabilidad-patentes-alimenta.md)) que fundamentan [`docs/propuesta.md`](docs/propuesta.md). Antes de iniciar la implementación deben contrastarse las propuestas documentales con el HTML aprobado. **El mockup es una referencia visual y de interacción, no un backend funcional.**
 
 ## Estado actual del proyecto
 
@@ -186,7 +187,7 @@ El resto de las rutas detalladas en la sección **Estructura actual del reposito
 | `app/backend/` | API, reglas de solicitudes y donaciones, evaluación, inventario, agenda, transporte, recepciones, servicios y reconocimientos. | Estilos, maquetas de presentación o credenciales en código fuente. |
 | `app/database/` | *Seeds* ficticios y recursos reproducibles de inicialización. Las migraciones de esquema se mantienen en `app/backend/migrations/`. | Descargas exploratorias originales o datos personales reales. |
 | `deploy/` | Configuración de entornos, despliegue, redes, volúmenes y automatización de infraestructura. | Reglas de priorización, asignaciones o lógica de frontend. |
-| `docs/diseño/` | El **HTML final aprobado** (`Mockup_Alimenta_Taste_v6_Menu_Superior.html`), lineamientos visuales y especificación `propuesta_mockup.md`. | Cambios directos para convertir el mockup en la aplicación de producción. |
+| `docs/diseño/` | El **HTML final aprobado** (`Mockup_Alimenta_Taste_v7_Jornadas_Voluntariado.html`), lineamientos visuales y especificación `propuesta_mockup.md`. | Cambios directos para convertir el mockup en la aplicación de producción. |
 | `Documentos-prototipos/` | Patentes de referencia, artículos científicos y análisis de aplicabilidad (`aplicabilidad-patentes-alimenta.md`). | Código fuente de la aplicación o secretos. |
 | `Bases de datos/` | Exploración de fuentes y scripts existentes, incluido el trabajo de Manizales. | Esquema transaccional de la plataforma o secretos de infraestructura. |
 | `tests/` | Pruebas existentes y futuros recorridos de extremo a extremo; las pruebas unitarias pueden residir junto a cada módulo. | Datos reales sensibles o artefactos generados sin control de versiones. |
@@ -220,7 +221,7 @@ docker compose up --build
 
 ### Regla para implementar a partir del mockup final
 
-El HTML aprobado en [`docs/diseño/Mockup_Alimenta_Taste_v6_Menu_Superior.html`](docs/dise%C3%B1o/Mockup_Alimenta_Taste_v6_Menu_Superior.html) es la **referencia visual**; el producto se construye en `app/frontend/`. Deben mantenerse la navegación superior unificada, el diseño editorial, los paneles de selección, la paleta institucional y los carruseles con controles consistentes. Los flujos funcionales se desarrollan en `app/backend/` y no se validan únicamente desde el navegador. Las diferencias respecto del diseño o de la propuesta se documentan antes de implementarse.
+El HTML aprobado en [`docs/diseño/Mockup_Alimenta_Taste_v7_Jornadas_Voluntariado.html`](docs/dise%C3%B1o/Mockup_Alimenta_Taste_v7_Jornadas_Voluntariado.html) es la **referencia visual**; el producto se construye en `app/frontend/`. Deben mantenerse la navegación superior unificada, el diseño editorial, los paneles de selección, la paleta institucional y los carruseles con controles consistentes. Los flujos funcionales se desarrollan en `app/backend/` y no se validan únicamente desde el navegador. Las diferencias respecto del diseño o de la propuesta se documentan antes de implementarse.
 
 ## Dónde encontrar cada información
 

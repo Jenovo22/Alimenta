@@ -2,13 +2,13 @@
 
 ## Referencias normativas, en orden
 
-1. `Mockup_Alimenta_Taste_v6_Menu_Superior.html` — **diseño aprobado**, estructura de pantallas y microinteracciones. No modificar este archivo: usarlo como patrón de comparación.
+1. `Mockup_Alimenta_Taste_v7_Jornadas_Voluntariado.html` — **diseño aprobado**, estructura de pantallas (incluyendo `jornadas_edil` y `jornadas_admin`) y microinteracciones. No modificar este archivo: usarlo como patrón de comparación.
 2. `propuesta_mockup.md` — alcance, roles, reglas, flujos y criterios AC-01…AC-20.
 3. `lineamientos_diseno.md` — identidad, navegación, carruseles, componentes, tamaños y accesibilidad.
 4. `alimenta_paleta_colores.json` — valores reutilizables de identidad y UI.
-5. `../../README.md` y `../propuesta.md` — estructura de `app/` y `deploy/`, stack sugerido para la generación de código y módulos asistidos autorizados (**modelo de ponderación social + herramienta `US8494885B2`**, Catálogo de Ayudas Técnicas UNAL, emparejamiento asistido y Ruta PAP UNAL desacoplada sin datos clínicos).
+5. `../../README.md` y `../propuesta.md` — estructura de `app/` y `deploy/`, stack sugerido para la generación de código y módulos asistidos autorizados (**modelo de ponderación social + herramienta `US8494885B2`**, Catálogo de Ayudas Técnicas UNAL, emparejamiento asistido, **jornadas de voluntariado comunitario** y Ruta PAP UNAL desacoplada sin datos clínicos). La **accesibilidad universal en versión móvil** (lengua de señas, interfaces táctiles y auditivas) se mantiene como **plan a futuro (Fase 2)** y no bloquea la demo web inicial.
 
-> **Regla de implementación:** al generar código en `app/` y `deploy/`, usar **exclusivamente** las directrices ya escritas en los archivos del repositorio (incluyendo la pila tecnológica sugerida en `README.md` para construir la demo) sin alterar ni sobrescribir las directrices vigentes ni el HTML v6 congelado. Los módulos asistidos de `docs/propuesta.md` deben integrarse respetando el menú superior, la paleta y el control humano (*Human-in-the-Loop*).
+> **Regla de implementación:** al generar código en `app/` y `deploy/`, usar **exclusivamente** las directrices ya escritas en los archivos del repositorio (incluyendo la pila tecnológica sugerida en `README.md` para construir la demo) sin alterar ni sobrescribir las directrices vigentes ni el HTML v7 congelado. Los módulos asistidos de `docs/propuesta.md` deben integrarse respetando el menú superior, la paleta y el control humano (*Human-in-the-Loop*).
 
 ## Restricciones de desarrollo
 
