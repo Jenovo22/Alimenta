@@ -82,4 +82,4 @@ if os.path.exists(frontend_path):
         if os.path.isfile(file_path):
             return FileResponse(file_path)
         
-        return FileResponse(os.path.join(frontend_path, "index.html"))
+        return FileResponse(os.path.join(frontend_path, "index.html"), headers={"Cache-Control": "no-cache"})

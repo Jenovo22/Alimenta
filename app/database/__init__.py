@@ -21,9 +21,12 @@ DATABASE_URL = os.getenv("DATABASE_URL", "sqlite:///./feature_flags.db")
 # Donations database URL
 DONATIONS_DB_URL = os.getenv("DONATIONS_DB_URL", "sqlite:///./donations.db")
 
-# Create engines
-engine = create_engine(DATABASE_URL, echo=False)
-donations_engine = create_engine(DONATIONS_DB_URL, echo=False)
+# Create engines (allow SQLite connections across FastAPI worker threads)
+_db_connect_args = {"check_same_thread": False} if DATABASE_URL.startswith("sqlite") else {}
+_donations_connect_args = {"check_same_thread": False} if DONATIONS_DB_URL.startswith("sqlite") else {}
+
+engine = create_engine(DATABASE_URL, echo=False, connect_args=_db_connect_args)
+donations_engine = create_engine(DONATIONS_DB_URL, echo=False, connect_args=_donations_connect_args)
 
 
 def get_session() -> Session:

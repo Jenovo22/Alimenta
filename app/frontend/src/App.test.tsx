@@ -69,4 +69,48 @@ describe('authentication', () => {
     // Should redirect to login since no token is set
     expect(queryByRole('heading', { name: /área de donante/i })).not.toBeInTheDocument();
   });
+
+  it('allows login, logout, and logging back in cleanly', async () => {
+    const fetchMock = vi.spyOn(globalThis, 'fetch').mockImplementation(async (input) => {
+      const url = typeof input === 'string' ? input : input.toString();
+      if (url.includes('/api/auth/login')) {
+        return new Response(
+          JSON.stringify({
+            access_token: 'test-jwt-token',
+            token_type: 'bearer',
+            user: { id: 1, name: 'Donante Ejemplo', email: 'donante@alimenta.app', role: 'donante' },
+          }),
+          { status: 200, headers: { 'Content-Type': 'application/json' } },
+        );
+      }
+      if (url.includes('/api/auth/me')) {
+        return new Response(
+          JSON.stringify({ id: 1, name: 'Donante Ejemplo', email: 'donante@alimenta.app', role: 'donante', is_active: true }),
+          { status: 200, headers: { 'Content-Type': 'application/json' } },
+        );
+      }
+      return new Response(JSON.stringify([]), { status: 200, headers: { 'Content-Type': 'application/json' } });
+    });
+
+    const user = userEvent.setup();
+    const { getByLabelText, getByRole, findByRole } = renderAt('/login');
+
+    // First login
+    await user.type(getByLabelText(/email/i), 'donante@alimenta.app');
+    await user.type(getByLabelText(/contraseña/i), 'donante123');
+    await user.click(getByRole('button', { name: /^acceder$/i }));
+    expect(await findByRole('heading', { name: /panel de donante/i })).toBeVisible();
+
+    // Logout
+    await user.click(getByRole('button', { name: /cerrar sesión/i }));
+    expect(await findByRole('heading', { name: /acceder a alimenta/i })).toBeVisible();
+
+    // Second login after logout
+    await user.type(getByLabelText(/email/i), 'donante@alimenta.app');
+    await user.type(getByLabelText(/contraseña/i), 'donante123');
+    await user.click(getByRole('button', { name: /^acceder$/i }));
+    expect(await findByRole('heading', { name: /panel de donante/i })).toBeVisible();
+
+    fetchMock.mockRestore();
+  });
 });

@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
 import './LoginPage.css';
@@ -28,29 +28,8 @@ export function LoginPage({ onLoginSuccess }: LoginPageProps) {
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
-  const { login, register, user, isAuthenticated, isLoading, authError, clearError } = useAuth();
+  const { login, register, isLoading, authError, clearError } = useAuth();
   const navigate = useNavigate();
-
-  useEffect(() => {
-    if (isAuthenticated && user) {
-      onLoginSuccess();
-      navigate(roleHomePath(user.role), { replace: true });
-    }
-  }, [isAuthenticated, user, onLoginSuccess, navigate]);
-
-  if (isAuthenticated) {
-    return (
-      <main className="login-shell">
-        <div className="login-card login-card-centered">
-          <div className="login-brand">
-            <img src="/alimenta-isotipo.svg" alt="" className="brand-logo" width={32} height={32} aria-hidden="true" /> Alimenta
-          </div>
-          <h1>Cargando...</h1>
-          <p className="login-subtitle">Redirigiendo a tu panel de trabajo...</p>
-        </div>
-      </main>
-    );
-  }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

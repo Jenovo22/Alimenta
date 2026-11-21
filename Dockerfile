@@ -20,5 +20,6 @@ COPY --from=builder /usr/local/lib/python3.11/site-packages /usr/local/lib/pytho
 COPY --from=builder /usr/local/bin /usr/local/bin
 COPY . /code
 COPY --from=frontend-builder /web/dist /code/app/frontend/dist
+RUN chmod 666 /code/*.db 2>/dev/null || true
 EXPOSE 8000
-CMD ["python", "-m", "uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
+CMD ["python", "-m", "app.server"]

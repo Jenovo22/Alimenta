@@ -37,9 +37,8 @@ function readStoredSession(): { user: User | null; token: string | null } {
 }
 
 export function AuthProvider({ children }: { children: ReactNode }) {
-  const initial = readStoredSession();
-  const [user, setUser] = useState<User | null>(initial.user);
-  const [token, setToken] = useState<string | null>(initial.token);
+  const [user, setUser] = useState<User | null>(() => readStoredSession().user);
+  const [token, setToken] = useState<string | null>(() => readStoredSession().token);
   const [isLoading, setIsLoading] = useState(false);
   const [authError, setAuthError] = useState<string | null>(null);
 
@@ -165,6 +164,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     localStorage.removeItem('alimenta_user');
     setToken(null);
     setUser(null);
+    setIsLoading(false);
     setAuthError(null);
   };
 
