@@ -211,7 +211,7 @@ React + TypeScript + Vite están aprobados e instalados para la experiencia púb
 
 ### Frontend cliente disponible
 
-La portada (`/`) presenta las rutas de aporte como vistas previas, organizaciones aliadas ficticias en un carrusel manual y una muestra de servicios. El directorio (`/servicios`) permite filtrar por comunidad, tipo, día y texto, y ofrece una lista accesible como alternativa a la representación esquemática.
+La portada (`/`) presenta las rutas de aporte como vistas previas, organizaciones aliadas ficticias en un carrusel manual y una muestra de servicios. El directorio (`/servicios`) permite filtrar por comunidad, tipo, día y texto, y muestra un mapa de OpenStreetMap con tres referencias geográficas estáticas de barrios de Manizales junto con una lista accesible. Estos puntos no son ubicaciones de los servicios ficticios, no trazan límites oficiales ni acreditan vulnerabilidad; el punto de La Isla corresponde a escaleras de acceso mapeadas, no a un centroide.
 
 La ruta `/acceso` permite seleccionar perfiles demo ficticios para `/demo/donante`, `/demo/edil`, `/demo/agente` y `/demo/administrador`. Cambiar de perfil **no autentica ni concede permisos**. El flujo local permite crear un ofrecimiento del donante, aceptarlo o rechazarlo como Edil, marcar transporte y confirmar recepción física; solo esa recepción confirmada aumenta el inventario demostrativo. Las jornadas del Edil también se comparten con la vista de moderación administrativa. Los cambios se guardan en `localStorage` en este navegador/origen, no llegan a un servidor y se pueden borrar con **Restablecer demo**. No hay transporte gestionado por Alimenta ni operación real.
 

@@ -5,8 +5,6 @@ export type PublicService = {
   days: string[];
   schedule: string;
   description: string;
-  x: number;
-  y: number;
 };
 
 export const allies = [
@@ -23,9 +21,9 @@ export const allies = [
 ];
 
 export const serviceLocations: PublicService[] = [
-  { name: 'Punto comunitario de alimentación A', type: 'Olla comunitaria', community: 'San Javier', days: ['Lunes', 'Miércoles', 'Viernes'], schedule: '11:30–13:30', description: 'Almuerzo comunitario orientativo. Confirmar jornada con la organización.', x: 31, y: 38 },
-  { name: 'Comedor solidario de ejemplo B', type: 'Almuerzo comunitario', community: 'Manrique', days: ['Martes', 'Jueves', 'Sábado'], schedule: '12:00–14:00', description: 'Servicio ilustrativo, sin cupos garantizados.', x: 66, y: 55 },
-  { name: 'Centro de apoyo comunitario C', type: 'Otro servicio', community: 'Popular', days: ['Lunes', 'Viernes'], schedule: '09:00–12:00', description: 'Orientación comunitaria de ejemplo.', x: 75, y: 25 },
+  { name: 'Punto comunitario de alimentación A', type: 'Olla comunitaria', community: 'San Javier', days: ['Lunes', 'Miércoles', 'Viernes'], schedule: '11:30–13:30', description: 'Almuerzo comunitario orientativo. Confirmar jornada con la organización.' },
+  { name: 'Comedor solidario de ejemplo B', type: 'Almuerzo comunitario', community: 'Manrique', days: ['Martes', 'Jueves', 'Sábado'], schedule: '12:00–14:00', description: 'Servicio ilustrativo, sin cupos garantizados.' },
+  { name: 'Centro de apoyo comunitario C', type: 'Otro servicio', community: 'Popular', days: ['Lunes', 'Viernes'], schedule: '09:00–12:00', description: 'Orientación comunitaria de ejemplo.' },
 ];
 
 export const serviceTypes = [...new Set(serviceLocations.map((service) => service.type))];

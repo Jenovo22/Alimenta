@@ -84,14 +84,25 @@
 .result-count { margin: 15px 0; color: #637064; font-size: 12px; }
 .directory-layout { display: grid; grid-template-columns: 1.4fr .8fr; gap: 20px; align-items: start; }
 .map-panel, .service-list-panel { min-width: 0; padding: 20px; border: 1px solid var(--ui-border); border-radius: 8px; background: white; }
-.map-disclaimer { margin-bottom: 10px; color: #5c6c5f; font-size: 12px; font-weight: 700; }
-.schematic-map { position: relative; min-height: 330px; overflow: hidden; border: 1px solid #d5dfcf; border-radius: 6px; background-color: #eff3e9; background-image: linear-gradient(30deg, transparent 48%, #fff 49%, transparent 51%), linear-gradient(120deg, transparent 48%, #fff 49%, transparent 51%); background-size: 95px 90px, 130px 110px; }
-.map-marker { position: absolute; transform: translate(-50%, -50%); min-width: 44px; min-height: 44px; border: 2px solid white; border-radius: 50%; background: var(--brand-green-dark); color: white; box-shadow: 0 2px 6px #203b3240; }
-.map-marker.selected { background: var(--brand-green); color: #203b32; outline: 2px solid var(--brand-wine); }
-.map-empty { position: absolute; inset: 45% 10px auto; text-align: center; color: #566459; }
-.service-detail { margin-top: 15px; padding: 17px; border-radius: 6px; background: #f3f6ef; }
-.service-detail h2 { margin: 4px 0; font-size: 18px; }
-.service-detail > p:not(.eyebrow), .service-detail strong { color: #5b695d; font-size: 12px; }
+.reference-map-panel { min-width: 0; padding: 20px; border: 1px solid var(--ui-border); border-radius: 8px; background: white; }
+.reference-map-heading { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.reference-map-heading h2 { margin: 0; font-size: 19px; }
+.map-reference-notice { margin: 12px 0; padding: 12px; border-left: 3px solid var(--brand-green-dark); background: #f3f6ef; color: #405445; font-size: 13px; }
+.map-zoom-controls { display: flex; gap: 5px; }
+.map-zoom-controls button { width: 44px; height: 44px; border: 1px solid #bdcdb9; border-radius: 5px; background: white; color: #294632; font-size: 22px; }
+.reference-map { position: relative; height: 390px; overflow: hidden; border: 1px solid #d5dfcf; border-radius: 6px; background: #e8eee2; cursor: grab; touch-action: none; }
+.reference-map:active { cursor: grabbing; }
+.map-tile { position: absolute; width: 256px; height: 256px; max-width: none; user-select: none; }
+.reference-marker { position: absolute; z-index: 1; transform: translate(-50%, -50%); min-height: 44px; padding: 4px 9px; border: 2px solid white; border-radius: 18px; background: var(--brand-green-dark); color: white; box-shadow: 0 2px 6px #203b3240; white-space: nowrap; }
+.reference-marker.selected { background: var(--brand-green); color: #203b32; outline: 2px solid var(--brand-wine); }
+.tile-error { position: absolute; z-index: 0; inset: 12px 12px auto; padding: 10px; background: white; color: #405445; }
+.map-attribution { margin: 6px 0 0; text-align: right; font-size: 11px; }
+.map-attribution a { color: #405445; }
+.reference-list { margin: 12px 0 0; padding: 0; list-style: none; }
+.reference-list li { border-top: 1px solid #e6ebe3; }
+.reference-list button { width: 100%; min-height: 70px; display: grid; grid-template-columns: 1fr; gap: 3px; padding: 10px 4px; border: 0; background: transparent; text-align: left; }
+.reference-list button[aria-pressed="true"] { background: #f3f6ef; }
+.reference-list span, .reference-list small { color: #637064; font-size: 12px; }
 .service-list-panel h2 { margin-bottom: 4px; font-size: 19px; }
 .service-list-panel ul { margin: 12px 0 0; padding: 0; list-style: none; }
 .service-list-panel li { border-top: 1px solid #e6ebe3; }
@@ -150,7 +161,8 @@
   .service-filters { grid-template-columns: 1fr 1fr; }
   .search-field { grid-column: auto; }
   .clear-button { grid-column: 1 / -1; width: 100%; }
-  .schematic-map { min-height: 280px; }
+  .reference-map-panel { padding: 14px; }
+  .reference-map { height: 320px; }
   .role-access-grid { grid-template-columns: 1fr; }
 }
 @media (max-width: 390px) {
@@ -163,7 +175,7 @@
   .welcome-actions .button { flex: 1 1 100%; }
   .service-filters { grid-template-columns: 1fr; }
   .clear-button { grid-column: auto; }
-  .map-panel, .service-list-panel { padding: 13px; }
+  .service-list-panel { padding: 13px; }
   .featured-carousel { padding: 16px; }
 }
 @media (prefers-reduced-motion: reduce) {

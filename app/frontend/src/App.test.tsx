@@ -42,8 +42,40 @@ describe('public experience', () => {
 
     const list = screen.getByRole('list', { name: /servicios publicados/i });
     await user.click(within(list).getByRole('button', { name: /comedor solidario de ejemplo b/i }));
-    expect(screen.getByRole('heading', { name: 'Comedor solidario de ejemplo B' })).toBeVisible();
-    expect(screen.getByText(/no es un mapa real/i)).toBeVisible();
+    expect(screen.getByRole('region', { name: /mapa de referencia de manizales/i })).toBeVisible();
+  });
+
+  it('shows static Manizales reference markers with their coordinates and neutral labels', async () => {
+    renderAt('/servicios');
+
+    expect(screen.getByRole('heading', { name: /barrios de referencia para la demo/i })).toBeVisible();
+    expect(document.querySelector('.reference-marker[aria-label="Samaria, 5.0789850, -75.4864590"]')).toBeVisible();
+    expect(document.querySelector('.reference-marker[aria-label="Bosques del Norte, 5.0829919, -75.4892998"]')).toBeVisible();
+    expect(document.querySelector('.reference-marker[aria-label="La Isla, 5.0631788, -75.5177450, acceso"]')).toBeVisible();
+    expect(screen.getAllByText(/escaleras de acceso.*no.*centroide.*límite/i).length).toBeGreaterThan(0);
+    expect(screen.queryByText(/vulnerable/i)).not.toBeInTheDocument();
+  });
+
+  it('synchronizes geographic marker and accessible list selection', async () => {
+    const user = userEvent.setup();
+    renderAt('/servicios');
+
+    const samariaMarker = document.querySelector<HTMLButtonElement>('.reference-marker[aria-label^="Samaria"]')!;
+    const bosquesMarker = document.querySelector<HTMLButtonElement>('.reference-marker[aria-label^="Bosques del Norte"]')!;
+    await user.click(samariaMarker);
+    expect(samariaMarker).toHaveAttribute('aria-pressed', 'true');
+    await user.click(within(screen.getByRole('list', { name: /barrios de referencia/i })).getByRole('button', { name: /bosques del norte/i }));
+    expect(bosquesMarker).toHaveAttribute('aria-pressed', 'true');
+  });
+
+  it('attributes OpenStreetMap tiles and keeps the reference list usable after a tile error', () => {
+    renderAt('/servicios');
+
+    expect(screen.getByRole('link', { name: /© openstreetmap contributors/i })).toHaveAttribute('href', 'https://www.openstreetmap.org/copyright');
+    const tile = document.querySelector<HTMLImageElement>('.reference-map img');
+    expect(tile?.src).toMatch(/^https:\/\/tile\.openstreetmap\.org\/\d+\/\d+\/\d+\.png$/);
+    tile?.dispatchEvent(new Event('error'));
+    expect(screen.getByRole('list', { name: /barrios de referencia/i })).toBeVisible();
   });
 
   it('controls the allies carousel manually and does not autoplay', async () => {
