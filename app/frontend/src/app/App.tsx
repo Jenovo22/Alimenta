@@ -2,6 +2,7 @@ import { Link, Navigate, Route, Routes, useLocation } from 'react-router-dom';
 import { useState } from 'react';
 import { Carousel } from '../components/Carousel';
 import { ServiceDirectory } from '../features/services/ServiceDirectory';
+import { RoleWorkspace } from '../features/roles/RoleWorkspace';
 import { allies, serviceLocations } from '../features/services/data';
 import '../styles/public.css';
 
@@ -70,9 +71,17 @@ function NeedPreview() {
 }
 
 function AccessPage() {
-  return <main className="section-wrap access-page"><p className="eyebrow">Acceso y registro</p><h1>Acceso de demostración</h1><p>Esta pantalla no autentica ni registra usuarios reales. Los espacios por rol todavía no están implementados.</p><Link className="button button-dark" to="/">Volver al inicio</Link></main>;
+  const roles = [
+    ['donante', 'Donante', 'Explora necesidades y distingue cada etapa de una donación.'],
+    ['edil', 'Edil', 'Representa una comunidad ficticia y programa jornadas para revisión.'],
+    ['agente', 'Agente', 'Consulta evaluación, inventario y coordinación del banco.'],
+    ['administrador', 'Administrador', 'Revisa servicios, representantes y jornadas demostrativas.'],
+  ];
+  return <main className="section-wrap access-page"><p className="eyebrow">Acceso y registro</p><h1>Acceso de demostración</h1><p>Esta pantalla no autentica ni registra usuarios reales. Elegir una vista no concede permisos: solo abre una demostración cliente con datos ficticios.</p><div className="role-access-grid">{roles.map(([path, label, description]) => <article key={path}><h2>{label}</h2><p>{description}</p><Link className="button button-dark" to={`/demo/${path}`}>Abrir vista de {label}</Link></article>)}</div><Link className="button button-light" to="/">Volver al inicio</Link></main>;
 }
 
 export default function App() {
-  return <><PublicNavigation /><Routes><Route path="/" element={<LandingPage />} /><Route path="/servicios" element={<ServiceDirectory />} /><Route path="/acceso" element={<AccessPage />} /><Route path="*" element={<Navigate to="/" replace />} /></Routes><footer className="site-footer"><span>Alimenta · Prototipo público</span><span>Demostración cliente · sin operaciones reales</span></footer></>;
+  const location = useLocation();
+  const isWorkspace = location.pathname.startsWith('/demo/');
+  return <>{!isWorkspace && <PublicNavigation />}<Routes><Route path="/" element={<LandingPage />} /><Route path="/servicios" element={<ServiceDirectory />} /><Route path="/acceso" element={<AccessPage />} /><Route path="/demo/:role/*" element={<RoleWorkspace />} /><Route path="*" element={<Navigate to="/" replace />} /></Routes>{!isWorkspace && <footer className="site-footer"><span>Alimenta · Prototipo público</span><span>Demostración cliente · sin operaciones reales</span></footer>}</>;
 }
