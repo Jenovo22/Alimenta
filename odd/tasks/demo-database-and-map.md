@@ -61,7 +61,7 @@ The user requested a data store connected to demo accounts, at least Edil, Donor
   - Authored changed-line count: 380 total (328 additions + 52 deletions) in the work-unit snapshot, including this task record.
   - Commit: `bd2a938c5e81f4f7f1bda628e21b832306472008` (`feat(demo): add seeded shared browser workflow`).
 
-- [ ] **ALIM-DEMO-002 — Show Manizales with reference neighborhood markers**
+- [x] **ALIM-DEMO-002 — Show Manizales with reference neighborhood markers** *(implemented; interactive verification partial)*
   - Route: delegated direct, one writer after ALIM-DEMO-001.
   - Trigger evidence: map tiles, location fixtures, map component, responsive styles, attribution, and tests span multiple files.
   - Acceptance criteria:
@@ -72,16 +72,21 @@ The user requested a data store connected to demo accounts, at least Edil, Donor
     - Tile requests use only the user-authorized OSM endpoint; Nominatim is not queried at runtime.
     - Strict TDD tests cover marker data, selection/list behavior, attribution, and graceful tile failure.
   - Checks:
-    - `npm run test -- --run`
-    - `npm run build`
-    - Manual map/list and responsive check.
-  - Rollback boundary: remove map component, markers, map-specific styles/tests and README notes; preserve the shared demo store/workflow.
+    - `npm run test -- --run` — PASS: 1 test file, 19 tests.
+    - `npm run build` — PASS: TypeScript check and Vite production build.
+    - `git diff --check` — PASS.
+    - Local runtime smoke: Vite on `127.0.0.1:5179`, `GET /servicios` returned HTTP 200 (`text/html`). Interactive browser/screenshot inspection was unavailable; marker clicks, real tile rendering and responsive visual layout could not be manually verified. Automated tests verify selection and tile-failure behavior.
+  - TDD evidence: RED before production changes — 3 of 19 tests failed because Manizales markers, map/list synchronization and OSM attribution/tile failure handling did not exist; the other 16 tests passed. GREEN after implementation — all 19 tests passed.
+  - OSM marker provenance: Samaria `5.0789850, -75.4864590` (OSM neighborhood node); Bosques del Norte `5.0829919, -75.4892998` (OSM neighborhood node); La Isla `5.0631788, -75.5177450` (OSM-mapped access stairs, not a centroid or boundary). Coordinates are static local data; no runtime geocoding. Tile images use only `https://tile.openstreetmap.org/{z}/{x}/{y}.png` with visible `© OpenStreetMap contributors` attribution. No vulnerability claim is made. Fictional service records remain un-geocoded and retain their filters/list.
+  - Rollback boundary: revert the ALIM-DEMO-002 implementation/evidence commit(s) to restore the prior schematic directory; this removes only geographic reference markers, map component/styles and focused tests/task evidence, preserving ALIM-DEMO-001 shared demo store/workflows and service filtering/list behavior.
+  - Authored changed-line count: 214 total (178 additions + 36 deletions), including this task record in the evidence snapshot.
+  - Implementation commit: `ab9f360a4c9c694c22bf1a34ee83518cbeddc946` (`feat(map): show Manizales neighborhood references`).
 
 ## Progress and evidence
 
-- Current state: ALIM-DEMO-001 implementation complete with browser-local shared profiles/flows; interactive browser verification is partial. ALIM-DEMO-002 remains untouched and not started. User approved neutral reference labels, local browser persistence and OSM/Nominatim endpoints.
+- Current state: ALIM-DEMO-001 remains committed and intact. ALIM-DEMO-002 implements a client-side OSM map with static neighborhood references; automated tests/build pass, while interactive visual verification is partial because no browser/screenshot control is available.
 - Coordinate lookup: one initial query per requested place; La Isla returned only its mapped access stairs. A single narrower follow-up still returned that same access feature, so the UI must disclose this limitation.
-- TDD: strict mode; RED observed before production implementation (5 failed tests); GREEN: `npm run test -- --run` passed 16 tests.
-- Verification: test/build/diff check passed. Dev-server HTML smoke request returned successfully; interactive donor → Edil → Agent and event moderation/reload/reset walkthrough was not performed because no interactive browser control is available.
+- TDD: ALIM-DEMO-001 RED (5 failed tests) / GREEN (16/16); ALIM-DEMO-002 RED (3/19 failed) / GREEN (19/19).
+- Verification: ALIM-DEMO-002 full test suite, production build and diff check passed; local `/servicios` HTML smoke returned HTTP 200. Browser interaction and screenshot inspection are unavailable here.
 - Commits: ALIM-DEMO-001 — `bd2a938c5e81f4f7f1bda628e21b832306472008` (`feat(demo): add seeded shared browser workflow`); 380 authored changed lines (328 additions, 52 deletions).
-- Next step: implement ALIM-DEMO-002 separately; do not create PRs or push without authorization.
+- Next step: parent spot-check and RDD assessment; no PR or push.
