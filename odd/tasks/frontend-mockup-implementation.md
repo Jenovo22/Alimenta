@@ -82,5 +82,5 @@ The user explicitly authorized frontend implementation and approved React + Type
 - Dependency install: `npm install --registry=https://registry.npmjs.org --no-audit --no-fund` succeeded (`added 97 packages in 48s`); React type packages were then installed from the same registry (`added 3 packages in 1s`). Exact versions are locked in `app/frontend/package-lock.json`.
 - Verification: `npm run test -- --run` passed (1 file, 5 tests); `npm run build` passed (TypeScript check plus Vite production build, 27 modules; JS 273.66 kB / 86.17 kB gzip). Node `v24.18.0`; npm `11.16.0`.
 - Responsive/accessibility review: automated DOM tests cover keyboard-operable buttons/links, labels, visible list alternative, selected states, and live result/slide updates. Chromium headless screenshots were attempted for 1440, 1024, 768, 390, and 320 px plus directory at 390 px; snap Chromium logged screenshot writes, but the resulting files were inaccessible to the workspace for visual inspection. Visual overflow/capture review therefore remains unverified.
-- Commits: implementation work-unit hash pending; will be recorded after commit.
+- Commits: `203d07a84caacf3936734ce64f8f1433e2c80eb4` — `feat(frontend): build public Alimenta demo foundation` (ALIM-UI-001 only; ALIM-UI-002 excluded).
 - Next step: ALIM-UI-002 remains separate and unimplemented; no push or PR created.
