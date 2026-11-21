@@ -69,9 +69,37 @@ El **grado de necesidad (1 a 5)** lo asigna exclusivamente el agente, con justif
 Como definición funcional consolidada en [`docs/propuesta.md`](docs/propuesta.md), la solución complementa el flujo operativo con cinco capacidades que preservan la decisión humana (*Human-in-the-Loop*) y las exclusiones del MVP:
 
 - **Agente propio de ponderación social + herramienta `US8494885B2`:** el agente pondera urgencia (`G`), equidad territorial (con datos agregados de Manizales `ab8a-uwf7`, sin PII) y viabilidad logística, y utiliza el modelo de [`US8494885B2`](Documentos-prototipos/US8494885B2.pdf) (*Banco como área de acopio → Comunidades como puntos de distribución*) como herramienta para sugerir repartos parciales bajo escasez sin auto-reservar stock ni alterar `G`.
-- **Jornadas de voluntariado comunitario (agendadas por el Edil):** sección dedicada (`jornadas_edil`) donde el edil registra voluntarios para un horario específico en actividades de **atención psicológica, jornadas de vacunación, atención médica en el barrio u otra**, indicando el **nombre del voluntario encargado** y el **lugar público autorizado** (sin domicilios particulares). Cada jornada pasa por revisión administrativa (`jornadas_admin`) antes de publicarse en el directorio público comunitario y es independiente de las citas de donación.
+- **Jornadas de voluntariado comunitario (agendadas por el Edil):** sección dedicada (`jornadas_voluntariado`) donde el edil registra voluntarios para un horario específico en actividades de **atención psicológica, jornadas de vacunación, atención médica en el barrio u otra**, indicando el **nombre del voluntario encargado** y el **lugar público autorizado** (sin domicilios particulares). Cada jornada pasa por revisión administrativa (`jornadas_admin`) antes de publicarse en el directorio público comunitario y es independiente de las citas de donación.
 - **Catálogo de Ayudas Técnicas UNAL:** visibiliza solicitudes y donaciones de **MUUPA** (`NC2021/0010846`), **Muleta axilar plegable** y **Sistema *Anatom*** (cuidadores) dentro de `Salud y asistencia`, respetando la titularidad de la UNAL ante la SIC.
 - **Emparejamiento asistido donante–necesidad:** sugiere coincidencias por catálogo y ventanas horarias abiertas (*ReliefMatcher.AI* + `US11037098B2`), cerrando la verificación en terreno mediante ediles verificados.
+
+### Ventanas horarias
+
+La duración de cada ventana horaria es ahora configurable mediante el campo `duration_minutes` (valor por defecto 60 minutos).
+
+### Citas / Appointments
+
+La entidad `Appointment` representa una cita para la entrega de donaciones. Cada cita vincula una ventana de disponibilidad con un donante (y opcionalmente un transportador).
+
+**Campos principales:**
+- `id`: Identificador único (SERIAL PRIMARY KEY)
+- `window_id`: Referencia a `ventanas_disponibilidad(id)`
+- `donor_id`: Referencia a `usuarios(id)` (el donante)
+- `transportador_id`: Referencia opcional a `usuarios(id)` (el donante transportador)
+- `status`: Estado de la cita (`requested`, `accepted`, `canceled`, `completed`)
+- `created_at` / `updated_at`: Timestamps
+
+**Endpoints disponibles:**
+- `POST /appointments/` - Crear una nueva cita
+- `GET /appointments/` - Listar todas las citas (paginado)
+- `GET /appointments/{id}` - Obtener una cita específica
+- `PATCH /appointments/{id}` - Actualizar el estado de una cita
+
+**Restricciones:**
+- No se permite reservar el mismo cupo dos veces (constraint: UNIQUE (window_id, donor_id))
+- El sistema valida la capacidad de la ventana antes de aceptar una cita
+
+**Nota terminológica:** La terminología anterior ('cita', 'turno') ha sido unificada en la entidad `Appointment`. Todo el código nuevo usa este nombre.
 - **Ruta PAP UNAL y plan a futuro (Fase 2):** derivación desacoplada hacia **Primeros Auxilios Psicológicos (PAP) UNAL** (`WO2021247792A1`, `CN102708284A`) sin almacenar datos clínicos ni identidades. Como **plan a futuro (Fase 2)** se proyecta: (1) **accesibilidad universal en versión de dispositivo móvil** —lengua de señas, interfaces táctiles y auditivas— (`WO2026151479A1`, `US20200133474A1`, `US20170236450A1` / Sistema ECOS) junto con **operación móvil *offline-first* / baja conectividad**; (2) **evolución logística y mapas agregados en emergencias** (`US11393577B2`, `CN110852587A`, `US20200100084A1`, sin domicilios); (3) **validación institucional y trazabilidad ampliada para Jornadas de Voluntariado**; y (4) **módulo de sostenibilidad empresarial B2B / B2G** (perfiles corporativos, expedientes auditables de donación verificada y reportes ESG agregados vinculados a `#aliados`).
 
 ## Diseño y experiencia de usuario
@@ -277,3 +305,30 @@ Hasta que estos pasos se completen, los datos y escenarios utilizados para mostr
 ## Contribuciones
 
 Antes de proponer cambios, revisa [`CONTRIBUTING.md`](CONTRIBUTING.md), el contexto de producto y el plan de cambios. Mantén diferenciadas las funcionalidades **propuestas**, las **implementadas** y las **validadas**. Documenta decisiones que afecten permisos, datos, asignaciones o la experiencia visual para que la futura demo mantenga coherencia con el diseño acordado.
+
+## Procedimiento para detener workers y agentes en ejecución
+
+Cuando sea necesario detener todos los workers/agentes que estén ejecutándose en segundo plano:
+
+### Detener workers de RQ (Redis Queue)
+
+Los workers de fondo escuchan en las colas `ponderacion`, `asignacion`, `cleanup` y `retries`. Para detenerlos:
+
+1. **En contenedor Docker:**
+   ```bash
+   docker compose down
+   ```
+
+2. **Directamente con Ctrl-C:**
+   Si los workers están ejecutándose directamente (no en contenedores), presiona `Ctrl-C` para enviar `SIGTERM` y detenerlos gracefulmente. El worker completará la tarea actual antes de detenerse.
+
+3. **Con señal explícita:**
+   ```bash
+   kill -SIGTERM <worker_pid>
+   ```
+
+### Consideraciones al detener
+
+- Los workers procesan trabajos pendientes. Al usar `Ctrl-C` o `SIGTERM`, completan el trabajo actual antes de detenerse.
+- Si usas `kill -SIGKILL` o `docker kill`, los trabajos en curso se perderán y deberán reprocesarse.
+- Es recomendable usar `docker compose down` para un apagado ordenado de todos los servicios (API, workers, etc.).

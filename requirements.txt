@@ -6,3 +6,5 @@ alembic==1.13.1
 redis==5.0.1
 rq==1.15.1
 pydantic==2.7.0
+strawberry-graphql[fastapi]
+click==8.4.2
