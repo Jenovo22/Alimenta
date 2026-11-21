@@ -14,7 +14,7 @@ Las necesidades son reportadas por los **ediles**; los **agentes** califican su 
 
 La plataforma recomienda, organiza y registra; **el agente decide asignaciones**, **el edil verifica la recepción**, **el donante realiza el transporte**. Se mantiene trazabilidad de actor, fecha, productos, cita, cantidades e incidencias. Para donaciones dirigidas a un edil, el destinatario final debe ser la comunidad, nunca el patrimonio personal del representante.
 
-**Fundamentación en patentes y antecedentes aplicables (v2.1):** sobre esta estructura base se incorporan cuatro pilares asistidos que respetan las exclusiones del MVP y la decisión humana (*Human-in-the-Loop*): (1) el **Catálogo de Ayudas Técnicas UNAL** (MUUPA, muleta axilar plegable y Sistema *Anatom*) dentro de `Salud y asistencia`; (2) **asistencia de priorización con equidad y reparto parcial sugerido bajo escasez** (inspirada en arquitectura multi-agente *Cureus Journals*, `US11393577B2` y `US8494885B2`, cruzada con datos territoriales agregados de Manizales `ab8a-uwf7`); (3) **emparejamiento asistido donante–necesidad** (*ReliefMatcher.AI* + `US11037098B2`, cerrando la brecha de verificación en terreno mediante ediles/JAC); y (4) una capa de **accesibilidad universal** (`WO2026151479A1`, `US20200133474A1`, referencia LSC `US20170236450A1` / Sistema ECOS) junto con una **ruta separada de derivación a Primeros Auxilios Psicológicos (PAP) UNAL** (`WO2021247792A1`, `CN102708284A`) sin almacenar datos clínicos ni identidades.
+**Fundamentación en patentes y antecedentes aplicables (v2.1):** sobre esta estructura base se adopta la patente **`US8494885B2`** (*Modeling Distribution of Emergency Relief Supplies for Disaster Response Operations*, IBM) como **herramienta operativa de distribución** subordinada a un **agente inteligente propio de Alimenta** que pondera la urgencia y equidad social (*Human-in-the-Loop*). En conjunto, se integran cuatro pilares asistidos que respetan las exclusiones del MVP: (1) el **Catálogo de Ayudas Técnicas UNAL** (MUUPA, muleta axilar plegable y Sistema *Anatom*) dentro de `Salud y asistencia`; (2) **agente de ponderación social + herramienta `US8494885B2` de asignación bajo escasez** (combinando arquitectura multi-agente con equidad *Cureus Journals* y datos territoriales agregados de Manizales `ab8a-uwf7` para maximizar las ayudas hacia quienes más lo necesitan); (3) **emparejamiento asistido donante–necesidad** (*ReliefMatcher.AI* + `US11037098B2`, cerrando la brecha de verificación en terreno mediante ediles/JAC); y (4) una capa de **accesibilidad universal** (`WO2026151479A1`, `US20200133474A1`, referencia LSC `US20170236450A1` / Sistema ECOS) junto con una **ruta separada de derivación a Primeros Auxilios Psicológicos (PAP) UNAL** (`WO2021247792A1`, `CN102708284A`) sin almacenar datos clínicos ni identidades.
 
 ## 2. Estructura gráfica explicativa
 
@@ -182,15 +182,19 @@ P = 0.50G + 0.30A + 0.20T
 
 Los pesos y rangos de normalización son **provisionales**. Antes de ponerlos en producción deben revisarse con escenarios reales y representantes de las comunidades. En particular, no debe asumirse que el barrio más grande es automáticamente el más prioritario: se puede contemplar la proporción de personas afectadas respecto a su población total para contrastar los resultados.
 
-### Asistencia con equidad y sugerencia de reparto bajo escasez
+### Agente de ponderación social y herramienta `US8494885B2` de reparto bajo escasez
 
-Inspirado en el marco multi-agente con equidad (*Cureus Journals*, 2026) y los modelos de optimización bajo escasez (`US11393577B2` y `US8494885B2`), el panel del agente complementa `P` con **tres lentes orientativos**:
+Para maximizar el alcance real de las ayudas hacia quienes más lo necesitan sin caer en repartos ciegos por tamaño poblacional, el sistema combina **dos capas complementarias**:
 
-1. **Urgencia (*Triage*):** basada en la calificación humana `G` (con alerta inmediata para `G = 5`).
-2. **Equidad territorial (*Equity*):** contrasta el volumen de personas afectadas (`A`) y la antigüedad (`T`) frente a indicadores territoriales agregados por zona/comunidad (replicables en Manizales mediante [`Bases de datos/download_manizales_data.py`](../Bases%20de%20datos/download_manizales_data.py), dataset `ab8a-uwf7`, `cod_mpio = 17001`), evitando que comunidades pequeñas o vulnerables queden rezagadas frente a sectores más populosos. Nunca expone registros individuales de hogares.
-3. **Viabilidad logística (*Logistics*):** cruza el stock físicamente disponible en `inventario_lotes` con ventanas activas del edil y disponibilidad de donantes transportadores.
+1. **Agente inteligente propio de ponderación social (inspirado en *Cureus Journals*, 2026):** pondera cada necesidad evaluada integrando tres lentes orientativos:
+   - **Urgencia (*Triage*):** basada en la calificación humana `G` (con alerta inmediata para `G = 5`).
+   - **Equidad territorial (*Equity*):** contrasta el volumen de personas afectadas (`A`) y la antigüedad (`T`) frente a indicadores territoriales agregados por zona/comunidad (replicables en Manizales mediante [`Bases de datos/download_manizales_data.py`](../Bases%20de%20datos/download_manizales_data.py), dataset `ab8a-uwf7`, `cod_mpio = 17001`), evitando que comunidades pequeñas o vulnerables queden rezagadas frente a sectores más populosos. Nunca expone registros individuales de hogares.
+   - **Viabilidad logística (*Logistics*):** cruza el stock físicamente disponible en `inventario_lotes` con ventanas activas del edil y disponibilidad de donantes transportadores.
 
-Cuando las unidades libres en el banco sean menores que la demanda de múltiples solicitudes evaluadas, el sistema puede calcular una **sugerencia orientativa de reparto parcial** (respetando prioridades críticas `G = 4–5`, equidad territorial y el saldo pendiente sin reiniciar `T`). Esta sugerencia nunca auto-reserva stock ni modifica `G`: el agente decide si la adopta, ajusta o descarta.
+2. **Patente `US8494885B2` como herramienta operativa de asignación (*Banco → Comunidades*):** sobre los pesos generados por el agente de ponderación social, se adopta el esquema de [`US8494885B2`](../Documentos-prototipos/US8494885B2.pdf) (*Modeling Distribution of Emergency Relief Supplies for Disaster Response Operations*) como **herramienta de cálculo de envíos**:
+   - Modela el **Banco de donaciones** como área de acopio (*staging area*) y los **puntos comunitarios de Ediles verificados** como puntos de distribución (*distribution points*) con ventanas horarias activas.
+   - Cuando las unidades libres en el banco sean menores que la demanda conjunta de múltiples solicitudes evaluadas, la herramienta calcula una **sugerencia de reparto parcial de múltiples artículos** orientada a maximizar la cobertura ponderada de la demanda en la ventana de tiempo disponible (respetando prioridades críticas `G = 4–5`, equidad territorial y el saldo pendiente sin reiniciar `T`).
+   - **Control humano obligatorio (*Human-in-the-Loop*):** la herramienta `US8494885B2` y el agente inteligente nunca auto-reservan stock ni modifican `G`; entregan una propuesta explicable y auditable para que el **Agente humano** decida si la adopta, ajusta o descarta.
 
 ### Escala propuesta para `G`
 
@@ -306,6 +310,8 @@ Bajo la **Decisión 486 de la Comunidad Andina**, los programas de ordenador y m
 | `entregas`, `detalle_entrega` | Despachos y recepción real con cantidades aceptadas, pendientes e incidencias. |
 | `recepciones_aportes_dirigidos` | Historial específico de aportes comunitarios sin solicitud, responsable y destino final. |
 | `referencias_territoriales_agregadas` | Indicadores agregados por zona/comunidad (ej. corte Manizales `ab8a-uwf7`), sin PII ni hogares individuales. |
+| `servicios_comunitarios` | Puntos públicos verificados (ollas, almuerzos y servicios de apoyo) con horarios informativos, sin cupos en tiempo real. |
+| `organizaciones_aliadas` | Reconocimientos y listado Top 10 gestionado por el Agente para visibilidad dentro de Inicio (`#aliados`). |
 | `derivaciones_pap_agregadas` | Conteo/traza anonimizada de accesos a la ruta PAP UNAL, desacoplada del inventario y sin datos clínicos. |
 | `auditoria` | Cambios por actor, antes/después, fecha, razón y objeto. |
 
@@ -313,32 +319,38 @@ Bajo la **Decisión 486 de la Comunidad Andina**, los programas de ordenador y m
 
 **Transacciones obligatorias de backend:** apartar cupos, evitar doble reserva de stock/saldo, validar roles, liberar citas canceladas y procesar recepciones exactamente una vez. El prototipo HTML simula estos controles y no puede garantizarlos sin servidor.
 
-## 12. Diseño de interfaces (mockup v2.1)
+## 12. Diseño de interfaces y alineación con el mockup aprobado
+
+El diseño visual y de navegación aprobado se define en [`docs/diseño/Mockup_Alimenta_Taste_v6_Menu_Superior.html`](dise%C3%B1o/Mockup_Alimenta_Taste_v6_Menu_Superior.html), [`docs/diseño/propuesta_mockup.md`](dise%C3%B1o/propuesta_mockup.md) y [`docs/diseño/lineamientos_diseno.md`](dise%C3%B1o/lineamientos_diseno.md): **navegación superior unificada** (sin barra lateral), composición editorial con paleta institucional (`#94B43B`, `#466B3F`, `#A61C31`, `#76232F`, `#565A5C`, `#B1B2B0`), carrusel compartido sin *autoplay* y selector de necesidades de tres paneles.
+
+**Acceso público (sin sesión):** Portada editorial con modalidades de donación, sección integrada de **Organizaciones aliadas (Top 10)** dentro de Inicio (`#aliados`, sin página pública independiente) y acceso al **directorio público de servicios comunitarios** (`mapa_publico`) con horarios informativos verificados.
 
 **Panel del donante:** Inicio con **tres rutas** («Necesidad», «Banco», «Donar a un edil»), exploración de comunidades con **asistente de emparejamiento rápido** (*ReliefMatcher.AI* + `US11037098B2`), visibilidad destacada del **Catálogo de Ayudas Técnicas UNAL**, selección de fecha/hora de recepción, aviso orientativo en donaciones espontáneas cuando haya solicitudes compatibles, «Mis donaciones», «Mis transportes» y acceso directo a **Ruta PAP UNAL**.
 
-**Panel del edil:** Solicitudes (incluyendo ayudas técnicas UNAL y dictado por voz opcional), creación/edición, **Horarios de recepción** (fecha, intervalo y cupos), bandeja **Aportes a mi nombre** (aceptar o rechazar espontáneas y citas de necesidades), confirmación de entregas, registro de incidencias y acceso a **Ruta PAP UNAL**. Selector de comunidad si administra más de una.
+**Panel del edil:** Solicitudes (incluyendo ayudas técnicas UNAL y dictado por voz opcional), creación/edición, **Horarios de recepción** (fecha, intervalo y cupos), bandeja **Aportes a mi nombre** (aceptar o rechazar espontáneas y citas de necesidades), confirmación de entregas, registro de incidencias, registro de servicios comunitarios sujetos a revisión y acceso a **Ruta PAP UNAL**. Selector de comunidad si administra más de una.
 
-**Panel del agente:** Evaluación (G exclusivo del agente) asistida por **tres lentes** (*Urgencia `G`*, *Equidad territorial* con datos agregados y *Viabilidad logística*), inventario y verificación de ingreso, **Agenda del banco**, asignaciones con **sugerencia precargable de reparto parcial bajo escasez** (`US11393577B2` + *Cureus Journals*), propuesta de salida con transportador donante y seguimiento hasta recepción.
+**Panel del agente:** Evaluación (`G` exclusivo del agente) asistida por el **agente de ponderación social** (*Urgencia `G`*, *Equidad territorial* con datos agregados de Manizales `ab8a-uwf7` y *Viabilidad logística*), inventario y verificación de ingreso, **Agenda del banco**, asignaciones con la **herramienta `US8494885B2` de reparto parcial bajo escasez**, propuesta de salida con transportador donante, gestión de publicaciones de **Organizaciones aliadas (Top 10)** y seguimiento hasta recepción.
 
-**Panel de administración:** Autorización de ediles/transportadores y permisos, catálogo de productos con ficha del **Catálogo de Ayudas Técnicas UNAL**, reglas de custodia y auditoría de todas las transiciones.
+**Panel de administración:** Autorización de ediles/transportadores y permisos, catálogo de productos con ficha del **Catálogo de Ayudas Técnicas UNAL**, revisión de servicios comunitarios, reglas de custodia y auditoría de todas las transiciones.
 
-**Componentes de UX críticos:** conmutador transversal de **Modo accesible** (`WO2026151479A1`, `US20200133474A1`), selector de fecha/hora basado en cupos disponibles, estados diferenciados, cronología por entrega, avisos de falta de cupos o transportador, confirmación de aceptación, registro de rechazos y vista de diferencias entre prometido, recibido y entregado.
+**Componentes de UX críticos:** controles de **accesibilidad** (`WO2026151479A1`, `US20200133474A1`, contraste WCAG, foco visible y navegación por teclado), selector de fecha/hora basado en cupos disponibles, estados diferenciados, cronología por entrega, avisos de falta de cupos o transportador, confirmación de aceptación, registro de rechazos y vista de diferencias entre prometido, recibido y entregado.
 
-El archivo `Mockup_interactivo_Alimenta.html` incluido en la entrega permite recorrer estos procesos con datos ficticios. **No es un sistema real de citas, pagos, transporte, diagnóstico clínico o almacenamiento.**
+El mockup HTML aprobado es una **referencia visual y de interacción con datos ficticios**. **No es un sistema real de citas, pagos, transporte, diagnóstico clínico o almacenamiento.**
 
-## 13. Plan de implementación
+## 13. Plan de implementación (alineado con `README.md`)
 
-### Fase 1 — MVP funcional revisado
+### Fase 1 — Demo funcional MVP en `app/` y `deploy/`
 
-1. Autenticación, roles, autorización y directorio de ediles verificados.
-2. Comunidades, catálogo normalizado, solicitudes y prevención de duplicados.
-3. Evaluación exclusiva del agente con G 1–5 y ranking orientativo.
-4. **Calendarios de recepción del edil y del banco**, con franjas/cupos, confirmación/rechazo, cancelación, reprogramación y auditoría.
-5. Tres recorridos de donación: banco; directa vinculada a necesidad; dirigida a edil sin necesidad.
-6. Registro de donantes transportadores voluntarios y **aceptación explícita** de trayectos bancarios.
-7. Inventario físico verificado, reservas, salidas, entregas completas/parciales y conciliación de diferencias.
-8. Seguimiento claro por rol y control de acceso sobre puntos de recepción.
+Conservando la estructura documental actual, la implementación se organizará en **`app/`** (`frontend/`, `backend/`, `database/seeds/`), **`deploy/`** y `compose.yaml` bajo una arquitectura recomendada de **monolito modular** (sujeta a aprobación formal del stack en `CONTRIBUTING.md`):
+
+1. Autenticación real, roles, autorización en servidor y directorio de ediles verificados.
+2. Portada pública, directorio verificado de servicios comunitarios y bloque **Organizaciones aliadas (Top 10)** en Inicio (`#aliados`).
+3. Comunidades, catálogo normalizado (incluyendo el **Catálogo de Ayudas Técnicas UNAL**), solicitudes y prevención de duplicados.
+4. Evaluación exclusiva del agente con `G` 1–5, **agente de ponderación social** (con indicadores agregados de Manizales `ab8a-uwf7`) y **herramienta `US8494885B2`** para sugerencias de reparto parcial bajo escasez.
+5. **Calendarios de recepción del edil y del banco**, con franjas/cupos atómicos, confirmación/rechazo, cancelación, reprogramación y auditoría.
+6. Tres recorridos de donación: banco; directa vinculada a necesidad (con emparejamiento asistido); dirigida a edil sin necesidad.
+7. Registro de donantes transportadores voluntarios y **aceptación explícita** de trayectos bancarios.
+8. Inventario físico verificado, reservas, salidas, entregas completas/parciales, conciliación de diferencias y **Ruta PAP UNAL** desacoplada sin datos clínicos.
 
 ### Fase 2 — Mejoras posteriores
 

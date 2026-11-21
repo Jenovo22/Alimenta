@@ -57,6 +57,15 @@ La solución deberá distinguir recursos **comprometidos, recibidos, disponibles
 
 El **grado de necesidad (1 a 5)** lo asigna exclusivamente el agente, con justificación. La fórmula de priorización propuesta —`P = 0.50G + 0.30A + 0.20T`— y sus normalizaciones son **provisionales**: requieren validación antes de utilizarse en decisiones reales. La plataforma puede recomendar, pero el agente decide y deja trazabilidad.
 
+### Agente de ponderación social, patente de referencia y módulos de inclusión
+
+Como definición funcional consolidada en [`docs/propuesta.md`](docs/propuesta.md), la solución complementa el flujo operativo con cuatro capacidades asistidas que preservan la decisión humana (*Human-in-the-Loop*) y las exclusiones del MVP:
+
+- **Agente propio de ponderación social + herramienta `US8494885B2`:** el agente pondera urgencia (`G`), equidad territorial (con datos agregados de Manizales `ab8a-uwf7`, sin PII) y viabilidad logística, y utiliza el modelo de [`US8494885B2`](Documentos-prototipos/US8494885B2.pdf) (*Banco como área de acopio → Comunidades como puntos de distribución*) como herramienta para sugerir repartos parciales bajo escasez sin auto-reservar stock ni alterar `G`.
+- **Catálogo de Ayudas Técnicas UNAL:** visibiliza solicitudes y donaciones de **MUUPA** (`NC2021/0010846`), **Muleta axilar plegable** y **Sistema *Anatom*** (cuidadores) dentro de `Salud y asistencia`, respetando la titularidad de la UNAL ante la SIC.
+- **Emparejamiento asistido donante–necesidad:** sugiere coincidencias por catálogo y ventanas horarias abiertas (*ReliefMatcher.AI* + `US11037098B2`), cerrando la verificación en terreno mediante ediles verificados.
+- **Accesibilidad universal y Ruta PAP UNAL:** criterios *accessibility-first* (`WO2026151479A1`, `US20200133474A1`) y derivación desacoplada hacia **Primeros Auxilios Psicológicos (PAP) UNAL** (`WO2021247792A1`, `CN102708284A`) sin almacenar datos clínicos ni identidades.
+
 ## Diseño y experiencia de usuario
 
 El diseño de referencia acordado para la demo contempla:
@@ -67,7 +76,7 @@ El diseño de referencia acordado para la demo contempla:
 - **Interfaz adaptable** a escritorio y móvil, con navegación utilizable mediante teclado.
 - **Paleta institucional** de referencia: verde `#94B43B`, verde oscuro `#466B3F`, rojo `#A61C31`, vinotinto `#76232F`, gris oscuro `#565A5C` y gris claro `#B1B2B0`.
 
-Los materiales de diseño se organizan en `docs/diseño/` y los documentos o prototipos de referencia en `Documentos-prototipos/`. Antes de iniciar la implementación debe confirmarse que la **versión final aprobada del mockup HTML** esté incorporada en este último directorio y que las propuestas documentales correspondan a ella. **El mockup es una referencia visual y de interacción, no un backend funcional.**
+Los materiales de diseño —incluida la **versión final aprobada del mockup HTML** ([`docs/diseño/Mockup_Alimenta_Taste_v6_Menu_Superior.html`](docs/dise%C3%B1o/Mockup_Alimenta_Taste_v6_Menu_Superior.html)), sus lineamientos visuales y la especificación `propuesta_mockup.md`— se organizan en `docs/diseño/`. Por su parte, `Documentos-prototipos/` reúne las patentes, artículos científicos y el análisis de aplicabilidad ([`Documentos-prototipos/aplicabilidad-patentes-alimenta.md`](Documentos-prototipos/aplicabilidad-patentes-alimenta.md)) que fundamentan [`docs/propuesta.md`](docs/propuesta.md). Antes de iniciar la implementación deben contrastarse las propuestas documentales con el HTML aprobado. **El mockup es una referencia visual y de interacción, no un backend funcional.**
 
 ## Estado actual del proyecto
 
@@ -177,7 +186,8 @@ El resto de las rutas detalladas en la sección **Estructura actual del reposito
 | `app/backend/` | API, reglas de solicitudes y donaciones, evaluación, inventario, agenda, transporte, recepciones, servicios y reconocimientos. | Estilos, maquetas de presentación o credenciales en código fuente. |
 | `app/database/` | *Seeds* ficticios y recursos reproducibles de inicialización. Las migraciones de esquema se mantienen en `app/backend/migrations/`. | Descargas exploratorias originales o datos personales reales. |
 | `deploy/` | Configuración de entornos, despliegue, redes, volúmenes y automatización de infraestructura. | Reglas de priorización, asignaciones o lógica de frontend. |
-| `Documentos-prototipos/` | El **HTML final aprobado**, conservado como referencia visual y funcional. | Cambios directos para convertir el mockup en la aplicación de producción. |
+| `docs/diseño/` | El **HTML final aprobado** (`Mockup_Alimenta_Taste_v6_Menu_Superior.html`), lineamientos visuales y especificación `propuesta_mockup.md`. | Cambios directos para convertir el mockup en la aplicación de producción. |
+| `Documentos-prototipos/` | Patentes de referencia, artículos científicos y análisis de aplicabilidad (`aplicabilidad-patentes-alimenta.md`). | Código fuente de la aplicación o secretos. |
 | `Bases de datos/` | Exploración de fuentes y scripts existentes, incluido el trabajo de Manizales. | Esquema transaccional de la plataforma o secretos de infraestructura. |
 | `tests/` | Pruebas existentes y futuros recorridos de extremo a extremo; las pruebas unitarias pueden residir junto a cada módulo. | Datos reales sensibles o artefactos generados sin control de versiones. |
 
@@ -210,7 +220,7 @@ docker compose up --build
 
 ### Regla para implementar a partir del mockup final
 
-El HTML aprobado en `Documentos-prototipos/` es la **referencia visual**; el producto se construye en `app/frontend/`. Deben mantenerse la navegación superior unificada, el diseño editorial, los paneles de selección, la paleta institucional y los carruseles con controles consistentes. Los flujos funcionales se desarrollan en `app/backend/` y no se validan únicamente desde el navegador. Las diferencias respecto del diseño o de la propuesta se documentan antes de implementarse.
+El HTML aprobado en [`docs/diseño/Mockup_Alimenta_Taste_v6_Menu_Superior.html`](docs/dise%C3%B1o/Mockup_Alimenta_Taste_v6_Menu_Superior.html) es la **referencia visual**; el producto se construye en `app/frontend/`. Deben mantenerse la navegación superior unificada, el diseño editorial, los paneles de selección, la paleta institucional y los carruseles con controles consistentes. Los flujos funcionales se desarrollan en `app/backend/` y no se validan únicamente desde el navegador. Las diferencias respecto del diseño o de la propuesta se documentan antes de implementarse.
 
 ## Dónde encontrar cada información
 
@@ -234,22 +244,23 @@ El HTML aprobado en `Documentos-prototipos/` es la **referencia visual**; el pro
 
 El directorio `Bases de datos/` contiene un script asociado a Manizales. **No se asume en este README cuál es su fuente de datos, qué parámetros acepta ni qué archivos genera**; estos detalles deben consultarse en su documentación y en el código antes de ejecutarlo. El hecho de disponer de datos de una ciudad no acredita que las ubicaciones de servicios comunitarios sean operativas o estén verificadas.
 
-Si se dispone de Python y `pytest` instalados, puede intentarse la prueba individual desde la raíz del repositorio:
+Con Python 3 (usando el módulo estándar `unittest`, sin dependencias externas), puede ejecutarse la prueba unitaria existente desde la raíz del repositorio:
 
 ```bash
-python -m pytest tests/test_manizales_downloader.py
+python3 -m unittest discover -s tests -p 'test_manizales_downloader.py' -v
 ```
 
-Este comando **no constituye una garantía de ejecución satisfactoria**: las dependencias y condiciones de prueba deben revisarse en los archivos correspondientes. Evita incluir credenciales, datos personales o archivos de gran tamaño sin revisar su procedencia y las reglas de publicación.
+Este comando **ejecuta únicamente pruebas unitarias con transportes simulados**: no realiza descargas reales ni valida la API en vivo. Evita incluir credenciales, datos personales o archivos de gran tamaño sin revisar su procedencia y las reglas de publicación.
 
 ## Próximos pasos para la demo funcional
 
-1. **Consolidar las fuentes de verdad:** contrastar `docs/propuesta.md`, los documentos de diseño y el mockup HTML final; registrar cualquier diferencia.
-2. **Preparar `app/` y `deploy/`:** aprobar o ajustar el stack sugerido; crear la estructura propuesta, los contratos API, la configuración de entorno, el arranque local y las migraciones sin mover las carpetas preexistentes.
-3. **Implementar acceso y permisos:** desarrollar en `app/` la autenticación, verificación del edil y autorización de acciones por rol; no reutilizar el selector libre de rol del mockup como mecanismo real de seguridad.
-4. **Completar un recorrido verificable:** solicitud → evaluación → ofrecimiento/asignación → horario → transporte → recepción confirmada → actualización de saldo.
-5. **Extender la demo:** banco e inventario, aportes espontáneos, directorio público de servicios, reconocimientos y auditoría.
-6. **Validar y preparar despliegue:** pruebas automatizadas (incluidas `tests/e2e/`), comparación visual con el HTML final, casos de citas simultáneas y entregas parciales; configurar `deploy/` y verificar migraciones, respaldos y variables de entorno.
+1. **Consolidar las fuentes de verdad:** contrastar [`docs/propuesta.md`](docs/propuesta.md) (incluidos los módulos fundamentados en patentes: Catálogo de Ayudas Técnicas UNAL, asistencia de equidad con datos agregados de Manizales `ab8a-uwf7` y reparto bajo escasez, emparejamiento donante–necesidad, capa accesible y Ruta PAP UNAL), los documentos de `docs/diseño/` y el mockup HTML final; registrar cualquier diferencia.
+2. **Completar entregables de evaluación y transición de fase:** documentar los elementos pendientes de [`PLAN_CAMBIOS_PROYECTO.md`](PLAN_CAMBIOS_PROYECTO.md) (Plan 30–60–90 días, viabilidad/aliados e indicadores piloto) y formalizar en [`CONTRIBUTING.md`](CONTRIBUTING.md) el paso a fase de implementación antes de escribir código en `app/`.
+3. **Preparar `app/` y `deploy/`:** aprobar o ajustar el stack sugerido; crear la estructura propuesta, los contratos API, la configuración de entorno, el arranque local y las migraciones sin mover las carpetas preexistentes.
+4. **Implementar acceso y permisos:** desarrollar en `app/` la autenticación, verificación del edil y autorización de acciones por rol; no reutilizar el selector libre de rol del mockup como mecanismo real de seguridad.
+5. **Completar un recorrido verificable:** solicitud → evaluación → ofrecimiento/asignación → horario → transporte → recepción confirmada → actualización de saldo.
+6. **Extender la demo:** banco e inventario, aportes espontáneos, directorio público de servicios, reconocimientos y auditoría.
+7. **Validar y preparar despliegue:** pruebas automatizadas (incluidas `tests/e2e/`), comparación visual con el HTML final, casos de citas simultáneas y entregas parciales; configurar `deploy/` y verificar migraciones, respaldos y variables de entorno.
 
 Hasta que estos pasos se completen, los datos y escenarios utilizados para mostrar la interfaz deben etiquetarse como **demostrativos**, sin atribuirles disponibilidad o impacto real.
 

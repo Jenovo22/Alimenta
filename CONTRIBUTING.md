@@ -47,6 +47,10 @@ Do not invent product or technical decisions to fill a gap. In particular, do no
 
 Record unresolved matters as assumptions or focused questions in the [product brief](docs/product-brief.md). Decisions should be made only after the relevant context, participants, ownership, and tradeoffs are understood.
 
+### Implementation transition note
+
+For code generation in `app/` and `deploy/`, contributors and agents **may adopt the technology stack, modular monolith architecture, and assisted modules explicitly documented in [README.md](README.md), [docs/propuesta.md](docs/propuesta.md), and [docs/diseño/AGENTS.md](docs/dise%C3%B1o/AGENTS.md)** (including the social-weighting model + `US8494885B2` allocation tool under *Human-in-the-Loop*). Follow **exclusively** the guidelines already written in the repository without altering existing directives or introducing out-of-scope behavior (payments, medications, beneficiary PII, or autonomous unapproved allocation).
+
 ## Review checklist
 
 - [ ] The change has one clear purpose.

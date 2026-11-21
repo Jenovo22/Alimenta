@@ -10,9 +10,9 @@ Este documento consolida el diagnóstico técnico y documental del repositorio *
 
 * Rúbrica de evaluación: [`docs/Rubrica_requerimientos.jpeg`](docs/Rubrica_requerimientos.jpeg)
 * Definición inicial y límites éticos: [`docs/product-brief.md`](docs/product-brief.md)
-* Propuesta funcional v2.0: [`docs/propuesta.md`](docs/propuesta.md)
-* Diseño de pantallas, flujos y reglas (`P01`–`P23`, `F01`–`F05`, `R01`–`R12`): [`docs/diseño/Propuesta_mockup_Alimenta.md`](docs/dise%C3%B1o/Propuesta_mockup_Alimenta.md)
-* Prototipo HTML y paleta institucional: [`docs/diseño/Mockup_interactivo_Alimenta.html`](docs/dise%C3%B1o/Mockup_interactivo_Alimenta.html) y [`docs/diseño/alimenta_paleta_colores.json`](docs/dise%C3%B1o/alimenta_paleta_colores.json)
+* Propuesta funcional v2.1: [`docs/propuesta.md`](docs/propuesta.md)
+* Especificación de diseño v4.0, lineamientos e instrucciones para agentes: [`docs/diseño/propuesta_mockup.md`](docs/dise%C3%B1o/propuesta_mockup.md), [`docs/diseño/lineamientos_diseno.md`](docs/dise%C3%B1o/lineamientos_diseno.md) y [`docs/diseño/AGENTS.md`](docs/dise%C3%B1o/AGENTS.md)
+* Prototipo HTML aprobado y paleta institucional: [`docs/diseño/Mockup_Alimenta_Taste_v6_Menu_Superior.html`](docs/dise%C3%B1o/Mockup_Alimenta_Taste_v6_Menu_Superior.html) y [`docs/diseño/alimenta_paleta_colores.json`](docs/dise%C3%B1o/alimenta_paleta_colores.json)
 * Descargador reproducible de datos de Manizales (`ab8a-uwf7`, `cod_mpio = 17001`): [`Bases de datos/download_manizales_data.py`](Bases%20de%20datos/download_manizales_data.py)
 * Acervo y análisis de aplicabilidad de patentes: [`Documentos-prototipos/bases-datos.md`](Documentos-prototipos/bases-datos.md) y [`Documentos-prototipos/aplicabilidad-patentes-alimenta.md`](Documentos-prototipos/aplicabilidad-patentes-alimenta.md)
 
@@ -20,11 +20,11 @@ Este documento consolida el diagnóstico técnico y documental del repositorio *
 
 ## 1. Cambios para que el proyecto sea funcional y utilizable (Componente 2 — 25 pts)
 
-Actualmente [`docs/diseño/Mockup_interactivo_Alimenta.html`](docs/dise%C3%B1o/Mockup_interactivo_Alimenta.html) es una demostración estática con datos ficticios en memoria, sin persistencia ni control real de concurrencia. Para que Alimenta pueda operarse y demostrarse como prototipo funcional se requiere:
+Actualmente [`docs/diseño/Mockup_Alimenta_Taste_v6_Menu_Superior.html`](docs/dise%C3%B1o/Mockup_Alimenta_Taste_v6_Menu_Superior.html) es una referencia visual y de interacción estática con datos ficticios en memoria, sin persistencia ni control real de concurrencia. Para que Alimenta pueda operarse y demostrarse como prototipo funcional en `app/` y `deploy/` (siguiendo exclusivamente las directrices del repositorio) se requiere:
 
 ### 1.1. Backend ligero y persistencia real
-* **Implementar el esquema de datos** de [`docs/propuesta.md` §11](docs/propuesta.md#L252-L275) en una base de datos relacional (p. ej., SQLite para piloto rápido o PostgreSQL): `usuarios`, `comunidades`, `ediles_comunidades`, `categorias`/`subcategorias`/`productos`/`presentaciones`, `kits`/`kits_componentes`, `solicitudes`/`detalle_solicitud`, `evaluaciones`, `donaciones`/`detalle_donacion`, `donaciones_dirigidas`, `ventanas_disponibilidad`, `citas_entrega`, `transportes`, `inventario_lotes`/`movimientos_inventario`, `asignaciones`, `entregas`, `recepciones_aportes_dirigidos` y `auditoria`.
-* **Hacer cumplir en servidor las reglas `R01`–`R12`** ([`Propuesta_mockup_Alimenta.md` §6](docs/dise%C3%B1o/Propuesta_mockup_Alimenta.md#L134-L150)):
+* **Implementar el esquema de datos** de [`docs/propuesta.md` §11](docs/propuesta.md#L293-L316) en una base de datos relacional (p. ej., SQLite para piloto rápido o PostgreSQL): `usuarios`, `comunidades`, `ediles_comunidades`, `categorias`/`subcategorias`/`productos`/`presentaciones`, `kits`/`kits_componentes`, `solicitudes`/`detalle_solicitud`, `evaluaciones`, `donaciones`/`detalle_donacion`, `donaciones_dirigidas`, `ventanas_disponibilidad`, `citas_entrega`, `transportes`, `inventario_lotes`/`movimientos_inventario`, `asignaciones`, `entregas`, `recepciones_aportes_dirigidos`, `servicios_comunitarios`, `organizaciones_aliadas`, `referencias_territoriales_agregadas`, `derivaciones_pap_agregadas` y `auditoria`.
+* **Hacer cumplir en servidor las reglas `R01`–`R12` y criterios `AC-01`–`AC-20`** ([`propuesta_mockup.md`](docs/dise%C3%B1o/propuesta_mockup.md)):
   * Reserva atómica de cupos en ventanas horarias para impedir sobreagendamiento concurrente (`R04`).
   * Calificación de urgencia `G` (1–5) exclusiva del **Agente** con justificación obligatoria (`R01`) y alerta inmediata para `G = 5`.
   * Separación estricta de estados en banco: *comprometida ≠ recibida/verificada ≠ disponible ≠ reservada ≠ despachada ≠ entregada* (`R06`).
@@ -104,7 +104,7 @@ Al cruzar el estado actual del repositorio con [`docs/Rubrica_requerimientos.jpe
 
 ---
 
-## 6. Estado de ejecución y pendiente en `docs/diseño/`
+## 6. Estado de ejecución y alineación para generación de código
 
-* **Completado en definición funcional ([`docs/propuesta.md`](docs/propuesta.md) v2.1):** Ya incorpora los cuatro pilares derivados de las patentes y antecedentes aplicables (Catálogo de Ayudas Técnicas UNAL, asistencia de equidad territorial con `ab8a-uwf7` y reparto parcial sugerido bajo escasez, emparejamiento donante–necesidad, capa *Accessibility-First* y Ruta PAP UNAL desacoplada).
-* **Pendiente en `docs/diseño/`:** Se decidió mantener sin modificaciones [`docs/diseño/Propuesta_mockup_Alimenta.md`](docs/dise%C3%B1o/Propuesta_mockup_Alimenta.md) y [`docs/diseño/Mockup_interactivo_Alimenta.html`](docs/dise%C3%B1o/Mockup_interactivo_Alimenta.html) en esta iteración (anulando los cambios previos sobre esa carpeta). Queda pendiente para una iteración posterior actualizar el mockup y sus pantallas (`P01`–`P24`, Modo accesible, Catálogo UNAL, asistente de equidad/reparto, emparejamiento y Ruta PAP UNAL) junto con la aplicación de [`docs/diseño/alimenta_paleta_colores.json`](docs/dise%C3%B1o/alimenta_paleta_colores.json).
+* **Completado en definición funcional y punto de entrada ([`docs/propuesta.md`](docs/propuesta.md) v2.1 y [`README.md`](README.md)):** Ya integran el **agente de ponderación social + herramienta `US8494885B2`** (*Human-in-the-Loop*), el Catálogo de Ayudas Técnicas UNAL, el emparejamiento donante–necesidad, la capa *Accessibility-First* y la Ruta PAP UNAL desacoplada, alineados con la estructura `app/` + `deploy/`.
+* **Conflictos de documentación resueltos:** Se actualizaron [`CONTRIBUTING.md`](CONTRIBUTING.md), [`docs/product-brief.md`](docs/product-brief.md), [`docs/diseño/AGENTS.md`](docs/dise%C3%B1o/AGENTS.md), [`docs/diseño/propuesta_mockup.md`](docs/dise%C3%B1o/propuesta_mockup.md) y [`docs/diseño/lineamientos_diseno.md`](docs/dise%C3%B1o/lineamientos_diseno.md) para autorizar la generación de código en `app/` y `deploy/` siguiendo **exclusivamente** las directrices ya escritas en el repositorio (sin alterar el HTML v6 aprobado [`docs/diseño/Mockup_Alimenta_Taste_v6_Menu_Superior.html`](docs/dise%C3%B1o/Mockup_Alimenta_Taste_v6_Menu_Superior.html) ni las reglas vigentes). El documento histórico [`docs/diseño/Propuesta_mockup_Alimenta.md`](docs/dise%C3%B1o/Propuesta_mockup_Alimenta.md) quedó marcado como superado.

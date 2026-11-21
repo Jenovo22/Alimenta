@@ -226,7 +226,7 @@ Los puntos de quiebre exactos observados son aproximadamente `1190`, `1100`, `95
 
 ## 15. Tokens portables de implementación
 
-Además del documento, se entrega `tokens_diseno.json` con valores de referencia. Extracto CSS recomendado para iniciar el sistema visual **sin sustituir** el contraste o el contenido del HTML:
+Además del documento, se entrega `alimenta_paleta_colores.json` con valores de referencia. Extracto CSS recomendado para iniciar el sistema visual **sin sustituir** el contraste o el contenido del HTML:
 
 ```css
 :root {

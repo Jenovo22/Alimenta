@@ -69,6 +69,8 @@ La base actual del proyecto no define ni autoriza:
 
 Estas áreas deben permanecer abiertas hasta que se establezcan evidencias, responsabilidades y requisitos. Algunas podrían quedar permanentemente fuera del ámbito de actuación de Alimenta.
 
+> **Nota de transición a prototipo funcional:** Para la generación de código de la demo en `app/` y `deploy/`, se autoriza aplicar **exclusivamente** las directrices y la pila tecnológica sugerida en [`README.md`](../README.md), [`docs/propuesta.md`](propuesta.md) y [`docs/diseño/AGENTS.md`](dise%C3%B1o/AGENTS.md) (incluido el modelo de ponderación social + herramienta `US8494885B2` bajo decisión humana), sin modificar las directrices existentes ni incorporar pagos, medicamentos, datos personales de beneficiarios ni afirmaciones de impacto no validadas.
+
 ## 7. Supuestos que requieren validación
 
 1. Los organizadores participantes experimentan un problema de coordinación de inventarios que podría explorarse de manera significativa mediante un prototipo digital.
